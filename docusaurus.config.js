@@ -18,9 +18,9 @@ const config = {
   tagline: 'Install, configure and re-brand eDrama: the app, the Admin Panel, the website and the Creator Portal.',
   favicon: 'images/brand/favicon.png',
 
-  url: 'https://wrteam-aayush.github.io',
+  url: 'https://wrteam-in.github.io',
   baseUrl: '/edrama-doc/',
-  organizationName: 'wrteam-aayush',
+  organizationName: 'WRTeam-in',
   projectName: 'edrama-doc',
   deploymentBranch: 'gh-pages',
   trailingSlash: true,

@@ -2,7 +2,7 @@
 
 The buyer documentation for **eDrama** by WRTeam: installing the backend and Admin Panel, the website, the Creator Portal, and setting up and re-branding the Flutter app.
 
-👉 **Live:** https://wrteam-aayush.github.io/edrama-doc/
+👉 **Live:** https://wrteam-in.github.io/edrama-doc/
 
 ## Run it locally
 
