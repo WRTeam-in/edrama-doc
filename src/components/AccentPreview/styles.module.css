@@ -1,0 +1,99 @@
+.wrap {
+  margin: 1.5rem 0;
+  padding: 1.1rem;
+  border: 1px solid var(--ed-border);
+  border-radius: 18px;
+  background: var(--ed-surface);
+}
+.swatches {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+.swatch {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform var(--ed-quick) var(--ed-ease), box-shadow var(--ed-quick) var(--ed-ease);
+}
+.swatch:hover {
+  transform: scale(1.08);
+}
+.swatch[aria-checked='true'] {
+  box-shadow: 0 0 0 3px var(--ifm-background-color), 0 0 0 5px var(--ifm-font-color-base);
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+.phones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+@media (max-width: 520px) {
+  .phones {
+    grid-template-columns: 1fr;
+  }
+}
+.phone {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  border-radius: 16px;
+  min-height: 9rem;
+  justify-content: flex-end;
+}
+.phone[data-mode='dark'] {
+  background: #000;
+  color: #f3f1ea;
+  --c: var(--pick);
+}
+.phone[data-mode='light'] {
+  background: #f6f6f3;
+  color: #1b1b19;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  --c: var(--pick-on-light);
+}
+.chip {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0.75;
+}
+.cta {
+  display: block;
+  text-align: center;
+  font-weight: 650;
+  padding: 0.65rem;
+  border-radius: 999px;
+  background: var(--c);
+  transition: background var(--ed-standard) var(--ed-ease);
+}
+.phone[data-mode='dark'] .cta {
+  color: #0b0b0c;
+}
+.phone[data-mode='light'] .cta {
+  color: #fff;
+}
+.link {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c);
+  transition: color var(--ed-standard) var(--ed-ease);
+}
+.caption {
+  margin: 0.9rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ed-text-2);
+}

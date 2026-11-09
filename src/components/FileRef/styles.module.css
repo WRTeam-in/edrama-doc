@@ -1,0 +1,25 @@
+.ref {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 100%;
+  vertical-align: middle;
+}
+.ref code {
+  overflow-wrap: anywhere;
+}
+.copy {
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+  border: 1px solid var(--ed-border);
+  background: transparent;
+  color: var(--ifm-color-primary);
+  cursor: pointer;
+  transition: background var(--ed-quick) var(--ed-ease);
+}
+.copy:hover {
+  background: var(--ed-accent-soft);
+}

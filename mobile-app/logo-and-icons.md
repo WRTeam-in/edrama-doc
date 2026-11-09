@@ -1,0 +1,51 @@
+---
+sidebar_position: 7
+title: Logo, icons and splash
+description: Replace the in-app logo, the launcher icon, the splash screen and the notification icon.
+---
+
+# Logo, icons and splash
+
+## The in-app logo
+
+Replace these files in `assets/branding/`, keeping the **same names and formats**:
+
+| File | What it is |
+|---|---|
+| `edrama_logo_dark.png` | The full logo for dark backgrounds |
+| `edrama_logo_light.png` | The full logo for light backgrounds |
+| `edrama_mark.png` | The mark alone |
+| `coin.svg`, `coin_mono.svg` | The coin, in colour and in one colour |
+| `vip.svg`, `vip_mono.svg` | The VIP badge |
+| `company_logo.svg`, `company_logo_light.svg` | Your company's logo at the foot of the splash |
+
+## The launcher icon
+
+The project is set up for `flutter_launcher_icons`. Replace the four files in `assets/branding/launcher/` (same names), then run:
+
+```bash
+dart run flutter_launcher_icons
+```
+
+| File | What it is |
+|---|---|
+| `ic_launcher.png` | The full icon, for iOS and older Android |
+| `ic_launcher_background.png` | The adaptive icon's background layer |
+| `ic_launcher_foreground.png` | The adaptive icon's foreground. The files already leave Android's safe margin, so keep yours the same. |
+| `ic_launcher_monochrome.png` | The one-colour layer for Android 13+ themed icons |
+
+More about icon sizes and the options: **[common guide › App icon](https://wrteam-in.github.io/common_app_doc/GeneralSettings/appicon)**.
+
+## The splash screen
+
+The first screen, drawn by the phone before the app starts:
+
+- **Android**: `android/app/src/main/res/drawable*/launch_background.xml` and `values*/styles.xml`
+- **iOS**: `ios/Runner/Base.lproj/LaunchScreen.storyboard` and the `LaunchImage` image set in `Assets.xcassets`
+
+The animated splash after it uses your logo from `assets/branding/`.
+
+## The notification icon (Android)
+
+- `android/app/src/main/res/drawable-*/ic_stat_edrama.png`: **white on transparent**, in each density folder.
+- `brand_green` in `android/app/src/main/res/values/brand_colors.xml`: the colour Android tints it with.

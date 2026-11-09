@@ -1,0 +1,210 @@
+/**
+ * eDrama documentation theme.
+ * Colours come from the app's theme: pure black background and the
+ * Greenlight accent (#C6EB3B) in dark mode, its deeper on-light partner
+ * (#4A7300) in light mode so text keeps its contrast.
+ */
+
+:root {
+  --ifm-color-primary: #4a7300;
+  --ifm-color-primary-dark: #436800;
+  --ifm-color-primary-darker: #3f6200;
+  --ifm-color-primary-darkest: #345100;
+  --ifm-color-primary-light: #517e00;
+  --ifm-color-primary-lighter: #558400;
+  --ifm-color-primary-lightest: #619500;
+
+  --ifm-background-color: #f6f6f3;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-font-color-base: #1b1b19;
+  --ifm-font-family-base: 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ifm-heading-font-family: 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ifm-font-family-monospace: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ifm-code-font-size: 92%;
+  --ifm-heading-font-weight: 650;
+  --ifm-navbar-height: 4rem;
+  --ifm-global-radius: 10px;
+  --ifm-card-border-radius: 16px;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
+
+  --ed-accent: #4a7300;
+  --ed-accent-bright: #c6eb3b;
+  --ed-accent-soft: rgba(74, 115, 0, 0.1);
+  --ed-coin: #b8860b;
+  --ed-vip: #8a6a2f;
+  --ed-surface: #ffffff;
+  --ed-surface-muted: #ecece7;
+  --ed-border: rgba(27, 27, 25, 0.1);
+  --ed-text-2: #55544f;
+  --ed-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ed-quick: 160ms;
+  --ed-standard: 280ms;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #c6eb3b;
+  --ifm-color-primary-dark: #bde620;
+  --ifm-color-primary-darker: #b3dc19;
+  --ifm-color-primary-darkest: #94b615;
+  --ifm-color-primary-light: #cfee5a;
+  --ifm-color-primary-lighter: #d5f070;
+  --ifm-color-primary-lightest: #e2f59a;
+
+  --ifm-background-color: #000000;
+  --ifm-background-surface-color: #151517;
+  --ifm-font-color-base: #f3f1ea;
+  --ifm-navbar-background-color: rgba(0, 0, 0, 0.82);
+  --ifm-footer-background-color: #0b0b0c;
+  --ifm-toc-border-color: rgba(240, 238, 230, 0.12);
+  --ifm-hr-background-color: rgba(240, 238, 230, 0.12);
+  --ifm-color-emphasis-200: rgba(240, 238, 230, 0.12);
+  --ifm-code-background: #1c1c1f;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.08);
+
+  --ed-accent: #c6eb3b;
+  --ed-accent-soft: rgba(198, 235, 59, 0.12);
+  --ed-coin: #f2c25b;
+  --ed-vip: #f1ddb3;
+  --ed-surface: #151517;
+  --ed-surface-muted: #1c1c1f;
+  --ed-border: rgba(240, 238, 230, 0.12);
+  --ed-text-2: #b4b1a8;
+}
+
+.footer--dark {
+  --ifm-footer-background-color: #0b0b0c;
+}
+
+/* Text on the accent stays dark in both themes, as in the app. */
+.button--primary,
+.button--primary:hover {
+  color: #0b0b0c;
+}
+[data-theme='light'] .button--primary,
+[data-theme='light'] .button--primary:hover {
+  color: #ffffff;
+}
+
+.navbar {
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--ed-border);
+  box-shadow: none;
+}
+.navbar__logo img {
+  height: 30px;
+}
+
+h1,
+.markdown h1:first-child {
+  letter-spacing: -0.02em;
+}
+.markdown h1:first-child {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 2.9rem;
+  line-height: 1.05;
+}
+.markdown h2 {
+  letter-spacing: -0.01em;
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
+}
+.markdown h3 {
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 1rem);
+}
+
+.markdown img {
+  border-radius: 12px;
+  border: 1px solid var(--ed-border);
+}
+
+.markdown table {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--ed-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.markdown table thead tr {
+  background: var(--ed-surface-muted);
+}
+.markdown table tr:nth-child(2n) {
+  background: transparent;
+}
+.markdown table th,
+.markdown table td {
+  border: 0;
+  border-bottom: 1px solid var(--ed-border);
+}
+.markdown table tr:last-child td {
+  border-bottom: 0;
+}
+@media (max-width: 700px) {
+  .markdown table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+.theme-doc-sidebar-menu .menu__link--active:not(.menu__link--sublist) {
+  background: var(--ed-accent-soft);
+  font-weight: 600;
+}
+
+/* Reading progress bar under the navbar (src/theme/Root.js). */
+.ed-progress {
+  position: fixed;
+  top: var(--ifm-navbar-height);
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: var(--ifm-color-primary);
+  z-index: 200;
+  pointer-events: none;
+}
+
+/* Scroll-in reveal (src/components/Reveal). */
+.ed-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 500ms var(--ed-ease), transform 500ms var(--ed-ease);
+}
+.ed-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .ed-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.navbar__item,
+.navbar__link {
+  white-space: nowrap;
+}
+@media (min-width: 997px) and (max-width: 1240px) {
+  .navbar__item {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 0.92rem;
+  }
+  .navbar__items--right a[href*='wrteam.in'] {
+    display: none;
+  }
+}
