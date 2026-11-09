@@ -52,6 +52,9 @@ Check the Google Play or App Store keys and press **Test connection** in [Settin
 ### Ads don't unlock episodes
 Check that the app has your own AdMob app IDs (not Google's test IDs), that the region has ad unit IDs in Monetization › Ads, and that **server-side verification** is on in AdMob with your callback URL. An ad pays only once AdMob confirms it.
 
+### A viewer moved country and sees the wrong prices
+If they never paid, the app moves them to the right region by itself at its next start. If they have paid, open their page in <AdminPath path="Audience › Users" /> and use **Change region** with a reason. See [how a viewer's region is decided](/admin-panel/monetization/#how-a-viewers-region-is-decided).
+
 ### Can I charge different prices in different countries?
 Yes. Create a region for those countries in [Monetization › Regions](/admin-panel/monetization/#regions), with its own currency, coin value, packs, VIP plans and title prices.
 

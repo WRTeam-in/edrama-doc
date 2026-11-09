@@ -53,7 +53,7 @@ What viewers say about your titles. Check reports, approve what was held by the 
 ## Audience
 
 ### Users
-Find a viewer by name, email or ID, and open their profile, wallet and coin history, unlocks, purchases and devices. Wallet changes always need a reason and are logged. From a viewer you can adjust their balance, grant an episode, or ban the account.
+Find a viewer by name, email or ID, and open their profile, wallet and coin history, unlocks, purchases and devices. Wallet changes always need a reason and are logged. From a viewer you can adjust their balance, grant an episode, **change their region** (with a reason; their coins and purchases stay), or ban the account.
 
 ### Balance adjustments
 Coins added or removed by the team. Over the **Approval limit** (Settings › Payments), a second member approves.

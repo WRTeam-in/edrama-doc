@@ -27,6 +27,7 @@ A Flutter app for **Android 7+** and **iOS 15+**, in a dark theme by default wit
 - **Coin store**: coin packs with bonus coins, a first top-up offer, and **restore purchases**.
 - **VIP**: weekly, monthly or yearly plans, with a renewal reminder and cancel in two taps.
 - **Wallet**: the balance, a readable coin history with every row explained, pending purchases, and the **spend cap**.
+- **Prices line**: the coin store and Settings show where prices come from, such as "Prices in INR · India".
 
 ## Rewards
 

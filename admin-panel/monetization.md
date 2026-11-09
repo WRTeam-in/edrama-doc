@@ -34,8 +34,19 @@ Every country belongs to one region. A country no active region lists uses the *
 
 A **New region** starts as a copy of the default region's coin packs, VIP plans, title prices, ad limits and rewards, with money prices converted at the two coin values. Review them, then turn it on. **Make default** changes which region serves every other country. Viewers keep the prices they already locked.
 
-:::note Where the country comes from
-The backend reads the viewer's country from the `CF-IPCountry` header, which Cloudflare adds when your domain runs through Cloudflare's proxy. To read another header, set `EDRAMA_COUNTRY_HEADER` in `.env`. Without a country, viewers get the default region.
+### How a viewer's region is decided
+
+1. **When the account is created** (the first time the app opens), the backend takes the viewer's country from the `CF-IPCountry` header, which Cloudflare adds when your domain runs through Cloudflare's proxy. Without that header, it uses the country the phone sends. The header always wins, so viewers behind Cloudflare can't pick a cheaper region by changing their phone. To read another header, set `EDRAMA_COUNTRY_HEADER` in `.env`.
+2. The country goes to the active region that lists it, or else the **default region**. The region is saved on the account.
+3. **On every app start after that**, an account that **never paid** (no purchase, no VIP subscription, no paid coins) moves to the region of the country it is in now. A viewer whose first start was abroad, or who moved, gets their own prices without asking anyone.
+4. An account that **has paid keeps its region**, so coins bought at one region's coin value never pay for another region's prices. If a paying viewer really moved, your team can move them with **Change region** on their page in <AdminPath path="Audience › Users" />, with a reason.
+
+A move never touches coins, purchases, unlocks, Series Passes, VIP subscriptions or locked prices. Only what comes next follows the new region. Every move is in the audit log: **Region followed the viewer's country** (by the viewer's own app) or **Region changed** (by a team member).
+
+The app shows viewers where their prices come from, such as "Prices in INR · India", in the coin store and in Settings.
+
+:::tip Use Cloudflare's proxy if you sell in several regions
+Without it the backend falls back to the phone's country, which viewers can change.
 :::
 
 ## Coin packs
