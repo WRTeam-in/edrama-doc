@@ -193,11 +193,23 @@ export default function HeroPhone() {
 
   return (
     <div ref={root} className={styles.wrap}>
-      <button type="button" className={styles.phone} onClick={next} aria-label={`App preview: ${SCREENS[index]}. Tap for the next screen.`}>
-        <span className={styles.notch} aria-hidden="true" />
-        <span className={styles.screen} aria-hidden="true">
+      <div
+        role="button"
+        tabIndex={0}
+        className={styles.phone}
+        onClick={next}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            next();
+          }
+        }}
+        aria-label={`App preview: ${SCREENS[index]}. Tap for the next screen.`}
+      >
+        <div className={styles.notch} aria-hidden="true" />
+        <div className={styles.screen} aria-hidden="true">
           {SCREENS.map((name, i) => (
-            <span
+            <div
               key={name}
               className={clsx(styles.layer, i === index && styles.layerActive, i < index && styles.layerPast)}
             >
@@ -205,13 +217,13 @@ export default function HeroPhone() {
               {name === 'Series' && <SeriesScreen />}
               {name === 'Player' && <PlayerScreen active={i === index} />}
               {name === 'Unlock' && <UnlockScreen active={i === index} />}
-            </span>
+            </div>
           ))}
-        </span>
+        </div>
         <span className={styles.tapHint} aria-hidden="true">
           Tap
         </span>
-      </button>
+      </div>
       <div className={styles.tabs} role="tablist" aria-label="App preview screens">
         {SCREENS.map((name, i) => (
           <button
