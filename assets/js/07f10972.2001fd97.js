@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkedrama_doc||=[]).push([[8785],{8470(a){a.exports=JSON.parse('{"name":"docusaurus-plugin-content-docs","id":"admin-panel"}')}}]);
