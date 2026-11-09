@@ -80,10 +80,10 @@
   transition: background var(--ed-standard) var(--ed-ease);
 }
 .phone[data-mode='dark'] .cta {
-  color: #0b0b0c;
+  color: var(--pick-ink, #0b0b0c);
 }
 .phone[data-mode='light'] .cta {
-  color: #fff;
+  color: var(--pick-ink-light, #fff);
 }
 .link {
   text-align: center;
@@ -96,4 +96,29 @@
   margin: 0.9rem 0 0;
   font-size: 0.85rem;
   color: var(--ed-text-2);
+}
+.custom {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  background: conic-gradient(#ff4f6e, #ff8a4c, #f2c25b, #c6eb3b, #4fdccb, #5aa9ff, #9b8cff, #ff7fa8, #ff4f6e);
+  transition: transform var(--ed-quick) var(--ed-ease);
+}
+.custom:hover {
+  transform: scale(1.08);
+}
+.custom input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.custom span {
+  font-weight: 700;
+  color: #0b0b0c;
+  pointer-events: none;
 }

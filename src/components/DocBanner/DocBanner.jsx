@@ -8,7 +8,7 @@ const DocBanner = () => {
             <div className={styles.bannerImageWrapper}>
                 {/* SVG illustration - converted from HTML */}
                 <svg width="214" height="143" viewBox="0 0 214 143" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_138_10542)">
+                    <g clipPath="url(#clip0_138_10542)">
                         <path
                             d="M27.0832 14.5977H186.479C188.785 14.5977 190.656 16.4746 190.656 18.7869V119.826H22.9062V18.7876C22.9062 16.4754 24.7777 14.5984 27.0832 14.5984V14.5977Z"
                             fill="white" />

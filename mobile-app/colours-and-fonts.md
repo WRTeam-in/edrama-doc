@@ -8,11 +8,11 @@ description: The app's theme colours, its five accents, and its two fonts.
 
 ## The accent: no code needed
 
-The **accent** colours the app's buttons, switches, progress and highlights. The app ships with five, and you pick the live one in Admin Panel › Settings › Branding › **Theme colour** (which also offers Gold, Sky and any custom colour). The app picks it up at its next start.
+The **accent** colours the app's buttons, switches, progress and highlights. Set your brand colour in Admin Panel › Settings › Branding › **Theme colour**: pick a ready-made one or type any hex code. The app, the panels and the website all pick it up, with no new app release. Try one below:
 
 <AccentPreview />
 
-`defaultAccent` in `lib/app/config/app_config.dart` is the accent used until the app first reaches the server.
+`defaultAccent` in `lib/app/config/app_config.dart` is the accent used until the app first reaches the server. It is one of the five accents drawn in `theme_colors.dart`, each with a deeper partner for light backgrounds.
 
 ## Every other colour
 

@@ -79,10 +79,19 @@
   flex-wrap: wrap;
   gap: 0.75rem;
 }
+.heroButtons :global(.button),
+.helpButtons :global(.button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.1rem;
+  padding: 0 1.6rem;
+  line-height: 1;
+  border: 1px solid transparent;
+}
 .primaryButton {
   background: var(--hero-accent, #c6eb3b);
-  color: #0b0b0c !important;
-  border: 0;
+  color: var(--hero-ink, #0b0b0c) !important;
   border-radius: 999px;
   transition: transform 160ms ease, box-shadow 160ms ease, background 400ms ease;
 }
@@ -112,6 +121,7 @@
 }
 .accentRow {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.55rem;
   margin-top: 2rem;
@@ -137,95 +147,57 @@
   display: flex;
   justify-content: center;
 }
-.phone {
-  width: 250px;
-  aspect-ratio: 9 / 19;
-  border-radius: 38px;
-  padding: 10px;
-  background: linear-gradient(160deg, #2a2a2e, #0b0b0c);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-  animation: float 6s ease-in-out infinite alternate, rise 900ms 120ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-@keyframes float {
-  from {
-    transform: translateY(0) rotate(-2deg);
-  }
-  to {
-    transform: translateY(-12px) rotate(1deg);
-  }
-}
-.phoneScreen {
-  position: relative;
-  height: 100%;
-  border-radius: 30px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 1.25rem;
-  background:
-    radial-gradient(120% 70% at 50% 25%, color-mix(in srgb, var(--hero-accent) 30%, #151517) 0%, #0b0b0c 70%),
-    #0b0b0c;
-  transition: background 500ms ease;
-}
-.phoneIcon {
-  position: absolute;
-  top: 34%;
-  left: 50%;
-  width: 84px;
-  transform: translate(-50%, -50%);
-  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
-}
-.phonePill {
-  align-self: flex-start;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #f3f1ea;
-}
-.phoneProgress {
-  height: 3px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.15);
-  overflow: hidden;
-}
-.phoneProgress span {
-  display: block;
-  height: 100%;
-  width: 100%;
-  background: var(--hero-accent);
-  transform-origin: 0 50%;
-  animation: play 6s linear infinite;
-}
-@keyframes play {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-.phoneCta {
-  text-align: center;
-  font-weight: 650;
-  font-size: 0.9rem;
-  padding: 0.7rem;
-  border-radius: 999px;
-  background: var(--hero-accent);
-  color: #0b0b0c;
-  transition: background 400ms ease;
-}
 
-.trail {
+.trailLayer {
   position: fixed;
+  inset: 0;
   pointer-events: none;
   z-index: 1000;
-  opacity: 1;
-  transform: scale(0);
-  transition: transform 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.85s ease;
+  overflow: hidden;
+  contain: strict;
+}
+.trail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.customColour {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 50%;
+  cursor: pointer;
+  background: conic-gradient(#ff4f6e, #ff8a4c, #f2c25b, #c6eb3b, #4fdccb, #5aa9ff, #9b8cff, #ff7fa8, #ff4f6e);
+  transition: transform 160ms ease;
+}
+.customColour:hover {
+  transform: scale(1.12);
+}
+.customColour input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.customColour span {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #0b0b0c;
+  pointer-events: none;
+}
+.accentNote {
+  margin: 0.6rem 0 0;
+  font-size: 0.82rem;
+  color: #7d7b74;
+  max-width: 30rem;
 }
 
 .sections,
@@ -359,7 +331,7 @@
     grid-template-columns: 1fr;
   }
   .heroArt {
-    display: none;
+    margin-top: 1rem;
   }
   .hero {
     padding: 3.5rem 0 4rem;
@@ -367,10 +339,21 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .glow,
-  .phone,
-  .phoneProgress span,
   .lines path,
   .heroText {
     animation: none;
   }
+}
+
+.heroButtons .ghostButton {
+  border-color: rgba(243, 241, 234, 0.25);
+}
+.heroButtons .ghostButton:hover {
+  border-color: rgba(243, 241, 234, 0.6);
+}
+.helpButtons .ghostButtonPlain {
+  border-color: var(--ed-border);
+}
+.helpButtons .ghostButtonPlain:hover {
+  border-color: var(--ifm-color-primary);
 }

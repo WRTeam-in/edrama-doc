@@ -6,7 +6,8 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import DocBanner from '@site/src/components/DocBanner/DocBanner';
 import Reveal from '@site/src/components/Reveal';
-import { ACCENTS } from '@site/src/components/AccentPreview';
+import { ACCENTS, inkOn } from '@site/src/components/AccentPreview';
+import HeroPhone from '@site/src/components/HeroPhone';
 import styles from './index.module.css';
 
 /** Icon paths for the cursor trail: clapperboard, play, coin, heart. */
@@ -17,54 +18,99 @@ const TRAIL_ICONS = [
   'M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.3 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10Z',
 ];
 const TRAIL_COLOURS = ['#C6EB3B', '#D5F070', '#F2C25B', '#FF4F6E'];
+const TRAIL_POOL = 18;
+const TRAIL_SPACING = 34;
 
+/**
+ * Small icons that drift away from the cursor over the hero. A fixed pool of
+ * elements is reused, each moved with transform only and animated by the
+ * browser's compositor (Web Animations), so the page never re-lays out while
+ * the mouse moves. New icons appear every few dozen pixels of travel, at most
+ * once a frame. Off on touch screens and for readers who prefer less motion.
+ */
 function useCursorTrail(ref) {
   useEffect(() => {
     const node = ref.current;
-    if (!node) return undefined;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const touch = window.matchMedia('(hover: none)').matches;
-    if (reduce || touch) return undefined;
+    if (!node || typeof Element.prototype.animate !== 'function') return undefined;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    if (window.matchMedia('(hover: none)').matches) return undefined;
 
-    let last = { x: 0, y: 0 };
-    const spawn = (x, y, vx = 0, vy = 0) => {
-      const i = Math.floor(Math.random() * TRAIL_ICONS.length);
-      const size = 14 + Math.random() * 8;
+    const layer = document.createElement('div');
+    layer.className = styles.trailLayer;
+    layer.setAttribute('aria-hidden', 'true');
+    const pool = Array.from({ length: TRAIL_POOL }, (_, n) => {
+      const i = n % TRAIL_ICONS.length;
       const el = document.createElement('div');
       el.className = styles.trail;
-      el.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none"><path d="${TRAIL_ICONS[i]}" stroke="${TRAIL_COLOURS[i]}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-      const angle = Math.random() * Math.PI * 2;
-      const distance = 6 + Math.random() * 18;
-      el.style.left = `${x + Math.cos(angle) * distance}px`;
-      el.style.top = `${y + Math.sin(angle) * distance}px`;
-      document.body.appendChild(el);
-      const rotate = (Math.random() - 0.5) * 140;
-      const dx = (Math.random() - 0.5) * 60 + vx;
-      const dy = -Math.random() * 60 - 30 + vy;
-      requestAnimationFrame(() => {
-        el.style.transform = `translate(${dx}px, ${dy}px) rotate(${rotate}deg) scale(1)`;
-        el.style.opacity = '0';
-      });
-      setTimeout(() => el.remove(), 900);
+      el.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="${TRAIL_ICONS[i]}" stroke="${TRAIL_COLOURS[i]}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      layer.appendChild(el);
+      return el;
+    });
+    document.body.appendChild(layer);
+
+    let next = 0;
+    let frame = 0;
+    let pending = null;
+    let last = null;
+    let travelled = 0;
+
+    const spawn = (x, y, dx, dy) => {
+      const el = pool[next];
+      next = (next + 1) % pool.length;
+      const len = Math.hypot(dx, dy) || 1;
+      const ux = dx / len;
+      const uy = dy / len;
+      const spread = (Math.random() - 0.5) * 40;
+      const driftX = -ux * 26 + -uy * spread;
+      const driftY = -uy * 26 + ux * spread - 24;
+      const size = 0.7 + Math.random() * 0.4;
+      const turn = (Math.random() - 0.5) * 120;
+      el.getAnimations().forEach((a) => a.cancel());
+      el.animate(
+        [
+          { transform: `translate3d(${x}px, ${y}px, 0) scale(0.2) rotate(0deg)`, opacity: 0 },
+          { transform: `translate3d(${x + driftX * 0.3}px, ${y + driftY * 0.3}px, 0) scale(${size}) rotate(${turn * 0.3}deg)`, opacity: 0.95, offset: 0.25 },
+          { transform: `translate3d(${x + driftX}px, ${y + driftY}px, 0) scale(${size * 0.85}) rotate(${turn}deg)`, opacity: 0 },
+        ],
+        { duration: 1100, easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)', fill: 'forwards' },
+      );
     };
-    const onMove = (e) => {
-      const vx = e.clientX - last.x;
-      const vy = e.clientY - last.y;
-      last = { x: e.clientX, y: e.clientY };
-      const count = Math.min(Math.floor(Math.hypot(vx, vy) / 9), 3);
-      for (let n = 0; n < count; n += 1) {
-        setTimeout(() => spawn(e.clientX, e.clientY, vx, vy), n * 40);
+
+    const flush = () => {
+      frame = 0;
+      if (!pending) return;
+      const { x, y } = pending;
+      pending = null;
+      if (!last) {
+        last = { x, y };
+        return;
       }
+      const dx = x - last.x;
+      const dy = y - last.y;
+      travelled += Math.hypot(dx, dy);
+      if (travelled >= TRAIL_SPACING) {
+        travelled = 0;
+        spawn(x - 10, y - 10, dx, dy);
+      }
+      last = { x, y };
     };
-    const onEnter = (e) => {
-      last = { x: e.clientX, y: e.clientY };
-      for (let n = 0; n < 6; n += 1) setTimeout(() => spawn(e.clientX, e.clientY), n * 45);
+
+    const onMove = (e) => {
+      pending = { x: e.clientX, y: e.clientY };
+      if (!frame) frame = requestAnimationFrame(flush);
     };
-    node.addEventListener('mousemove', onMove);
-    node.addEventListener('mouseenter', onEnter);
+    const onLeave = () => {
+      last = null;
+      travelled = 0;
+    };
+
+    node.addEventListener('pointermove', onMove, { passive: true });
+    node.addEventListener('pointerleave', onLeave);
     return () => {
-      node.removeEventListener('mousemove', onMove);
-      node.removeEventListener('mouseenter', onEnter);
+      node.removeEventListener('pointermove', onMove);
+      node.removeEventListener('pointerleave', onLeave);
+      cancelAnimationFrame(frame);
+      layer.remove();
     };
   }, [ref]);
 }
@@ -72,12 +118,11 @@ function useCursorTrail(ref) {
 function Hero() {
   const { siteConfig } = useDocusaurusContext();
   const ref = useRef(null);
-  const [accent, setAccent] = useState(ACCENTS[0]);
-  const icon = useBaseUrl('/images/brand/icon.svg');
+  const [accent, setAccent] = useState(ACCENTS[0].fill.toLowerCase());
   const logo = useBaseUrl('/images/brand/logo-horizontal-dark.svg');
   useCursorTrail(ref);
   return (
-    <header ref={ref} className={styles.hero} style={{ '--hero-accent': accent.fill }}>
+    <header ref={ref} className={styles.hero} style={{ '--hero-accent': accent, '--hero-ink': inkOn(accent) }}>
       <div className={styles.glow} aria-hidden="true" />
       <div className={clsx('container', styles.heroInner)}>
         <div className={styles.heroText}>
@@ -97,32 +142,35 @@ function Hero() {
             </Link>
           </div>
           <div className={styles.accentRow}>
-            <span>Ships with 5 accents:</span>
+            <span>Your brand colour, in a minute:</span>
             {ACCENTS.map((a) => (
               <button
                 key={a.name}
                 type="button"
                 className={styles.accentDot}
                 style={{ background: a.fill }}
-                aria-pressed={a.name === accent.name}
+                aria-pressed={a.fill.toLowerCase() === accent}
                 aria-label={`Preview ${a.name}`}
                 title={a.name}
-                onClick={() => setAccent(a)}
+                onClick={() => setAccent(a.fill.toLowerCase())}
               />
             ))}
+            <label className={styles.customColour} title="Any colour">
+              <input
+                type="color"
+                value={accent}
+                onChange={(e) => setAccent(e.target.value)}
+                aria-label="Pick any brand colour"
+              />
+              <span aria-hidden="true">+</span>
+            </label>
           </div>
+          <p className={styles.accentNote}>
+            Set it in Admin Panel › Settings › Branding and the app, panels and website all switch, with no new release.
+          </p>
         </div>
-        <div className={styles.heroArt} aria-hidden="true">
-          <div className={styles.phone}>
-            <div className={styles.phoneScreen}>
-              <img src={icon} alt="" className={styles.phoneIcon} />
-              <span className={styles.phonePill}>Episode 7 · Free</span>
-              <div className={styles.phoneProgress}>
-                <span />
-              </div>
-              <span className={styles.phoneCta}>Unlock episode 8</span>
-            </div>
-          </div>
+        <div className={styles.heroArt}>
+          <HeroPhone />
         </div>
       </div>
     </header>

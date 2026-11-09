@@ -208,3 +208,16 @@ h1,
     display: none;
   }
 }
+
+/* Search: text on the highlighted result stays readable on the accent. */
+:root {
+  --search-local-hit-active-color: #ffffff;
+}
+[data-theme='dark'] {
+  --search-local-hit-active-color: #0b0b0c;
+  --search-local-modal-background: #151517;
+  --search-local-hit-background: #1c1c1f;
+  --search-local-hit-shadow: none;
+  --search-local-hit-color: #f3f1ea;
+  --search-local-muted-color: #b4b1a8;
+}
