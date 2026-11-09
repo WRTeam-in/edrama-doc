@@ -125,6 +125,35 @@ These are locked so a pricing change can't quietly undo them:
 - Unlocks belong to the account and come back on a new phone.
 - VIP: a reminder before renewal, cancel in two taps, no ads.
 
+## Series in some regions only
+
+Every series is shown in every region by default. When you only have the rights in some countries, or want a series for one market, limit it:
+
+<Steps>
+<Step title="Open the series">
+
+<AdminPath path="Content › Titles" /> › the series › **Monetization** tab › **Where it's shown**.
+
+</Step>
+<Step title="Pick the regions">
+
+Choose **Only these regions**, tick the regions, and save. Only regions that are switched on can be picked. The change is recorded in the audit log.
+
+</Step>
+</Steps>
+
+What changes for viewers in every other region:
+
+- The series disappears from Home, search, categories, creator pages, Top 10 and My List.
+- A link to it says **"This series isn't available in your region."**
+- Its episodes can't be unlocked or bought there.
+- Followers there get no new-episode alerts, and Push composer messages sent to its followers skip them.
+- **Viewers who already unlocked an episode or bought its Series Pass keep the series**, wherever they are, so nobody loses what they paid for.
+
+The [website](/website/) shows what the default region's viewers see, so include the default region if the series should be on the website.
+
+A region that a series is limited to can't be deleted.
+
 ## Title prices
 
 Each series' **Coin price per episode** and **Series Pass** price are set per region on the series itself, in <AdminPath path="Content › Titles" /> › the series › **Prices**. A region without its own price uses the default region's. See [Features › Coins and unlocks](/features/coins-and-unlocks/).

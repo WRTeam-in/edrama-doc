@@ -24,6 +24,8 @@ Every drama, its episodes, its prices per region and who owns it. A title is one
 
 Every title starts as a **draft**: add episodes, artwork and prices, send it to review, then publish. **Prices** set the coin price per episode and the Series Pass per region; a region without its own price uses the default region's. **Price lock** keeps the price each viewer started with. Episodes have subtitles, and a series can be marked **Complete** once every episode is out.
 
+**Where it's shown** (Monetization tab) puts a series in **Every region** (the default) or **Only these regions**. See [Series in some regions only](/admin-panel/monetization/#series-in-some-regions-only).
+
 ### Categories
 The labels on your titles, and the picks in the app's onboarding. Drag to set the order the app shows them in.
 

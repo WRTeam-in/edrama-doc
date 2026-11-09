@@ -55,6 +55,9 @@ Check that the app has your own AdMob app IDs (not Google's test IDs), that the 
 ### A viewer moved country and sees the wrong prices
 If they never paid, the app moves them to the right region by itself at its next start. If they have paid, open their page in <AdminPath path="Audience › Users" /> and use **Change region** with a reason. See [how a viewer's region is decided](/admin-panel/monetization/#how-a-viewers-region-is-decided).
 
+### Can I show a series in some countries only?
+Yes. In the series' **Monetization** tab, set **Where it's shown** to **Only these regions**. See [Series in some regions only](/admin-panel/monetization/#series-in-some-regions-only).
+
 ### Can I charge different prices in different countries?
 Yes. Create a region for those countries in [Monetization › Regions](/admin-panel/monetization/#regions), with its own currency, coin value, packs, VIP plans and title prices.
 
