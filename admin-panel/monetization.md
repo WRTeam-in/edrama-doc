@@ -68,6 +68,8 @@ Weekly, monthly and yearly subscriptions that unlock every drama with no ads. St
 | **App Store product ID** | From App Store Connect |
 | **Perks** | One perk per sentence or line, as the app lists them |
 
+How to create these subscriptions in each store: [VIP subscriptions](/mobile-app/vip-subscriptions/).
+
 Locked subscription rules: **no free trial** that turns into a charge, a **renewal reminder 24 hours before every charge**, **cancel in two taps** in the app, and **VIP never sees an ad**.
 
 ## Ads

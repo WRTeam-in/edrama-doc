@@ -88,4 +88,4 @@ Press **Test connection** on each card after saving. Keys are stored encrypted a
 
 ## Products in the stores
 
-Coin packs are **consumable** in-app products and VIP plans are **auto-renewable subscriptions**. Create them in Play Console and App Store Connect with the **same product IDs** you enter in [Monetization](../monetization.md). The general steps for creating products are in the [common in-app purchase guide](https://wrteam-in.github.io/common_app_doc/GeneralSettings/iap).
+Coin packs are **consumable** in-app products and VIP plans are **auto-renewable subscriptions**. Create them in Play Console and App Store Connect with the **same product IDs** you enter in [Monetization](../monetization.md). Coin packs: the [common in-app purchase guide](https://wrteam-in.github.io/common_app_doc/GeneralSettings/iap). VIP plans: [VIP subscriptions](/mobile-app/vip-subscriptions/), step by step for both stores.

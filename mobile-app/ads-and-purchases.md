@@ -38,7 +38,7 @@ Coins are **consumable** products and VIP plans are **auto-renewable subscriptio
 <Steps>
 <Step title="Create the products">
 
-In Play Console and App Store Connect, create one product per coin pack and one subscription per VIP plan: **[common guide › In-app purchases](https://wrteam-in.github.io/common_app_doc/GeneralSettings/iap)**.
+In Play Console and App Store Connect, create one **consumable** product per coin pack (**[common guide › In-app purchases](https://wrteam-in.github.io/common_app_doc/GeneralSettings/iap)**) and one **auto-renewable subscription** per VIP plan (**[VIP subscriptions](./vip-subscriptions.md)**).
 
 </Step>
 <Step title="Enter the same IDs in the Admin Panel">
