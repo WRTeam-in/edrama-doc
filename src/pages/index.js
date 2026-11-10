@@ -313,7 +313,7 @@ function Help() {
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout title="Documentation" description={siteConfig.tagline}>
+    <Layout description={siteConfig.tagline}>
       <Hero />
       <main>
         <Sections />
