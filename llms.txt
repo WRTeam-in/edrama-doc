@@ -1,0 +1,19 @@
+# eDrama Documentation
+
+> How to install, configure and rebrand eDrama by WRTeam: a short-drama streaming app (Flutter, Android and iOS), its Laravel backend and Admin Panel, the Creator Portal and the Next.js website.
+
+Viewers watch episodes of a few minutes and unlock more with coins, a rewarded ad, a Series Pass (one purchase for a whole series) or VIP. These guides cover setting up each part on your own servers and stores.
+
+## Guides
+
+- [Admin Panel](https://wrteam-in.github.io/edrama-doc/admin-panel/): requirements, installation, environment, background jobs, settings, monetization and the go-live checklist
+- [Mobile App](https://wrteam-in.github.io/edrama-doc/mobile-app/): app name, package name, logo and icons, colours, Firebase, push, ads and purchases, deep links, languages and release builds
+- [Website](https://wrteam-in.github.io/edrama-doc/website/): local setup, connecting to the backend, deploying to Vercel or other hosts, editing content, languages and app links
+- [Creator Portal](https://wrteam-in.github.io/edrama-doc/creator-portal/): becoming a creator, publishing a series and the review queue
+- [Features](https://wrteam-in.github.io/edrama-doc/features/): the viewer app, coins and unlocks, how earnings work and the Admin Panel menus
+
+## Help
+
+- [FAQs](https://wrteam-in.github.io/edrama-doc/faqs/)
+- [Support](https://wrteam-in.github.io/edrama-doc/support/)
+- [Changelog](https://wrteam-in.github.io/edrama-doc/changelog/)
