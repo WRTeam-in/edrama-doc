@@ -8,6 +8,8 @@ description: The settings in the backend's .env file that you may need to change
 
 Most settings live in the Admin Panel. A few, which change only when you deploy, are in the backend's `.env` file. The installer fills in the essential ones.
 
+Some keys below are in `.env` with a `#` in front: remove the `#` to use them. A key that isn't there at all can be added on its own line.
+
 After you edit `.env`, run:
 
 ```bash
@@ -20,7 +22,7 @@ php artisan config:clear
 
 ## Written by the installer
 
-`APP_URL`, `APP_KEY`, `APP_ENV=production`, `APP_DEBUG=false`, the `DB_*` database settings, `SESSION_DRIVER`, `CACHE_STORE` and `QUEUE_CONNECTION` (all `database`), `EDRAMA_INSTALLER=false` and `EDRAMA_LICENSE_ENFORCED=true`. Leave these as they are unless your server changes.
+`APP_URL`, `APP_KEY`, `APP_ENV=production`, `APP_DEBUG=false`, the `DB_*` database settings, `SESSION_DRIVER`, `CACHE_STORE` and `QUEUE_CONNECTION` (all `database`), `EDRAMA_INSTALLER=false` and `EDRAMA_LICENSE_ENFORCED=true`. Leave these as they are unless your server changes. If you move to another domain, change `APP_URL` too: the purchase code is registered to its domain ([License and updates](./license-and-updates.md#moving-to-another-domain)).
 
 ## Ones you may change
 
@@ -35,6 +37,7 @@ php artisan config:clear
 | `EDRAMA_COUNTRY_HEADER` | `CF-IPCountry` | The request header that holds the viewer's country |
 | `EDRAMA_BONUS_EXPIRY_DAYS` | `7` | A fallback for bonus coin expiry. Set it per region in Monetization › Rewards › **Bonus coins expire after**. |
 | `EDRAMA_API_RATE_LIMIT_PER_MINUTE` | `300` | API requests per minute for each viewer |
+| `EDRAMA_UPDATE_MAX_MB` | `300` | The largest update zip the Admin Panel accepts, in MB |
 | `EDRAMA_CORS_ORIGINS` | empty | Extra web origins allowed to call the API from a browser, comma-separated |
 | `EDRAMA_SUPPORT_EMAIL` | `support@example.com` | Used until Settings › App & support › **Support email** is saved. Set one of the two, or the app shows the example address. |
 | `EDRAMA_ALERT_EMAILS`, `EDRAMA_ALERT_SLACK_WEBHOOK_URL` | empty | Used until Settings › Notifications › **System alerts** is saved |

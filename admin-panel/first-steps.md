@@ -27,7 +27,7 @@ Open **Your account** from the sidebar footer to change your name, photo and pas
 | **Community** | Creators, Review queue, Comments & reviews |
 | **Audience** | Users, Balance adjustments, Support tickets, Push |
 | **Money** | Monetization, Transactions |
-| **System** | Settings, Team & roles, Audit log, System, License & updates |
+| **System** | Settings, Team & roles, Audit log, System, License & updates, and Clear demo data while demo data is imported |
 
 What each page does is on [Features › Admin Panel menus](/features/admin-panel-menus/). Team members only see the pages their role allows.
 
@@ -45,12 +45,12 @@ As the Owner, open <AdminPath path="System › Clear demo data" />. The page onl
 </Step>
 <Step title="Confirm">
 
-Type `CLEAR` in capital letters and confirm.
+Click **Clear demo data**, type `CLEAR` in capital letters and confirm. This can't be undone.
 
 </Step>
 </Steps>
 
-**Removed:** the demo series, categories, creators and viewers with all their coin and purchase rows, demo dashboard figures and demo pushes.
+**Removed:** the demo series with their episodes, artwork and videos; the demo categories and creators; the demo viewers with all their coin, purchase and activity rows; the demo team accounts; demo dashboard figures and demo pushes. Home goes back to its starting layout, and the sign-in screens to the built-in photos.
 
 **Kept:** your regions, coin packs, VIP plans, ad and reward settings; every setting, language, role, legal page and email template; the licence and the Owner; anything you created yourself; and the audit log. A demo series that real viewers have already paid for is kept, hidden.
 

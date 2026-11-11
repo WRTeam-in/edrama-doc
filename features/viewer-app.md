@@ -6,7 +6,7 @@ description: The screens and features of the eDrama app for Android and iOS.
 
 # The viewer app
 
-A Flutter app for **Android 7+** and **iOS 15+**, in a dark theme by default with a light theme too. It has four tabs: **Home**, **Library**, **Rewards** and **Me**.
+A Flutter app for **Android 7+** and **iOS 15+**, in a dark theme by default with a light theme too. It has four tabs: **Home**, **Library**, **Rewards** and **Me**. When Rewards is switched off in Settings › App & support, the third tab is the **Wallet**.
 
 ## Getting started
 
@@ -31,15 +31,19 @@ A Flutter app for **Android 7+** and **iOS 15+**, in a dark theme by default wit
 
 ## Rewards
 
-- A **daily spin** that always pays, with a bigger prize for VIP.
-- **Streak titles** for watching on many days in a row, and **streak shields** that cover a missed day.
-- **Ads for coins** (Rewards ads).
+- A free **daily spin** that always pays bonus coins, with the odds shown. VIP members win more (the region's VIP multiplier).
+- A **streak** for spinning on days in a row, with **titles** that pay bonus coins the first time they're reached, and **streak shields** that cover a missed day. Shields are earned, never sold.
+- **Ads for coins**: watch a rewarded ad for bonus coins, up to a daily limit.
+- The coin balance (paid and bonus) and the coin history.
+
+Everything is set per region in Monetization › Rewards.
 
 ## Library and discovery
 
 - **Library**: Watching, My List and Unlocked.
 - **Search** and **browse by genre**.
 - **Creator profiles** with Follow and their series.
+- A series limited to some regions is only found by viewers in those regions.
 
 ## Staying in touch
 
@@ -48,7 +52,7 @@ A Flutter app for **Android 7+** and **iOS 15+**, in a dark theme by default wit
 
 ## Settings
 
-Under **Me › Settings**: autoplay, auto-unlock, data saver, quality and subtitles; language; theme and accent; haptics; notification switches; sign in, edit profile, sign out and **delete account**; your legal pages and ad privacy choices.
+Under **Me › Settings**: autoplay, auto-unlock, data saver and subtitles; language; theme (dark, light or same as phone); haptics; notification switches and quiet hours; restore purchases and clear cache; sign in, edit profile, sign out and **delete account**; your legal pages and ad privacy choices. **Me** also links to **Become a creator**.
 
 ## Always working
 

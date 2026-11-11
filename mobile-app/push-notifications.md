@@ -11,7 +11,7 @@ Pushes go from your server through **Firebase Cloud Messaging**.
 <Steps>
 <Step title="Set up FCM and APNs">
 
-Follow **[common guide › Notifications](https://wrteam-in.github.io/common_app_doc/GeneralSettings/notifications)**: `google-services.json` for Android, and for iOS the Push Notifications and Background Modes capabilities and an APNs key (`.p8`) uploaded to Firebase.
+Follow **[common guide › Notifications](https://wrteam-in.github.io/common_app_doc/GeneralSettings/notifications)**. Android needs only `google-services.json` ([Firebase](./firebase.md)). On iOS the project already has the Push Notifications capability and the remote notifications background mode, so you only create an APNs key (`.p8`) in the Apple Developer portal and upload it in Firebase › Project settings › **Cloud Messaging**.
 
 </Step>
 <Step title="Add the Firebase keys to the Admin Panel">

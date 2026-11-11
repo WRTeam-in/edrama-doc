@@ -8,7 +8,7 @@ description: Run the eDrama website on your computer before putting it live.
 
 ## Before you start
 
-- **Node.js 20 or newer** ([nodejs.org](https://nodejs.org/)). Check with `node -v`.
+- **Node.js 20.9 or newer** ([nodejs.org](https://nodejs.org/); the current LTS is a good choice). Check with `node -v`.
 - **npm**, which comes with Node.js. The website ships with a `package-lock.json`.
 - A running eDrama backend. On your computer that can be the Admin Panel at `http://localhost:8000`.
 
@@ -19,7 +19,7 @@ The website is built with Next.js 16 and React 19.
 <Steps>
 <Step title="Open the website folder">
 
-Open the website's source code (it comes with your purchase) in a terminal or in an editor such as VS Code.
+Unzip `edrama-website-1.0.0.zip` from your download and open the folder in a terminal or in an editor such as VS Code.
 
 </Step>
 <Step title="Install the packages">
@@ -49,6 +49,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+For the Admin Panel's preview, set <AdminPath path="Content › Website" /> › **Connection & history** › **Website address** to `http://localhost:3000`. On your computer, a publish shows within 5 minutes: the instant refresh is only sent to a public address.
 
 </Step>
 </Steps>

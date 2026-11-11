@@ -6,7 +6,7 @@ description: Run the eDrama website on your own Node.js server instead of Vercel
 
 # Other hosts
 
-The website is a standard Next.js app, so it runs on any server with **Node.js 20 or newer**: a VPS, a cloud VM, or a host with Node.js app support.
+The website is a standard Next.js app, so it runs on any server with **Node.js 20.9 or newer**: a VPS, a cloud VM, or a host with Node.js app support.
 
 :::caution It can't be a static export
 The website needs a running Node.js process: it rebuilds pages in the background, answers the refresh call and serves `/.well-known` files. Uploading the build folder to plain shared hosting won't work.
@@ -22,7 +22,7 @@ npm ci
 npm run build
 ```
 
-Set the environment variables from [Connect to the Admin Panel](./connect.md) first, in `.env.local` or the server's environment. `EDRAMA_API_URL` is read when the site builds and when it runs.
+Set the environment variables from [Connect to the Admin Panel](./connect.md) first, in `.env.local` or the server's environment. They are read when the site builds and when it runs, so after changing one, build and restart again.
 
 </Step>
 <Step title="Start it">

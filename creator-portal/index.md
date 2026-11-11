@@ -6,7 +6,7 @@ description: What the Creator Portal is, who can use it, and how to turn it on.
 
 # Creator Portal
 
-The **Creator Portal** at `https://admin.your-domain.com/creator` lets approved creators publish their own series on your platform. Creators upload episodes from their browser, set prices and release times within your limits, follow every review, and see how their series do. **Every episode is reviewed by your team before it goes live.**
+The **Creator Portal** at `https://admin.your-domain.com/creator` lets approved creators publish their own series on your platform. Creators upload episodes from their browser, propose prices within your limits, follow every review, see how their series do and see their earnings. **Every episode is reviewed by your team before it goes live.**
 
 <DocBanner />
 

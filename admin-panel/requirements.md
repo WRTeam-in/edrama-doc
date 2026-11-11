@@ -6,7 +6,7 @@ description: What your server needs to run eDrama, on a VPS or on shared hosting
 
 # Server requirements
 
-The installation wizard checks these for you and highlights anything missing.
+The installation wizard checks the PHP version, the extensions and the writable folders for you, and marks anything missing. Check the rest with your host.
 
 ## Required
 
@@ -14,10 +14,12 @@ The installation wizard checks these for you and highlights anything missing.
 |---|---|
 | **PHP** | **8.5.0** or newer |
 | **PHP extensions** | `bcmath`, `ctype`, `curl`, `fileinfo`, `gd`, `intl`, `json`, `mbstring`, `openssl`, `pdo_mysql`, `sodium`, `tokenizer`, `xml`, `zip` |
-| **Writable** | the `storage` and `bootstrap/cache` folders, and the `.env` file |
+| **PHP functions** | `proc_open` allowed (not in `disable_functions`). The cron job and ffmpeg need it. |
+| **Writable** | the `storage` and `bootstrap/cache` folders and the `.env` file, by the user PHP runs as. During installation the backend folder itself must be writable too, because the wizard rewrites `.env` there. |
 | **Database** | An empty **MySQL 8** database, with its user and password |
 | **HTTPS** | An SSL certificate on your domain. The app and the website only talk to `https://` servers. |
 | **Cron** | One cron job that runs every minute ([Background jobs](./background-jobs.md)) |
+| **Outgoing HTTPS** | The server must reach the licence server, to check your purchase code |
 
 Recommended: the `pcntl` extension, so a stuck background job is stopped after its time limit.
 
@@ -29,7 +31,7 @@ Every uploaded episode is turned into adaptive streaming video (1080p, 720p, 480
 
 | Option | What you need | Good for |
 |---|---|---|
-| **This server** (the default) | **ffmpeg** on the server, and PHP's `proc_open` function allowed | Getting started and small catalogues |
+| **This server** (the default) | **ffmpeg** on the server | Getting started and small catalogues |
 | **Amazon S3** | ffmpeg on the server, plus an S3 bucket (or S3-compatible: MinIO, DigitalOcean Spaces, Wasabi) | Growing catalogues: storage grows without filling your disk |
 | **Cloudflare Stream** | A Cloudflare account with Stream. **No ffmpeg needed.** | No video work on your server. Cloudflare bills for minutes stored and watched. |
 
@@ -48,4 +50,6 @@ Transcoding needs CPU and memory. If your host stops long jobs ("Killed" or "Can
 
 ## Upload size
 
-Episode files upload in 8 MB chunks, so PHP's `upload_max_filesize` and `post_max_size` only need to be above 8 MB. The largest episode file is set in [Settings › Video pipeline](./settings/video-pipeline.md) (up to 200 GB), and the longest episode is 15 minutes.
+Episode files upload in 8 MB pieces, and images and documents in the panels go up to 10 MB. Set PHP's `upload_max_filesize` and `post_max_size`, and your web server's body limit (Nginx `client_max_body_size`, 1 MB by default), to at least **16 MB**. To install an update from the Admin Panel, they must also be larger than the update zip ([License and updates](./license-and-updates.md)).
+
+The largest episode file is set in [Settings › Video pipeline](./settings/video-pipeline.md) (20 GB by default, up to 200 GB), and the longest episode is 15 minutes.

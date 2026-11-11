@@ -6,13 +6,13 @@ description: Your purchase code, moving to another domain, and installing an upd
 
 # License and updates
 
-<AdminPath path="System › License & updates" /> shows your licence (**Purchase code**, **Domain**, **Buyer**, **Last checked**), the **Installed version** and the **Update history**. Only the Owner can activate, reset or upload updates.
+<AdminPath path="System › License & updates" /> shows your licence (**Purchase code**, **Domain**, **Buyer**, **Last checked**), the **Installed version** and the **Update history**. Members with Settings access can open the page. Only the Owner can **Activate license**, **Reset purchase code** or **Upload update**.
 
 ## The licence
 
-Your purchase code is registered to your domain during installation. The Admin Panel and the Creator Portal only open on a domain with an active code. The app, the website and the API keep working whatever the licence check says.
+Your purchase code is registered to your domain during installation. The domain is the one in `APP_URL` in `.env`, without `www.`. The Admin Panel and the Creator Portal only open on a domain with an active code. The app, the website and the API keep working whatever the licence check says.
 
-The code is checked again at most every 7 days. If the licence server can't be reached, nothing locks. The panels lock only when the code is clearly invalid or registered to another domain.
+The code is checked again at most every 7 days. If the licence server can't be reached, nothing locks. The panels lock only when the code is clearly invalid or registered to another domain. A locked panel shows **Activate your purchase**: enter the purchase code and click **Activate**.
 
 ### Moving to another domain
 
@@ -22,9 +22,14 @@ The code is checked again at most every 7 days. If the licence server can't be r
 On the old domain, click **Reset purchase code**. Both panels there lock until it's activated again.
 
 </Step>
+<Step title="Move the backend">
+
+Copy the backend folder and the database to the new server, or point the new domain at the same folder. In `.env`, set `APP_URL` to the new address, such as `https://admin.new-domain.com`, then run `php artisan config:clear`.
+
+</Step>
 <Step title="Activate it on the new domain">
 
-Open the Admin Panel on the new domain and **Activate** with the same purchase code.
+Open the Admin Panel on the new domain. It shows **Activate your purchase**: enter the same purchase code and click **Activate**.
 
 </Step>
 </Steps>
@@ -41,7 +46,9 @@ Back up your **database** and your `storage` folder first. Run the update at a q
 </Step>
 <Step title="Upload the update">
 
-Click **Upload update** and choose the update zip. Files are replaced and new database migrations run. Every file it replaces is backed up first, in `storage/app/private/updates`.
+Click **Upload update** and choose the update zip. The purchase code is checked with the licence server first, so it must be reachable. Then files are replaced, new database migrations run and the caches are cleared. Every file it replaces is backed up first, in a zip in `storage/app/private/updates`.
+
+The zip goes through PHP's upload, so `upload_max_filesize` and `post_max_size` must be larger than it. If you can't raise them, ask [support](/support/).
 
 </Step>
 <Step title="Restart the workers">

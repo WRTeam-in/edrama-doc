@@ -30,25 +30,32 @@ Steps that are the same for every Flutter app (installing Flutter, creating a Fi
 
 ## Set it up in this order
 
-<Steps>
-<Step title="Set up Flutter and run the app">
+The download leaves out everything tied to WRTeam's accounts: it has placeholder IDs (`com.example.edrama`, `your-domain.com`), Google's test AdMob IDs and no Firebase files. The app's `FIRST_BUILD.md` lists the same steps in short.
 
-[Set up Flutter](./setup-flutter.md), then [run it](./run-the-app.md).
+<Steps>
+<Step title="Set up Flutter">
+
+[Set up Flutter](./setup-flutter.md).
 
 </Step>
-<Step title="Point it at your server">
+<Step title="Give it your package name">
 
-[App settings](./app-settings.md): your Admin Panel's API address and share domain.
+[Package name](./package-name.md). Do this first: Firebase and the stores are tied to it.
+
+</Step>
+<Step title="Connect Firebase and your server, then run it">
+
+[Firebase](./firebase.md) (the app doesn't build without its files) and [App settings](./app-settings.md) (your Admin Panel's API address and share domain), then [run it](./run-the-app.md).
 
 </Step>
 <Step title="Make it yours">
 
-[Package name](./package-name.md), [app name](./app-name.md), [logo and icons](./logo-and-icons.md), [colours and fonts](./colours-and-fonts.md), [languages](./languages.md).
+[App name](./app-name.md), [logo and icons](./logo-and-icons.md), [colours and fonts](./colours-and-fonts.md), [languages](./languages.md).
 
 </Step>
 <Step title="Connect the services">
 
-[Firebase](./firebase.md), [ads and purchases](./ads-and-purchases.md), [deep links](./deep-links.md) and [push notifications](./push-notifications.md).
+[Ads and purchases](./ads-and-purchases.md), [VIP subscriptions](./vip-subscriptions.md), [deep links](./deep-links.md) and [push notifications](./push-notifications.md).
 
 </Step>
 <Step title="Release it">

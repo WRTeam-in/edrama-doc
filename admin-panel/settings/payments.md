@@ -16,19 +16,19 @@ Coins and VIP are sold through **Google Play** and the **App Store**. The backen
 
 | Field | What it does |
 |---|---|
-| **Default creator share** | The percent of paid coin revenue a creator earns on their series. A creator's own percent, set on their page in <AdminPath path="Community › Creators" />, wins. |
+| **Default creator share** | The percent of paid coin revenue a creator earns on their series (50 by default). A creator's own percent, set on their page in <AdminPath path="Community › Creators" />, wins. |
 | **Google Play fee**, **App Store fee** | The stores' cut, in percent (15 by default). Used to work out net revenue. |
-| **Reason for the change** | Recorded in the audit log. |
+| **Reason for the change** | Required. Recorded in the audit log. |
 
 The share and fees are **saved on each unlock and purchase**, so a change never rewrites past money: new unlocks and purchases use the new values. How the numbers combine is explained, with a calculator, on [How earnings work](/features/how-earnings-work/).
 
 ## Creator price limits
 
-What a creator may charge per episode, and the free episodes every creator series starts with: **Lowest coin price**, **Highest coin price** (30 and 90 coins by default) and **Free episodes at least** (5 by default).
+What a creator may charge per episode, and the free episodes every creator series starts with: **Lowest coin price**, **Highest coin price** (30 and 90 coins by default) and **Free episodes at least** (5 by default). Prices already set stay until they next change.
 
 ## Daily spend cap
 
-The daily coin caps a viewer can choose in the app (**Choices, in coins**: 100, 300, 600 and 1,000 by default) and the **Default cap** (300). The cap is a fair-play rule and is always on.
+The daily coin caps a viewer can choose in the app (**Choices, in coins**: up to 6 amounts, 100, 300, 600 and 1,000 by default; press Enter after each) and the **Default cap** (300), which must be one of the choices. The cap is a fair-play rule and is always on.
 
 ## Balance adjustments
 
@@ -39,17 +39,17 @@ The daily coin caps a viewer can choose in the app (**Choices, in coins**: 100, 
 <Steps>
 <Step title="Create a service account">
 
-In the [Google Cloud console](https://console.cloud.google.com/), in the project linked to your Play Console (Play Console › **Setup › API access**), create a service account and download a **JSON key** for it. Enable the **Google Play Android Developer API** for the project.
+In the [Google Cloud console](https://console.cloud.google.com/), pick or create a project and enable the **Google Play Android Developer API** for it. Then, under **IAM & Admin › Service accounts**, create a service account and add a **JSON key** for it (**Keys › Add key › Create new key › JSON**).
 
 </Step>
 <Step title="Give it access in Play Console">
 
-Play Console › **Users and permissions** › **Invite new users**: add the service account's email with **View financial data** and **Manage orders and subscriptions**, for your app.
+Play Console › **Users and permissions** › **Invite new users**: add the service account's email (it ends in `iam.gserviceaccount.com`) with **View financial data, orders and cancellation survey responses** and **Manage orders and subscriptions**, for your app. New access can take up to a day to start working.
 
 </Step>
 <Step title="Add the keys">
 
-On the **Google Play** card, add the **Package name** (your app's ID, such as `com.yourcompany.yourapp`) and the **Service account JSON**.
+On the **Google Play** card, press **Add keys** and enter the **Package name** (your app's ID, such as `com.yourcompany.yourapp`) and the **Service account JSON** (open the downloaded file and paste its whole contents).
 
 </Step>
 <Step title="Turn on real-time notifications">
@@ -74,7 +74,9 @@ App Store Connect › **Users and Access** › **Integrations** › **In-App Pur
 </Step>
 <Step title="Add the keys">
 
-On the **App Store** card, add the **Issuer ID**, **Key ID**, **Private key (.p8)**, **Bundle ID** (your app's bundle ID) and **Environment**: **Production** for the live app, **Sandbox** for TestFlight and test purchases.
+On the **App Store** card, press **Add keys** and enter the **Issuer ID**, **Key ID**, **Private key (.p8)** (open the file in a text editor and paste everything, including the `BEGIN` and `END` lines) and **Bundle ID** (your app's bundle ID).
+
+**Environment** only decides where **Test connection** asks Apple for a test notification: **Production** (default) or **Sandbox**. Purchases are always checked with the live App Store first and then the sandbox, so TestFlight and App Review purchases work either way.
 
 </Step>
 <Step title="Add the server notifications URL">
@@ -84,7 +86,7 @@ App Store Connect › your app › **App Information** › **App Store Server No
 </Step>
 </Steps>
 
-Press **Test connection** on each card after saving. Keys are stored encrypted and never shown again.
+Press **Save keys**, then **Test connection** on each card. Google Play's test reads your app's subscriptions; the App Store's asks Apple to send a test notification to the URL above. Secrets are stored encrypted and never shown again; leave one empty to keep it.
 
 ## Products in the stores
 

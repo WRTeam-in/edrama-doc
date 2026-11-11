@@ -16,13 +16,19 @@ eDrama uses two **rewarded** ad units: one that unlocks an episode, and one for 
 
 | What | Where |
 |---|---|
-| **AdMob app ID**, Android | `android/app/src/main/AndroidManifest.xml`: the `com.google.android.gms.ads.APPLICATION_ID` value |
-| **AdMob app ID**, iOS | `ios/Runner/Info.plist`: `GADApplicationIdentifier` |
-| **Ad unit IDs** | Admin Panel › Money › Monetization › **Ads**, per region. **Not** in the app. |
+| **AdMob app ID**, Android | `admob.appId=` in `android/key.properties` (or `android/local.properties`). The build puts it into the manifest for you: don't edit `AndroidManifest.xml`. |
+| **AdMob app ID**, iOS | `ios/Runner/Info.plist`: the `GADApplicationIdentifier` value |
+| **Ad unit IDs** | Admin Panel › Money › Monetization › **Ads**, per region: **Unlock ad unit ID** and **Rewards ad unit ID**, each for Android and iOS. **Not** in the app. |
 | **Server-side verification** | AdMob › each ad unit › **Server-side verification**: <ServerUrl path="/api/v1/webhooks/admob-ssv" /> |
 
+The app IDs are in AdMob › Apps › App settings and look like `ca-app-pub-1234567890123456~1234567890` (with a `~`; ad unit IDs have a `/`).
+
+```ini title="android/key.properties"
+admob.appId=ca-app-pub-1234567890123456~1234567890
+```
+
 :::caution Replace the test IDs
-The app ships with **Google's sample test app IDs**. Put your own in both files before you release.
+The app ships with **Google's sample test app IDs**, so every build shows test ads and earns nothing. Set `admob.appId` and `GADApplicationIdentifier` before you release. A release build on Android without `admob.appId` prints a `WARNING` about the test ID; iOS doesn't warn, so check `Info.plist` yourself.
 :::
 
 An ad unlocks an episode or pays coins only once AdMob confirms it on that callback, so server-side verification is required.

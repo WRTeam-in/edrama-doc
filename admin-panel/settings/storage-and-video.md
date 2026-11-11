@@ -20,17 +20,19 @@ Pick where your images, documents and episode videos live, and who turns uploade
 |---|---|---|---|
 | **Local storage** (default) | This server's disk | Transcoded here with ffmpeg, streamed through signed links | ffmpeg on the server |
 | **Amazon S3** | Your S3 bucket | Transcoded here with ffmpeg, then stored and streamed from S3 through signed links | ffmpeg, and S3 bucket keys |
-| **Cloudflare Stream** | Stay where they are | Cloudflare uploads, transcodes and streams them | Cloudflare Stream keys. No ffmpeg. |
+| **Cloudflare Stream** | Stay where they are (this server or S3) | Cloudflare uploads, transcodes and streams them | Cloudflare Stream keys. No ffmpeg. |
 
-Each card shows whether it's **Ready** or **Needs setup**, and what's missing. Videos are made in 1080p, 720p, 480p and 360p, and the app picks the quality for each viewer's connection.
+Each card shows whether it's **Ready** or **Needs setup**, and what's missing. Press **Switch to …** on a ready card, or **Set up …** to see the steps and add its keys. Videos are made in 1080p, 720p, 480p and 360p, and the app picks the quality for each viewer's connection.
+
+While Cloudflare Stream is in use, its card also offers **Move images and documents to …** (once the other provider is set up) to move your other files between this server and Amazon S3.
 
 ## How switching works
 
 - Moving between this server and Amazon S3 **copies every file first**, in batches, checks each copy, and switches only when all of them are there. The page shows the progress, and you can **Retry failed files**, **Resume** or **Cancel move**.
 - **Nothing is ever deleted** from where it was, and links in the app keep working throughout.
 - Changing who handles videos applies to **new uploads**. Videos already uploaded keep playing from where they are.
-- Leaving Cloudflare Stream? **Move videos off Cloudflare Stream** downloads each video, transcodes it here and stores it with your other files. Viewers keep playing the Stream video until its copy is ready.
-- While Amazon S3 holds your files, its bucket, region and endpoint can't change. Keys can be replaced at any time.
+- Leaving Cloudflare Stream? **Move videos off Cloudflare Stream** downloads each video, transcodes it here and stores it with your other files. It needs ffmpeg and the Cloudflare Stream keys. Viewers keep playing the Stream video until its copy is ready, and nothing is deleted from Cloudflare.
+- While Amazon S3 holds your files, its bucket, region and endpoint can't change: move back to this server first. Keys can be replaced at any time.
 
 ## ffmpeg
 
@@ -107,7 +109,7 @@ The backend's `docs/deploy/ffmpeg-shared-hosting.md` has the same steps with mor
 
 ## Amazon S3
 
-Create a bucket and an IAM user with access to it in the [AWS console](https://console.aws.amazon.com/s3/), then add its keys under **Connections** › **Amazon S3 bucket**:
+Create a bucket and an IAM user that can read, write and delete objects in it in the [AWS console](https://console.aws.amazon.com/s3/), and create an access key for the user. Then press **Add keys** under **Connections** › **Amazon S3 bucket**:
 
 | Field | What to enter |
 |---|---|
@@ -117,7 +119,7 @@ Create a bucket and an IAM user with access to it in the [AWS console](https://c
 | **Endpoint** | Only for an S3-compatible service (MinIO, DigitalOcean Spaces, Wasabi). Leave empty for Amazon S3. |
 | **Public URL** | Optional. Where media can be read publicly, such as a CloudFront domain, or the bucket URL with a policy allowing `media/*`. Empty: media is served through signed links that last six days. |
 
-Media goes under `media/`, and private files and videos under `files/`. Then choose **Amazon S3** and confirm. If you use the website, add the bucket's host to its `EDRAMA_IMAGE_HOSTS` ([Website › Connect](/website/connect/)).
+Media goes under `media/`, and private files and videos under `files/`. Press **Save keys**, then **Test connection**: it writes a small file, reads it back and deletes it. Then press **Switch to Amazon S3** and confirm. If you use the website, add the bucket's host to its `EDRAMA_IMAGE_HOSTS` ([Website › Connect](/website/connect/)).
 
 ## Cloudflare Stream
 
@@ -146,7 +148,7 @@ The answer has an `id` (the **Signing key ID**) and a `pem` (the **Signing key**
 </Step>
 <Step title="Add the keys">
 
-Under **Connections** › **Cloudflare Stream**, add the **Account ID**, **API token**, **Signing key ID**, **Signing key** and **Customer subdomain**. Press **Test connection**.
+Under **Connections** › **Cloudflare Stream**, press **Add keys** and enter the **Account ID**, **API token**, **Signing key ID**, **Signing key** and **Customer subdomain**. Leave **Webhook secret** empty: the next step fills it in.
 
 </Step>
 <Step title="Register the webhook">
@@ -157,12 +159,14 @@ Cloudflare tells eDrama when a video is ready through a webhook. From the backen
 php artisan edrama:video-webhook
 ```
 
-It registers <ServerUrl path="/api/v1/webhooks/video" /> with Cloudflare and saves the **Webhook secret** it returns. Pass a different address as an argument if your Admin Panel's address differs.
+It registers <ServerUrl path="/api/v1/webhooks/video" /> (the **Webhook URL** on the card) with Cloudflare and saves the **Webhook secret** it returns. Pass a different address as an argument if your Admin Panel's address differs.
+
+Now press **Test connection** on the card. It fails until every key, the webhook secret included, is saved, and checks that the signing key belongs to your account.
 
 </Step>
 <Step title="Switch">
 
-Choose **Cloudflare Stream** and confirm. New uploads go to Cloudflare from now on.
+Press **Switch to Cloudflare Stream** and confirm. New uploads go to Cloudflare from now on.
 
 </Step>
 </Steps>

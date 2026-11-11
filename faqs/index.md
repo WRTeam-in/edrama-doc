@@ -14,7 +14,7 @@ The installer closes itself once installation finishes. Sign in at `/admin` inst
 Your server lacks a PHP extension, runs PHP below 8.5, or a folder isn't writable. Fix the items marked **Missing** (or ask your host), then press **Check again**. See [Server requirements](/admin-panel/requirements/).
 
 ### The Admin Panel asks for the purchase code again, or says the domain doesn't match
-Your purchase code is registered to one domain. If you moved, free it on the old domain with **Reset purchase code**, then activate it on the new one. See [License and updates](/admin-panel/license-and-updates/). The app and the website keep working meanwhile.
+Your CodeCanyon purchase code (from your CodeCanyon downloads page) is registered to one domain. If you moved, free it on the old domain with **Reset purchase code**, then activate it on the new one. See [License and updates](/admin-panel/license-and-updates/). The app and the website keep working meanwhile.
 
 ### Does it work on shared hosting?
 Yes. The single cron job runs the background work, so you need no long-running process. For video, set up a [ready-made ffmpeg](/admin-panel/settings/storage-and-video/#ffmpeg-on-shared-hosting) or use Cloudflare Stream.
@@ -50,7 +50,7 @@ Upload its JSON file in Settings › Regions & languages. The app downloads it a
 Check the Google Play or App Store keys and press **Test connection** in [Settings › Payments](/admin-panel/settings/payments/), and that the product IDs in Monetization match the store. The purchase shows in <AdminPath path="Money › Transactions" />.
 
 ### Ads don't unlock episodes
-Check that the app has your own AdMob app IDs (not Google's test IDs), that the region has ad unit IDs in Monetization › Ads, and that **server-side verification** is on in AdMob with your callback URL. An ad pays only once AdMob confirms it.
+Check that the app has your own AdMob app IDs (not Google's test IDs), that the region has ad unit IDs in Monetization › Ads, that the series has **Ads can unlock** on, and that **server-side verification** is on in AdMob with your callback URL. An ad pays only once AdMob confirms it.
 
 ### A viewer moved country and sees the wrong prices
 If they never paid, the app moves them to the right region by itself at its next start. If they have paid, open their page in <AdminPath path="Audience › Users" /> and use **Change region** with a reason. See [how a viewer's region is decided](/admin-panel/monetization/#how-a-viewers-region-is-decided).
@@ -65,7 +65,7 @@ Yes. Create a region for those countries in [Monetization › Regions](/admin-pa
 **Price lock** is a fair-play rule: once a viewer starts a series, their per-episode price can't rise. A new price applies to viewers who haven't started it, and a price drop applies to everyone.
 
 ### How are creators paid?
-eDrama works out each creator's share in the monthly creator report, and your team pays them from it. See [How earnings work](/features/how-earnings-work/).
+eDrama works out each creator's share in the monthly creator report and writes a monthly **statement** for each creator. Your team pays them outside eDrama (bank transfer, UPI, PayPal and so on) and records each payment with **Record payout** on the creator's page, so nobody is paid twice. Creators see their statements and payouts on **Earnings** in the Creator Portal. See [How earnings work](/features/how-earnings-work/#statements-and-payouts).
 
 ## Compatibility
 

@@ -44,7 +44,7 @@ Your public website's sections, header, footer, look and search settings. Edit, 
 ## Community
 
 ### Creators
-Invited creators, their revenue share, and new applications. See [Becoming a creator](/creator-portal/becoming-a-creator/).
+Invited creators, their revenue share, and new applications. Each creator's page also shows **Earnings & payouts**: what they earned in closed months, what you paid and what is still owed, with **Record payout**. See [Becoming a creator](/creator-portal/becoming-a-creator/) and [Statements and payouts](./how-earnings-work.md#statements-and-payouts).
 
 ### Review queue
 Creator titles, new episodes and viewer reports waiting for a decision. Every decision is logged. See [The review queue](/creator-portal/review-queue/).
@@ -72,7 +72,7 @@ Send a notification to every viewer or to a title's followers, now or at a set t
 Coins, VIP, ads and rewards, set per region, and the locked fair-play rules. See [Monetization](/admin-panel/monetization/).
 
 ### Transactions
-Every purchase across Google Play and the App Store. Receipts are verified on the server before coins land. Refunds from the store arrive by themselves; refunds from the panel are limited by each role's refund limit. Export to CSV.
+Every purchase across Google Play and the App Store. Receipts are verified on the server before coins land. Refunds from the store arrive by themselves; refunds from the panel are limited by each role's refund limit. Export to CSV, download the **Monthly creator report**, and **Close month for creators**. See [How earnings work](./how-earnings-work.md).
 
 ## System
 

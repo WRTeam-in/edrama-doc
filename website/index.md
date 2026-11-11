@@ -15,7 +15,7 @@ eDrama comes with a public website: a landing page, a page for every series, cat
 - The website is a **Next.js** app that you host separately from the Admin Panel, for example on Vercel.
 - It has no database of its own. It reads your backend's public website API (`/api/v1/website…`), which holds no viewer data and needs no keys.
 - Everything it shows is edited in <AdminPath path="Content › Website" />: sections, layouts, texts, header and footer, theme, languages, search text and social links.
-- The name, logos and theme colour come from <AdminPath path="Settings › Branding" />, so the app, the panels and the website always match.
+- The name, logos and theme colour come from <AdminPath path="System › Settings › Branding" />, so the app, the panels and the website always match.
 - Series are **shown, never played**. Every poster and button leads to the app.
 - Pages are built once and shared by every visitor, then rebuilt in the background every 5 minutes. When you **Publish** in the Admin Panel, the backend tells the website to refresh at once.
 - If your backend can't be reached, the website keeps showing its last good copy.

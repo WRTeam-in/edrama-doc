@@ -6,6 +6,8 @@ description: Open the project and run eDrama on an emulator or a phone.
 
 # Run the app
 
+Before the first run, give the app your [package name](./package-name.md), connect [Firebase](./firebase.md) and set your server in [App settings](./app-settings.md). The download has no Firebase files, so neither the Android nor the iOS build runs until `flutterfire configure` has made them.
+
 <Steps>
 <Step title="Open the project">
 
@@ -38,7 +40,7 @@ flutter run
 </Step>
 </Steps>
 
-The app talks to the server set in `lib/app/config/app_config.dart`. Until you change it, it shows WRTeam's demo server. Point it at your own Admin Panel next: [App settings](./app-settings.md).
+The app talks to the server set in `apiBaseUrl` in `lib/app/config/app_config.dart`. It ships as `https://your-domain.com/api/v1/`, a placeholder, so the app can't load anything until you set your own Admin Panel's address there: [App settings](./app-settings.md).
 
 ## If you change the code
 

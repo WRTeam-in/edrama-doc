@@ -8,7 +8,7 @@ description: App versions and forced updates, store links, the support email, fe
 
 **Where:** <AdminPath path="System › Settings › App & support" />
 
-Everything here reaches the app at its next start, without a new release.
+Everything here reaches the app at its next start, without a new release. Each card has its own **Save**.
 
 ## App versions
 
@@ -16,9 +16,11 @@ For **Android** and **iOS**:
 
 | Field | What it does |
 |---|---|
-| **Latest** | Your newest version in the store. |
+| **Latest** | Your newest version in the store. Older builds are offered the update, which they can skip, when a **Store link** is set. |
 | **Minimum supported** | Builds below it must update before they can be used: the app shows its update screen. Can't be newer than **Latest**. |
-| **Store link** | Your app's Google Play or App Store page. The app's update screen and the website's store buttons use it. |
+| **Store link** | Your app's Google Play or App Store page (`https://` only). The app's update screen and the website's store buttons use it. |
+
+Versions are numbers and dots only, such as `1.2.0`: the app's version name without the build number. **On latest** shows the share of devices seen in the last 30 days that run the latest version.
 
 ## Support email
 
@@ -26,11 +28,11 @@ Where viewers and creators write when they need help. It shows in the app's help
 
 ## Comment blocklist
 
-A comment or review containing one of these words or phrases waits for a person on <AdminPath path="Community › Comments & reviews" />. Whole words, any case. Press Enter after each.
+A comment or review containing one of these **Words and phrases** waits for a person on <AdminPath path="Community › Comments & reviews" /> instead of going live. Whole words, any case. Press Enter after each (up to 500). Comments with a link, a long run of digits (such as a phone number) or one character repeated many times are held the same way.
 
 ## Features
 
-Switch a feature off and the app hides it at its next start.
+Every feature is on to start. Switch one off and the app hides it at its next start.
 
 | Switch | What it controls |
 |---|---|
@@ -44,4 +46,4 @@ Switch a feature off and the app hides it at its next start.
 
 ## Maintenance mode
 
-Turn on **Show the maintenance screen** and write a **Message** (up to 280 characters, such as when you'll be back). While it's on, the app shows the maintenance screen with your message instead of the catalogue.
+Turn on **Show the maintenance screen** and write a **Message** (up to 280 characters, such as when you'll be back). While it's on, the app shows the maintenance screen with your message instead of the catalogue. The language tabs below take the message in each of your other app languages; an empty tab shows the main message.

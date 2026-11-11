@@ -17,11 +17,15 @@ Replace these files in `assets/branding/`, keeping the **same names and formats*
 | `edrama_mark.png` | The mark alone |
 | `coin.svg`, `coin_mono.svg` | The coin, in colour and in one colour |
 | `vip.svg`, `vip_mono.svg` | The VIP badge |
-| `company_logo.svg`, `company_logo_light.svg` | Your company's logo at the foot of the splash |
+| `company_logo.svg`, `company_logo_light.svg` | Your company's logo at the foot of the splash, for the dark and the light theme |
+
+The two full logos are 2197 × 512 pixels. Keep that shape, or set `brandLogoAspect` in `lib/core/constants/app_assets.dart` to your logo's width divided by its height.
+
+The logos you upload in Admin Panel › Settings › Branding are for the panels and web pages only: the app uses these files.
 
 ## The launcher icon
 
-The project is set up for `flutter_launcher_icons`. Replace the four files in `assets/branding/launcher/` (same names), then run:
+The project is set up for `flutter_launcher_icons` (its settings are at the end of `pubspec.yaml`). Replace the four files in `assets/branding/launcher/` (same names, 1024 × 1024 PNG), then run:
 
 ```bash
 dart run flutter_launcher_icons
@@ -38,10 +42,13 @@ More about icon sizes and the options: **[common guide › App icon](https://wrt
 
 ## The splash screen
 
-The first screen, drawn by the phone before the app starts:
+The first screen, drawn by the phone before the app starts: your mark centred on black. `dart run flutter_launcher_icons` doesn't change it, so replace these images yourself, at the same sizes:
 
-- **Android**: `android/app/src/main/res/drawable*/launch_background.xml` and `values*/styles.xml`
-- **iOS**: `ios/Runner/Base.lproj/LaunchScreen.storyboard` and the `LaunchImage` image set in `Assets.xcassets`
+| Platform | Image | Background |
+|---|---|---|
+| Android 12 and newer | `splash_icon.png` in each `android/app/src/main/res/drawable-*dpi/` folder | `brand_black` in `values/brand_colors.xml` |
+| Android 11 and older | `launch_mark.png` in the same folders, drawn by `drawable*/launch_background.xml` | the same `brand_black` |
+| iOS | `LaunchImage.png`, `@2x` and `@3x` in `ios/Runner/Assets.xcassets/LaunchImage.imageset/` | the view's background colour in `ios/Runner/Base.lproj/LaunchScreen.storyboard` |
 
 The animated splash after it uses your logo from `assets/branding/`.
 

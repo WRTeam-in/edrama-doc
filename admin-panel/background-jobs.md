@@ -17,7 +17,7 @@ Add this line, with your own folder, so it runs **every minute**:
 ```
 
 - **cPanel:** Advanced › **Cron Jobs** › Common Settings: *Once Per Minute*, and the command above.
-- **VPS:** `crontab -e` as the user that owns the files (often `www-data`).
+- **VPS:** `sudo crontab -u www-data -e`, with the user that owns the files in place of `www-data`.
 
 If `php` on your host isn't PHP 8.5, use its full path, for example `/usr/local/bin/php` or the path your host gives for PHP 8.5.
 
@@ -30,7 +30,7 @@ By default the cron job also starts the queue workers every minute (`EDRAMA_QUEU
 | `urgent` | `webhooks` (store and video notifications), `notifications`, `default` (emails and the rest) | 60 seconds |
 | `slow` | `video`, `reports` | 600 seconds |
 
-This needs no long-running process, so it works on shared hosting.
+This needs no long-running process, so it works on shared hosting. The cron job starts each task as its own process, so PHP's `proc_open` function must be allowed.
 
 ## Check it worked
 
@@ -38,7 +38,7 @@ Open <AdminPath path="System › System" />. It shows the queues, the scheduled 
 
 ## On a VPS: Supervisor (optional)
 
-For faster processing on a VPS, run the workers all the time with [Supervisor](http://supervisord.org/). The backend includes a ready config at `docs/deploy/supervisor.conf` with four programs: two urgent workers, one default worker, one slow worker for video and reports, and the scheduler.
+For faster processing on a VPS, run the workers all the time with [Supervisor](http://supervisord.org/). The backend includes a ready config at `docs/deploy/supervisor.conf`. It runs two urgent workers (store and video notifications, pushes), one default worker (emails and the rest), one slow worker (video and reports) and the scheduler.
 
 <Steps>
 <Step title="Copy the config">
@@ -47,7 +47,11 @@ For faster processing on a VPS, run the workers all the time with [Supervisor](h
 sudo cp docs/deploy/supervisor.conf /etc/supervisor/conf.d/edrama.conf
 ```
 
-Edit it: set `APP_DIR` to your backend's folder and `user=` to the user that owns the files.
+Edit the copy: replace every `%(ENV_APP_DIR)s` with your backend's folder, such as `/var/www/edrama`, and set every `user=www-data` line to the user that owns the files. You can also run `sed` to do the first part:
+
+```bash
+sudo sed -i 's#%(ENV_APP_DIR)s#/var/www/edrama#g' /etc/supervisor/conf.d/edrama.conf
+```
 
 </Step>
 <Step title="Turn off the cron-started workers">
@@ -72,7 +76,7 @@ sudo supervisorctl start edrama:*
 </Step>
 </Steps>
 
-The Supervisor config runs the scheduler itself (`schedule:work`), so on that server remove the cron line, or keep the cron line and remove the `edrama-scheduler` program. Run exactly one of the two.
+The Supervisor config runs the scheduler itself (`schedule:work`), so on that server remove the cron line, or keep the cron line and remove the `[program:edrama-scheduler]` block and its name in the `programs=` line. Run exactly one of the two.
 
 :::tip After every update
 Run `php artisan queue:restart` so running workers finish their job and load the new code.

@@ -21,11 +21,11 @@ Click **Add keys** (or **Replace keys**) on the **Firebase** card.
 | Field | Where to find it |
 |---|---|
 | **Project ID** | Firebase console › Project settings › **General** › Project ID |
-| **Service account JSON** | Firebase console › Project settings › **Service accounts** › **Generate new private key**. Upload the downloaded JSON file. |
-| **Web API key** | Needed for the Creator Portal's sign-in. Project settings › General › **Your apps**: add a **Web app** if you have none, and copy its `apiKey`. |
-| **Auth domain** | Needed for the Creator Portal's sign-in, such as `your-project.firebaseapp.com` (the web app's `authDomain`). |
+| **Service account JSON** | Firebase console › Project settings › **Service accounts** › **Generate new private key**. Open the downloaded JSON file and paste its whole contents. |
+| **Web API key** | Optional, but needed for the Creator Portal's sign-in. Project settings › General › **Your apps**: add a **Web app** if you have none, and copy its `apiKey` (it starts with `AIza`). |
+| **Auth domain** | Optional, but needed for the Creator Portal's sign-in, such as `your-project.firebaseapp.com` (the web app's `authDomain`). |
 
-Keys are stored encrypted and never shown again. Leave a field empty to keep its current value. Press **Test connection** after saving.
+Press **Save keys**. Secrets are stored encrypted and never shown again; leave one empty to keep its current value. Then press **Test connection**: it checks the key with Firebase Cloud Messaging without sending anything. Keys already set in the server's `.env` show as coming from the server's environment, and saving a value here replaces them.
 
 ![Where the Firebase service account key is generated](/images/admin/firebase-service-account.webp)
 
@@ -33,14 +33,22 @@ Keys are stored encrypted and never shown again. Leave a field empty to keep its
 
 | Field | What it does |
 |---|---|
-| **Maximum per viewer per day** | Pushes above this wait for the next day. The in-app inbox still gets every message. |
-| **Quiet hours start** / **Quiet hours end** | In each viewer's own time. Pushes wait until quiet hours end. |
+| **Maximum per viewer per day** | 3 to start, up to 20. Pushes above this wait for the next day. The in-app inbox still gets every message. |
+| **Quiet hours start** / **Quiet hours end** | 23:00 to 08:00 to start, in each viewer's own time. Pushes wait until quiet hours end. |
 
 The app reads these at its next start. Pushes need the [background jobs](../background-jobs.md) running.
+
+## Notification messages
+
+What the automatic notifications say, in each app language: **New episodes (drop alerts)**, **Reply to a comment**, **New series from a followed creator**, **VIP renewal reminder** and **Several notifications in one**. Press **Edit** on one to change its lines per language. The `{placeholders}` listed under each line are filled in when it's sent. A line left empty uses the language file's text. **Restore default wording** puts every language back.
 
 ## System alerts
 
 Who hears within minutes when a background job or scheduled task fails.
 
-- **Alert emails**: one or more addresses, separated by commas. Members who can edit Settings also get a bell notification in the Admin Panel.
-- **Slack webhook URL** (optional): an incoming webhook for your team's alerts channel (Slack › Apps › Incoming Webhooks).
+Fill in at least one of the two:
+
+- **Alert emails**: one or more addresses, separated by commas. Members who can edit Settings also get a bell notification in the Admin Panel. Emails need [SMTP](./email.md).
+- **Slack webhook URL**: an incoming webhook for your team's alerts channel (Slack › Apps › Incoming Webhooks), starting with `https://hooks.slack.com/services/`.
+
+**Test connection** on this card sends a test alert.

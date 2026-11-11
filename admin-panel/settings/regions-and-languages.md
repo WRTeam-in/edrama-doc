@@ -21,7 +21,7 @@ A fresh install lists **Hindi** as offered in the app, without its app file. Upl
 <Steps>
 <Step title="Add the language">
 
-Click **Add language** and fill in the **Code** (such as `hi`, or a regional code such as `pt-BR`; it can't change later), the **Name** and the **Native name** (how the language picker shows it, such as हिन्दी). Tick **Right to left (RTL)** for Arabic, Hebrew, Persian, Urdu and the like: the app and the Admin Panel turn their layout around.
+Click **Add language** and fill in the **Code** (such as `hi`, or a regional code such as `pt-BR`; it can't change later), the **Name** and the **Native name** (how the language picker shows it, such as हिन्दी). Turn on **Right to left (RTL)** for Arabic, Hebrew, Persian, Urdu and the like (it turns on by itself for their codes): the app and the Admin Panel turn their layout around.
 
 </Step>
 <Step title="Translate the file">
@@ -31,12 +31,12 @@ Download the **Sample JSON**: the English file with every key. Translate the val
 </Step>
 <Step title="Upload it">
 
-Open **Files** for the language and upload the app's JSON file (UTF-8, up to 1 MB, plain text only). Keys a file leaves out stay in English. Upload an Admin Panel file too if your team should use the Admin Panel in that language.
+Open **Files** for the language and press **Upload file** under **Mobile app** (or use **Upload pack** and pick the language). The file is JSON, UTF-8, up to 1 MB, plain text only, and every key must exist in the English file. Keys a file leaves out stay in English. Upload an **Admin panel** file too (its own sample is on the same screen) if your team should use the Admin Panel in that language.
 
 </Step>
 <Step title="Turn it on">
 
-Edit the language and tick **Offered in the app**. A language can only be turned on once it has its app file.
+**Edit** the language and turn on **Offered in the app**. A language can only be turned on once it has its app file. The default language is always offered.
 
 </Step>
 </Steps>
@@ -49,7 +49,9 @@ Edit the language and tick **Offered in the app**. A language can only be turned
 
 Your regions can sell in different currencies. The Dashboard and totals are shown in one **Reporting currency** (USD by default), and refund limits are compared in it.
 
-Add an exchange rate for each currency a region uses: **Currency**, **Rate** (how much one unit is worth in the reporting currency, up to six decimals) and **Valid from**. A rate applies from its date until a newer one starts. Rows in a currency with no rate are left out of reporting totals until you add one.
+Add an exchange rate for each currency a region uses: **Currency**, **Rate** (how much one unit is worth in the reporting currency, up to six decimals) and **Valid from**. A rate applies from its date until a newer one starts. Rows in a currency with no rate are left out of reporting totals until you add one. A new rate for a currency and date that already has one replaces it.
+
+To change the reporting currency, press **Change** beside it. Rates entered into the old currency stop applying, so add rates into the new one.
 
 ## Regions
 

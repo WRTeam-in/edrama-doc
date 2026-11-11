@@ -246,11 +246,11 @@ function Architecture() {
         <Reveal>
           <h2 className={styles.sectionTitle}>How it fits together</h2>
           <p className={styles.sectionLead}>
-            One Laravel backend serves the app, the website, the Admin Panel and the Creator Portal through the same API.
+            One Laravel backend runs the Admin Panel and the Creator Portal, and serves the app and the website through its API.
           </p>
         </Reveal>
         <Reveal>
-          <svg className={styles.diagram} viewBox="0 0 760 300" role="img" aria-label="The app, website and Creator Portal all talk to the backend, which uses Firebase, Cloudflare Stream and the app stores.">
+          <svg className={styles.diagram} viewBox="0 0 760 300" role="img" aria-label="The app, website and Creator Portal all talk to the backend, which uses Firebase, your video storage (this server, Amazon S3 or Cloudflare Stream) and the app stores.">
             <g className={styles.lines}>
               <path d="M150 70 C 260 70, 260 150, 330 150" />
               <path d="M150 150 L 330 150" />
@@ -274,7 +274,7 @@ function Architecture() {
             <text x="380" y="166" textAnchor="middle" className={styles.coreSub}>+ Admin Panel</text>
             {[
               ['Firebase', 610, 45],
-              ['Cloudflare Stream', 610, 125],
+              ['Video storage', 610, 125],
               ['Play · App Store', 610, 205],
             ].map(([label, x, y]) => (
               <g key={label}>

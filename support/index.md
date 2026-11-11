@@ -25,7 +25,7 @@ At WRTeam we're committed to helping you launch and run eDrama. Whether you have
 
 Including these helps us answer in one go:
 
-- Your **purchase code** and your **domain**.
+- Your **CodeCanyon purchase code** and your **domain**.
 - What you did, what you expected, and what happened, with the **exact error text** or a screenshot.
 - For the server: your **PHP version** and what <AdminPath path="System › System" /> shows for the queues and scheduled tasks.
 - For the app: the output of `flutter --version` and the full build error.

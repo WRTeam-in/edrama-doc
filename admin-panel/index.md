@@ -30,7 +30,7 @@ All contacts are on the [Support](/support/) page.
 <Steps>
 <Step title="Check your server">
 
-[Server requirements](./requirements.md): PHP 8.5, MySQL 8, a cron job, and ffmpeg or Cloudflare Stream for videos.
+[Server requirements](./requirements.md): PHP 8.5, MySQL 8, HTTPS, a cron job, and ffmpeg or Cloudflare Stream for videos.
 
 </Step>
 <Step title="Upload and install">

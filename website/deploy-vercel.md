@@ -11,7 +11,7 @@ description: Put the eDrama website live on Vercel, with your own domain.
 ## Before you start
 
 - A Vercel account.
-- The website's code in a Git repository you own (GitHub, GitLab or Bitbucket), or the [Vercel CLI](https://vercel.com/docs/cli) on your computer.
+- The website's code (unzip `edrama-website-1.0.0.zip` from your download) in a Git repository you own (GitHub, GitLab or Bitbucket), or the [Vercel CLI](https://vercel.com/docs/cli) on your computer.
 - Your Admin Panel installed and reachable over `https://`.
 
 ## Steps
@@ -29,7 +29,9 @@ Before the first deploy, open **Environment Variables** and add the variables fr
 </Step>
 <Step title="Deploy">
 
-Click **Deploy**. From now on every push to `main` deploys the live site, and every other branch gets its own preview address.
+Click **Deploy**. From now on every push to your production branch (usually `main`) deploys the live site, and every other branch gets its own preview address.
+
+When you change an environment variable later, redeploy (**Deployments** › **Redeploy**) so the site picks it up.
 
 </Step>
 <Step title="Add your domain">
@@ -50,7 +52,7 @@ Open your domain: the home page shows your sections. Open `https://your-domain.c
 
 ## Deploying from your computer instead
 
-The website includes `scripts/deploy.sh`, which uses the Vercel CLI:
+The website includes `scripts/deploy.sh`, a Bash script (macOS, Linux, or WSL on Windows) that uses the Vercel CLI:
 
 ```bash
 npm install --global vercel
@@ -60,15 +62,3 @@ scripts/deploy.sh --prod # the live site
 ```
 
 It runs `npm ci`, `npm run lint` and `npm run build` before deploying.
-
-## Deploying from GitHub Actions (optional)
-
-The website's `.github/workflows/deploy.yml` checks every push (lint, type check, `npm audit`) and can deploy to Vercel too. To turn the deploy on, add three repository secrets:
-
-| Secret | Where to find it |
-|---|---|
-| `VERCEL_TOKEN` | [vercel.com/account/tokens](https://vercel.com/account/tokens) |
-| `VERCEL_ORG_ID` | `.vercel/project.json` after `vercel link` |
-| `VERCEL_PROJECT_ID` | `.vercel/project.json` after `vercel link` |
-
-Without `VERCEL_TOKEN` the workflow only runs the checks, so it works alongside Vercel's own Git connection. Use one or the other for deploys, not both.

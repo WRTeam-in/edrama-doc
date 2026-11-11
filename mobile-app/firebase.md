@@ -14,15 +14,41 @@ Follow the common guide to create the project, install the Firebase CLI and run 
 
 👉 **[Common guide › Firebase setup](https://wrteam-in.github.io/common_app_doc/GeneralSettings/firebase)**
 
-In eDrama, `flutterfire configure` writes three files. Replace the ones that ship with the app:
+The download has **no Firebase files**: they are tied to a Firebase project, so you make your own. Until you do, the Android build stops and Xcode can't find `GoogleService-Info.plist`.
+
+<Steps>
+<Step title="Add the apps">
+
+[Change the package name](./package-name.md) first, then add an Android app and an iOS app with those IDs to your Firebase project.
+
+</Step>
+<Step title="Run flutterfire configure">
+
+From the project folder. The `--out` path matters: eDrama reads its options from `lib/app/config/`, not from FlutterFire's default `lib/firebase_options.dart`.
+
+```bash
+dart pub global activate flutterfire_cli
+flutterfire configure --project=<your-project> --out=lib/app/config/firebase_options.dart
+```
+
+It writes:
 
 | File | Platform |
 |---|---|
-| `lib/app/config/firebase_options.dart` | Both |
+| `lib/app/config/firebase_options.dart` (replaces the placeholder) | Both |
 | `android/app/google-services.json` | Android |
 | `ios/Runner/GoogleService-Info.plist` | iOS |
 
-Run it from the project folder after you [change the package name](./package-name.md).
+</Step>
+<Step title="Fill in the iOS URL schemes">
+
+In `ios/Runner/Info.plist` › `CFBundleURLSchemes`, replace the two placeholders:
+
+- `com.googleusercontent.apps.YOUR_REVERSED_CLIENT_ID`: the `REVERSED_CLIENT_ID` value from `GoogleService-Info.plist` (Google sign-in).
+- `app-1-YOUR_SENDER_ID-ios-YOUR_APP_HASH`: the **Encoded App ID** shown for your iOS app in Firebase › Project settings (phone sign-in).
+
+</Step>
+</Steps>
 
 ## Turn on the sign-in methods
 

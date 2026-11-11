@@ -9,7 +9,7 @@ description: Every tab of Admin Panel › Content › Website, and how draft, pr
 Everything on the website is edited in <AdminPath path="Content › Website" />. A live preview sits beside the form and shows what the form holds now, on a computer or a phone, in any language.
 
 :::note Who can edit it
-Members with **View** on **Schedule & Home** can open this page, and **Edit** is needed to change it. The **Website address** and the refresh secret need **Settings** › Edit. See [Team and roles](/admin-panel/team-and-roles/).
+Members whose role has **View** on **Website** can open this page, and **Edit** is needed to change it. The **Website address** and the refresh secret need **Settings** › Edit. See [Team and roles](/admin-panel/team-and-roles/).
 :::
 
 <Shot src="/images/admin/website.webp" alt="Content, Website: the Sections tab with the home page sections and the Publish button" caption="The Sections tab. The live preview sits to the right of the form." width="720px" />
@@ -19,7 +19,7 @@ Members with **View** on **Schedule & Home** can open this page, and **Edit** is
 | Action | What it does |
 |---|---|
 | **Save draft** | Keeps your changes. Visitors don't see them. |
-| **Preview** | Opens the saved draft on your real website for 30 minutes. Nothing is published. |
+| **Preview** | Opens the saved draft on your real website for 30 minutes. Nothing is published. Needs the **Website address** set. |
 | **Publish** | Makes the draft live. Visitors see it within a minute. You can write what changed. |
 | **Discard draft** | Throws away unpublished changes and goes back to the live version. |
 | **Switch website off / on** | Off shows visitors a short "back soon" page and asks search engines not to index it. |
@@ -53,7 +53,7 @@ The header style (Floating, Classic, Centred, Minimal), the footer style (Column
 
 ### Look & languages
 
-The theme (**Midnight (dark)**, **Paper (light)** or **Follow the visitor's device**), heading style, corners and motion, and which languages the website comes in. See [Languages and app links](./languages-and-app-links.md).
+The theme (**Midnight (dark)**, **Paper (light)** or **Follow the visitor's device**), whether visitors may switch between light and dark, heading style, corners and motion, and which languages the website comes in. See [Languages and app links](./languages-and-app-links.md).
 
 ### Translations
 
@@ -73,10 +73,10 @@ The **Website address**, the refresh secret and the publish history. See [Connec
 
 | On the website | Set in |
 |---|---|
-| App name, logos, theme colour | <AdminPath path="Settings › Branding" /> |
-| Google Play and App Store buttons | <AdminPath path="Settings › App & support" /> › **App versions** › **Store link** |
+| App name, logos, theme colour | <AdminPath path="System › Settings › Branding" /> |
+| Google Play and App Store buttons | <AdminPath path="System › Settings › App & support" /> › **App versions** › **Store link** |
 | Series, categories, creators | <AdminPath path="Content › Titles" />, <AdminPath path="Content › Categories" />, <AdminPath path="Community › Creators" /> |
-| Legal pages in the footer | <AdminPath path="Settings › Legal pages" /> |
+| Legal pages in the footer | <AdminPath path="System › Settings › Legal pages" /> |
 
 :::tip Sample series
 While a series section has fewer than 4 live series, sample series fill it so the page never looks empty. Turn this off when your catalogue is ready.

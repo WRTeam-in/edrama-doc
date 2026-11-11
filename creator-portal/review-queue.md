@@ -6,24 +6,24 @@ description: How your team reviews creator episodes and reports.
 
 # The review queue
 
-<AdminPath path="Community › Review queue" /> holds creator submissions and viewers' reports. Team members whose role can edit **Review queue** work here (the **Moderator** role, for example).
+<AdminPath path="Community › Review queue" /> holds creator submissions (new series, new episodes and updates to live series) and viewers' reports. Team members whose role has **Review queue** › Edit work here (the **Moderator** role, for example). The **Queue**, **Decided** and **All** tabs, and filters by type and assignee, help you find an item.
 
 ## Working an item
 
-1. **Assign to me** an item, so nobody else works on it at the same time. A colleague can **take over** if needed.
+1. **Assign to me** an item, so nobody else works on it at the same time. A colleague can **Take over** if you can't finish it.
 2. Watch the episodes and check the artwork, prices and rights.
 3. Decide:
 
 | Decision | What happens |
 |---|---|
-| **Approve** | The episodes go live at their release time, or at once if they have none |
+| **Approve** | For a series, you confirm the free episodes and the coin price first. It goes live at once; episodes go live at their release time, or at once if they have none |
 | **Request changes** | The creator sees your reason and can resubmit |
-| **Reject** | With a reason |
-| **Unpublish** | Takes a live episode down, with a reason |
-| **Mark resolved** | Closes a viewer's report, with a note |
-| **Ask the creator to fix it** | Sends a report on to the creator |
+| **Reject** | The creator sees your reason. A rejected series can't be changed or sent again |
+| **Unpublish** | Takes a live series or episode down at once, with a reason. Viewers who unlocked it keep their unlocks |
+| **Mark resolved** | Closes a viewer's report, with a note only the team sees |
+| **Ask the creator to fix it** | Sends a report on a creator's episode to the creator and resolves the report. The episode stays live |
 
-Each decision writes a notice in the creator's portal and sends them an email.
+Each decision on a creator's work writes a notice in their portal and sends them an email. You can't approve a series you own as a creator: another reviewer has to.
 
 ## Waiting times
 

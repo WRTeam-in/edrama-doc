@@ -25,7 +25,7 @@ Two kinds of links open the app:
 </Step>
 <Step title="Android">
 
-In `android/app/build.gradle.kts`, set both hosts (no `https://`):
+In `android/app/build.gradle.kts`, set both hosts (no `https://`). Both ship as `your-domain.com`:
 
 ```kotlin title="android/app/build.gradle.kts"
 manifestPlaceholders["shareHost"] = "admin.your-domain.com"
@@ -37,7 +37,7 @@ manifestPlaceholders["websiteHost"] = "your-domain.com"
 </Step>
 <Step title="iOS">
 
-In `ios/Runner/Runner.entitlements`, list both domains under Associated Domains:
+In `ios/Runner/Runner.entitlements`, replace the two `applinks:your-domain.com` entries under Associated Domains:
 
 ```xml title="ios/Runner/Runner.entitlements"
 <string>applinks:admin.your-domain.com</string>
@@ -53,7 +53,10 @@ Turn on **Associated Domains** for your App ID in the Apple Developer portal too
 
 Phones check a file on each domain before they open links in your app:
 
-- **Backend**: set `EDRAMA_ANDROID_PACKAGE`, `EDRAMA_ANDROID_SHA256` and `EDRAMA_IOS_APP_ID` in its `.env`. See [Admin Panel › Share links](/admin-panel/share-links/).
+- **Backend**: set these in its `.env`, then run `php artisan config:clear`. Until they are set, the files are empty and links open in the browser. See [Admin Panel › Share links](/admin-panel/share-links/).
+  - `EDRAMA_ANDROID_PACKAGE`: your application ID.
+  - `EDRAMA_ANDROID_SHA256`: the SHA-256 fingerprints of your upload key and of Play's app signing key (Play Console › App integrity), separated by commas.
+  - `EDRAMA_IOS_APP_ID`: your Team ID and bundle ID, such as `ABCDE12345.com.yourcompany.yourapp`.
 - **Website**: it serves the same files from your backend's app settings by itself.
 
 ## Check it worked

@@ -23,7 +23,7 @@ eDrama is a complete short-drama platform: vertical mini-series with short episo
 ## Money, explained
 
 - [Coins and unlocks](./coins-and-unlocks.md): paid and bonus coins, the ways to unlock, price lock and the spend cap.
-- [How earnings work](./how-earnings-work.md): how a paid unlock turns into store fees, the creator's share and yours.
+- [How earnings work](./how-earnings-work.md): how a paid unlock turns into store fees, the creator's share and yours, and how monthly statements and payouts work.
 - [Earnings calculator](./earnings-calculator.md): try your own prices and volumes.
 
 ## Built-in fair-play rules
