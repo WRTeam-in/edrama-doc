@@ -25,7 +25,7 @@ npm run serve          # http://localhost:3000, with search
 ## Deploy
 
 - **Any static host** (Netlify, Vercel, Cloudflare Pages, S3, nginx): run `npm run build` and upload the `build/` folder.
-- **GitHub Pages**: push to `main`; `.github/workflows/deploy.yaml` builds and publishes. Set the address with `DOCS_URL` and `DOCS_BASE_URL`, for example `DOCS_URL=https://wrteam-in.github.io DOCS_BASE_URL=/eDrama-Doc/`.
+- **GitHub Pages**: push to `main`; `.github/workflows/deploy.yaml` builds the site and pushes it to the `gh-pages` branch, which Pages serves at https://wrteam-in.github.io/edrama-doc/. Set the address with `DOCS_URL` and `DOCS_BASE_URL`, for example `DOCS_URL=https://wrteam-in.github.io DOCS_BASE_URL=/edrama-doc/`.
 
 ## Project layout
 

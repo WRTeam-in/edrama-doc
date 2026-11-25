@@ -5,7 +5,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
  * eDrama documentation site.
  *
  * To host it somewhere else, set DOCS_URL and DOCS_BASE_URL when you build, for example:
- *   DOCS_URL=https://wrteam-in.github.io DOCS_BASE_URL=/eDrama-Doc/ npm run build
+ *   DOCS_URL=https://wrteam-in.github.io DOCS_BASE_URL=/edrama-doc/ npm run build
  */
 const siteUrl = process.env.DOCS_URL || 'https://docs.edrama.example';
 const baseUrl = process.env.DOCS_BASE_URL || '/';
