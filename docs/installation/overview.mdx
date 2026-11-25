@@ -1,0 +1,99 @@
+---
+title: "Server installation"
+sidebar_label: "Overview & requirements"
+description: "What you need before installing the eDrama Admin Panel, and the order of the installation steps."
+---
+
+The server software (the Admin Panel, the Creator Portal and the API) is installed once, on a server you control. The package already contains everything it needs to run: you do **not** need to install Composer or Node.js on the server, and you never run a build step.
+
+## What you'll need
+
+<Cards
+  columns={2}
+  items={[
+    {icon: 'server', title: 'A server', text: 'A VPS (recommended) or shared hosting with PHP 8.5, MySQL 8 and the ability to run ffmpeg.', to: '/docs/installation/vps-server/'},
+    {icon: 'globe', title: 'A domain with HTTPS', text: 'Such as admin.your-domain.com, pointed at the server, with an SSL certificate.', to: '/docs/installation/vps-server/'},
+    {icon: 'shield', title: 'Your purchase code', text: 'From your CodeCanyon downloads page. It is registered to your domain.', to: '/docs/installation/license-and-updates/'},
+    {icon: 'book', title: 'An empty MySQL database', text: 'A database name, a user that can create and change tables, and its password.', to: '/docs/installation/web-installer/'},
+  ]}
+/>
+
+## Server requirements
+
+The web installer checks all of these and marks anything missing in red.
+
+| Requirement | Details |
+|---|---|
+| **PHP** | 8.5.0 or newer |
+| **PHP extensions** | bcmath, ctype, curl, fileinfo, gd, intl, json, mbstring, openssl, pdo_mysql, sodium, tokenizer, xml, zip |
+| **PHP function** | `proc_open` must be allowed (not in `disable_functions`): the cron line starts each task through it, and ffmpeg runs through it |
+| **Recommended** | The `pcntl` extension, so a background job that hangs is stopped at its time limit |
+| **Database** | MySQL 8 (an empty database) |
+| **Writable by the web server** | `storage`, `storage/app`, `storage/framework/cache`, `storage/framework/sessions`, `storage/framework/views`, `storage/logs`, `bootstrap/cache`, and the `.env` file |
+| **Video processing** | ffmpeg and ffprobe, unless you use Cloudflare Stream ([details](video-processing.mdx)) |
+| **Background work** | One cron entry every minute; supervisor is recommended on a VPS ([details](cron-and-queues.mdx)) |
+| **Web server** | Apache or nginx, with the domain pointing at the package's `public` folder |
+| **Upload size** | At least 16 MB for `upload_max_filesize` and `post_max_size` (videos upload in 8 MB pieces), and the same for the web server's body limit (nginx `client_max_body_size` is only 1 MB by default). Higher if you'll install update packages or import AI Studio clips from the browser (up to 300 MB). |
+| **Outgoing HTTPS** | The server must reach WRTeam's license server (to check your purchase code), Firebase, the stores and your video service. |
+| **HTTPS** | An SSL certificate on your domain: the app and the website only talk to `https://` servers. |
+
+:::tip[Which server?]
+A small VPS (2 CPU cores, 4 GB of memory) handles a launch comfortably. Video processing is the heaviest job: every upload is turned into four qualities on your server. If your hosting is small, choose **Cloudflare Stream** in <Path>Settings › Storage & video</Path> and your server does no video work at all.
+:::
+
+## Video: choose who does the work
+
+Every uploaded episode is turned into adaptive streaming video in four qualities (1080p, 720p, 480p and 360p). You choose who does that in <Path>Settings › Storage & video</Path>, and can switch later.
+
+| Option | You need | Good for |
+|---|---|---|
+| **This server** (the default) | ffmpeg on the server | Getting started and small catalogues |
+| **Amazon S3** (or S3-compatible) | ffmpeg on the server, plus a bucket | Growing catalogues: storage grows without filling your disk |
+| **Cloudflare Stream** | A Cloudflare account with Stream. **No ffmpeg.** | No video work on your server. Cloudflare bills for minutes stored and watched. |
+
+The largest episode file is 20 GB by default (up to 200 GB, set in <Path>Settings › Video pipeline</Path>), and the longest episode is 15 minutes.
+
+## A typical domain layout
+
+| Address | What runs there |
+|---|---|
+| `admin.your-domain.com` | This package: the Admin Panel (`/admin`), the Creator Portal (`/creator`), the API (`/api/v1`), share pages (`/s/…`, `/c/…`) and legal pages (`/legal/…`) |
+| `your-domain.com` or `www.your-domain.com` | The public [website](../website/overview.mdx), hosted separately |
+
+## The installation, step by step
+
+<Steps>
+
+1. **Prepare the server.** Install PHP, MySQL and ffmpeg, upload the package and point your domain at its `public` folder. Follow [VPS server](vps-server.mdx) or [Shared hosting](shared-hosting.mdx).
+2. **Run the web installer.** Open your domain in a browser and complete four screens: requirements, purchase code, database and Owner account. See [Web installer](web-installer.mdx).
+3. **Start the background work.** Add the cron line, and on a VPS the queue workers. See [Cron & queues](cron-and-queues.mdx).
+4. **Check video processing.** Make sure ffmpeg is found, or choose Cloudflare Stream. See [Video processing](video-processing.mdx).
+5. **Finish the setup.** Sign in, connect email and Firebase, set your branding and remove the demo data. See [After installation](after-installation.mdx).
+
+</Steps>
+
+## What's in the download
+
+Your CodeCanyon download holds one zip per part, each named with its version:
+
+| Zip | What it is | Guide |
+|---|---|---|
+| `edrama-backend-<version>.zip` | The server: Admin Panel, Creator Portal, API and installer | This section |
+| `edrama-app-<version>.zip` | The Flutter app for Android and iOS | [Mobile app setup](../app-setup/overview.mdx) |
+| `edrama-website-<version>.zip` | The public website (Next.js) | [Website](../website/overview.mdx) |
+
+Inside the backend zip:
+
+| Folder or file | What it is |
+|---|---|
+| `app`, `bootstrap`, `config`, `database`, `lang`, `resources`, `routes` | The application. |
+| `vendor` | Every PHP library it uses, already included. |
+| `public` | The only folder the internet should see. Your domain points here. |
+| `public/build` | The panels' styles and scripts, already built. |
+| `storage` | Logs, sessions, uploads (when files stay on this server). |
+| `.env` | The settings file. The installer fills it in. Some computers hide files whose names start with a dot: make sure it is uploaded. |
+| `.htaccess` | Used only when your domain can't point at `public` (see [Shared hosting](shared-hosting.mdx)). |
+| `docs/deploy/` | A ready-made `supervisor.conf` ([Cron & queues](cron-and-queues.mdx)) and `ffmpeg-shared-hosting.md` ([Video processing](video-processing.mdx)). |
+| `artisan` | The command-line tool for the [server commands](commands.mdx). |
+
+<HelpBanner title="Want WRTeam to install it?" text="Our team can prepare the server, run the installer and set up cron, queues and ffmpeg for you." />

@@ -1,0 +1,38 @@
+---
+title: "Refunds and chargebacks"
+sidebar_label: "Refunds & chargebacks"
+description: "How refunds from the panel and from the stores work, what happens to coins already spent, and who may refund."
+---
+
+## Three ways a refund happens
+
+| Source | How it arrives |
+|---|---|
+| **Admin Panel** | A member refunds a Google Play purchase from [Transactions](../admin/money/transactions.mdx#refund-a-purchase). |
+| **Store notification** | Google or Apple tells your server about a refund or chargeback. |
+| **Google Play voided purchases** | A daily check of Google's list of refunded and charged-back purchases, which always appear there. |
+
+App Store refunds are always decided by **Apple**: the viewer requests them from Apple, and Apple's notification updates the purchase.
+
+## What happens to the coins
+
+A refund can **take the coins back** (the default for store refunds; optional from the panel):
+
+- Coins still in the wallet are taken back as a new **reversal** row in the ledger.
+- Coins already spent can't be taken back: the balance **never goes below zero**. The part already spent is recorded on the refund as the **shortfall**.
+- If the store later **reverses a refund**, the coins come back.
+
+From the panel, you can also refund the money and **let the viewer keep the coins** (for example, a goodwill refund).
+
+## Who can refund
+
+Each role has a **refund limit** in the reporting currency (Admin 100.00, Finance & Support 20.00 by default; other roles none). Over the limit, someone with a higher limit must do it. The Owner can refund any amount. The panel asks Google first and writes nothing if Google refuses.
+
+## Effects on reporting
+
+- The Dashboard's revenue and Transactions' totals subtract refunds for the days they affect; the daily counts are redone for those days.
+- A creator's statement subtracts refunds of coins that were spent on their series; if a refund takes back more than a later month earned, it comes off the next statements.
+
+## Store notifications must be set up
+
+Without Google Play's real-time notifications and App Store Server Notifications, refunds made in the stores reach your server late (Google's daily check) or not at all (Apple). Set them up as described in [Google Play](../integrations/google-play.mdx) and [App Store](../integrations/app-store.mdx). If a notification can't be processed after 5 tries, members with Transactions (Edit) get a bell, and the job can be retried from <Path>System › System</Path>.

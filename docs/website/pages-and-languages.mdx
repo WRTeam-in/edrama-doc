@@ -1,0 +1,49 @@
+---
+title: "Website pages, languages and app links"
+sidebar_label: "Pages, languages & links"
+description: "Every page the website has, its addresses in each language, and how website links open your app."
+---
+
+## The pages
+
+| Address | Page |
+|---|---|
+| `/` | Home, built from your sections in <Path>Content › Website</Path> |
+| `/series` | All series, with category chips |
+| `/series/<slug>` | One series: banner, poster, synopsis, creator, an **Open in app** button and the store buttons |
+| `/categories` and `/categories/<slug>` | All categories, and the series in one |
+| `/creators/<slug>` | A creator's profile and series |
+| `/sitemap.xml`, `/robots.txt` | For search engines |
+| `/llms.txt`, `/llms-full.txt` | For AI assistants, only when you allow AI crawlers and `llms.txt` (<Path>Content › Website</Path> › Search & statistics) |
+| `/app-ads.txt` | For AdMob, only when `APP_ADS_TXT` is set ([Connect](connect.mdx#the-websites-settings)) |
+| `/s/<id>`, `/c/<handle>` | The app's own share links: they redirect to the series or creator page |
+
+The website shows what viewers in your **default region** see. A series limited to other regions isn't on it, so include the default region if a series should appear on the website.
+
+## Languages
+
+- The **default language** is at plain addresses: `/series/…`, `/categories/…`.
+- Every other language turned on in <Path>Content › Website</Path> › **Look & languages** lives under its code: `/hi/series/…`, `/ar/series/…`. Only languages already offered in the app (<Path>Settings › Regions & languages</Path>) can be picked.
+- Right-to-left languages such as Arabic are laid out right to left.
+- Visitors switch language from the header when **Show a language menu in the header** is on, and light or dark when **Let visitors switch between light and dark** is on.
+- Website texts are translated on the **Translations** tab. Series and category names use the translations already entered for the app.
+- The sitemap lists every page in every language, with links between the language versions.
+
+## Links that open the app
+
+The website serves the two files phones read to open links in your app instead of the browser:
+
+- `/.well-known/assetlinks.json` (Android)
+- `/.well-known/apple-app-site-association` (iOS)
+
+Both are filled from your server's app settings, so they stay empty until the server knows your app: set `EDRAMA_ANDROID_PACKAGE`, `EDRAMA_ANDROID_SHA256` and `EDRAMA_IOS_APP_ID` in the server's `.env`. Your app must list the website's domain too, as `websiteHost` on Android and an `applinks:` entry on iOS ([Deep links](../app-setup/deep-links.mdx)).
+
+## What comes from elsewhere
+
+| On the website | Set in |
+|---|---|
+| App name, logos, theme colour | <Path>Settings › Branding</Path> |
+| Google Play and App Store buttons | <Path>Settings › App & support</Path> › App versions › **Store link** |
+| Series, categories, creators | <Path>Content › Titles</Path>, <Path>Content › Categories</Path>, <Path>Community › Creators</Path> |
+| Legal pages in the footer | <Path>Settings › Legal pages</Path> |
+| Sections, header, footer, theme, translations, search and analytics | <Path>Content › Website</Path> ([Website](../admin/content/website.mdx)) |

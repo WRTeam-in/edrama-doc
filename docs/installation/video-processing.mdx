@@ -1,0 +1,110 @@
+---
+title: "Video processing (ffmpeg)"
+sidebar_label: "Video processing"
+description: "Install ffmpeg on a VPS or shared hosting so eDrama can turn uploads into streams, or use Cloudflare Stream instead."
+---
+
+Every episode you upload is turned into **adaptive streams**: copies at 1080p, 720p, 480p and 360p (never above the original's quality), plus a poster image, cut into small pieces so the app can switch quality as the connection changes. By default your own server does this with **ffmpeg**, a free video program. You have two choices:
+
+| Choice | Your server needs | Cost |
+|---|---|---|
+| **This server** (default) | ffmpeg installed and allowed to run | Nothing extra |
+| **Cloudflare Stream** | Nothing for video | Cloudflare bills for minutes stored and watched |
+
+You switch between them in <Path>Settings › Storage & video</Path>. Videos already uploaded keep playing from wherever they are.
+
+## On a VPS
+
+One command:
+
+```bash title="Server"
+sudo apt install -y ffmpeg
+ffmpeg -version | head -1
+```
+
+Then open <Path>Settings › Storage & video</Path> and refresh: the **This server** card shows a green line such as *ffmpeg 7.x on this server*.
+
+## On shared hosting {#shared-hosting}
+
+You can't install programs on shared hosting, but most hosts let you run a ready-made ffmpeg from your home folder. Run each block in **cPanel › Terminal** (or over SSH).
+
+<Steps>
+
+1. **Check the server allows it.**
+
+   ```bash
+   php -v
+   php -r 'var_dump(function_exists("proc_open"));'
+   uname -m
+   ```
+
+   You need PHP **8.5**, `bool(true)`, and usually `x86_64`. If `proc_open` is `false`, remove it from `disable_functions` in **Select PHP Version › Options** (or ask your host). If `uname -m` prints `aarch64`, use `arm64` instead of `amd64` below.
+
+2. **Download ffmpeg into your home folder.**
+
+   ```bash
+   cd ~ && mkdir -p ffmpeg && cd ffmpeg
+   wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
+   tar -xf ffmpeg-release-amd64-static.tar.xz --strip-components=1
+   chmod +x ffmpeg ffprobe
+   rm ffmpeg-release-amd64-static.tar.xz
+   ```
+
+   No `wget`? Use `curl -LO` with the same address instead.
+
+3. **Check that it runs.**
+
+   ```bash
+   ~/ffmpeg/ffmpeg -version
+   ~/ffmpeg/ffprobe -version
+   ```
+
+4. **Check your hosting is strong enough for video.** This makes a 2-second 1080p test clip and deletes it:
+
+   ```bash
+   ~/ffmpeg/ffmpeg -y -f lavfi -i testsrc=size=1080x1920:rate=25 -t 2 -c:v libx264 -preset veryfast ~/ffmpeg/test.mp4 && echo "ENCODE OK"
+   rm -f ~/ffmpeg/test.mp4
+   ```
+
+   `ENCODE OK` means you're fine. "Killed" or "Cannot allocate memory" means the hosting is too small: use Cloudflare Stream or a VPS.
+
+5. **Tell eDrama where ffmpeg is.** Go to your project folder (the one with the `artisan` file), then:
+
+   ```bash
+   grep -q '^EDRAMA_FFMPEG_PATH=' .env || echo "EDRAMA_FFMPEG_PATH=$HOME/ffmpeg/ffmpeg" >> .env
+   grep -q '^EDRAMA_FFPROBE_PATH=' .env || echo "EDRAMA_FFPROBE_PATH=$HOME/ffmpeg/ffprobe" >> .env
+   php artisan config:clear && php artisan optimize
+   ```
+
+6. **Check from the panel.** Open <Path>Settings › Storage & video</Path> and refresh. The ffmpeg line should be green. If the terminal works but the page stays red, the website's PHP still blocks `proc_open`: fix it for the website's PHP version and wait a minute (the check is remembered for 60 seconds).
+
+7. **Test a real upload.** Upload one short episode on <Path>Content › Upload & pipeline</Path>. It should go **Uploading → Processing → Ready** within a few minutes.
+
+</Steps>
+
+## Tuning (optional)
+
+These lines in `.env` change how videos are processed. The defaults suit most servers.
+
+| Setting | Default | Meaning |
+|---|---|---|
+| `EDRAMA_FFMPEG_PATH`, `EDRAMA_FFPROBE_PATH` | found automatically | Where ffmpeg and ffprobe are, if not on the normal path. |
+| `EDRAMA_VIDEO_MAX_DURATION_SECONDS` | `900` | The longest episode accepted, in seconds (15 minutes). |
+| `EDRAMA_TRANSCODE_TIMEOUT` | `540` | How long one video may take to process, in seconds. |
+| `EDRAMA_TRANSCODE_PRESET` | `veryfast` | Slower presets make smaller files but take longer. |
+| `EDRAMA_TRANSCODE_THREADS` | `2` in the example file | CPU threads per video; keep it low on shared hosting. `0` lets ffmpeg decide. |
+| `EDRAMA_UPLOAD_CHUNK_MB` | `8` | The size of each upload piece. |
+| `EDRAMA_KEEP_VIDEO_SOURCE` | `true` | Keep the original upload after processing. AI Studio's episode editor needs it to merge new clips with an episode. |
+
+Run `php artisan config:cache` after changing `.env`.
+
+## If something goes wrong
+
+| What you see | Fix |
+|---|---|
+| Upload stays **Processing** forever | The background worker isn't running: check the [cron line](cron-and-queues.mdx). |
+| Upload goes **Processing**, then **Failed** | The host stopped the long job. Use Cloudflare Stream, or a VPS. |
+| "ffmpeg not found" on the Storage & video page | Check `EDRAMA_FFMPEG_PATH`, then `php artisan config:clear`. |
+| "Permission denied" running ffmpeg | The host blocks programs in your folder. Ask support, or use Cloudflare Stream. |
+
+The easiest way out of any of these is **Cloudflare Stream**. See [Storage & streaming](../integrations/storage-and-streaming.mdx).

@@ -1,0 +1,79 @@
+---
+title: "Team and roles"
+sidebar_label: "Team & roles"
+description: "Add and invite team members, change roles, disable access, reset two-factor, and edit the permission matrix."
+---
+
+**Team & roles** manages who can use the Studio and what they can do. Everyone gets the least access their job needs, and every change is in the audit log.
+
+<Access area="Team & roles" view="See members, invites and roles" edit="Add, invite, change roles, disable and enable" owner="Create, edit and delete roles; reset two-factor" />
+
+<Screen
+  id="admin-team"
+  type="browser"
+  wire="list"
+  url="/admin/team"
+  title="Team & roles"
+  caption="Team & roles: overview cards, the members table and the permissions matrix."
+  markers={[
+    {x: 95.2, y: 14.6, title: 'Invite', text: 'Emails a link to set their own password.'},
+    {x: 87.4, y: 14.6, title: 'Add member', text: 'Adds them with a temporary password you share.'},
+    {x: 43.8, y: 22.9, title: 'The team at a glance', text: 'Members, two-factor coverage, open invites and roles.'},
+    {x: 85.8, y: 38.1, title: 'Members', text: 'Search by name or email.'},
+    {x: 24.7, y: 48.4, title: 'A member', text: 'Role, last sign-in, two-factor and status; change role, disable, reset 2FA.'},
+    {x: 54.5, y: 63.4, title: 'Permissions', text: 'What each role can do in each area: Edit, View or None.'},
+    {x: 93.8, y: 63.9, title: 'New role', text: 'Owner only: start blank or from a copy.'},
+  ]}
+/>
+
+## Add someone
+
+<Tabs>
+<TabItem value="invite" label="Invite by email (recommended)">
+
+<Steps>
+
+1. Choose **Invite**, enter their **Email** and pick a **Role**.
+2. Choose **Send invite**.
+
+</Steps>
+
+They get an email link to set their own password. It works **once** and for **7 days**. Pending invites are listed with who invited them and when the link expires: **Resend** sends a new link (the old one stops working), **Revoke** cancels it.
+
+</TabItem>
+<TabItem value="add" label="Add with a temporary password">
+
+<Steps>
+
+1. Choose **Add member**: **Name**, **Email**, **Role** and a **Temporary password** of at least 12 characters (or **Generate a password**).
+2. Choose **Add member**.
+3. Share the password with them in person or over a secure channel. It's never shown again.
+
+</Steps>
+
+At their first sign-in they must choose their own password before anything else.
+
+</TabItem>
+</Tabs>
+
+## Manage members
+
+| Action | What happens |
+|---|---|
+| **Change role** | Applies from their next click. |
+| **Disable** | They're signed out at their next click and can't sign in. Their history stays; you can **Enable** them again with the role they had. |
+| **Reset 2FA** | Owner only. Their authenticator and recovery codes stop working; they set it up again (at once, if the team requires it). |
+
+Protections: nobody can change the **Owner**. A member can't change their own role or status, and can't give anyone more access than they have.
+
+## Roles and the permission matrix
+
+The **Permissions** matrix shows what each role can do in each of the 18 areas: **None**, **View** or **Edit** (Edit includes View). The Owner always has everything; that row can't be edited.
+
+**Only the Owner** creates, edits and deletes roles:
+
+- **New role**: give it a name and **Start from** a blank role or a copy of an existing one, then set each area.
+- **Edit**: change the levels and the **refund limit**: the most one refund may be, in a currency you choose. Empty means no refunds.
+- **Delete**: only a role nobody uses.
+
+The four templates (Admin, Content Manager, Moderator, Finance & Support) keep their names; copy one to make a role with another name. See [Roles and access](../../getting-started/roles-and-access.mdx) for what each template can do.

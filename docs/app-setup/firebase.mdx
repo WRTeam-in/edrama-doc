@@ -1,0 +1,132 @@
+---
+title: "Connect Firebase"
+sidebar_label: "Firebase"
+description: "Create your Firebase project, connect the app with FlutterFire, turn on the sign-in methods and push notifications, and give your server its keys."
+---
+
+**Firebase** is Google's app platform. eDrama uses it for viewer **sign-in**, **push notifications**, **App Check** (proof that requests come from your real app), crash reports and analytics. The app and your server must use the **same** Firebase project.
+
+<CommonGuide to="GeneralSettings/firebase" title="Firebase setup" text="Create the Firebase project, install the Firebase CLI and run flutterfire configure, with screenshots." />
+
+:::warning[Do this after changing the package name]
+Firebase apps are tied to your package name and bundle ID. Change those first ([Name & package name](name-and-package.mdx)).
+:::
+
+## 1. Create the project
+
+<Steps>
+
+1. Open the [Firebase console](https://console.firebase.google.com/) and choose **Create a project**.
+2. Give it a name and finish the steps (Google Analytics is optional).
+
+</Steps>
+
+## 2. Connect the app with FlutterFire
+
+The download has **no Firebase files**: they belong to a Firebase project, so you make your own. Until you do, the Android build stops (no `google-services.json`), Xcode can't find `GoogleService-Info.plist`, and the placeholder `firebase_options.dart` stops the app at start with *Firebase is not configured yet*. The project's Firebase keys are generated, not typed by hand.
+
+```bash title="Terminal, in the app folder"
+npm install -g firebase-tools
+firebase login
+dart pub global activate flutterfire_cli
+flutterfire configure --project=your-project-id --out=lib/app/config/firebase_options.dart
+```
+
+Choose **android** and **ios**. The command registers both apps in your Firebase project and writes three files:
+
+| File | Platform |
+|---|---|
+| `lib/app/config/firebase_options.dart` (replaces the placeholder) | Both |
+| `android/app/google-services.json` | Android |
+| `ios/Runner/GoogleService-Info.plist` | iOS |
+
+:::warning[Keep the `--out` path]
+eDrama reads its options from `lib/app/config/`, not from FlutterFire's default `lib/firebase_options.dart`. Without `--out`, the app keeps the placeholder and won't start.
+:::
+
+### Fill in the iOS URL schemes
+
+Google and phone sign-in on iPhone return to the app through two URL schemes. In `ios/Runner/Info.plist` › `CFBundleURLSchemes`, replace the two placeholders:
+
+| Placeholder | Replace with | Used by |
+|---|---|---|
+| `com.googleusercontent.apps.YOUR_REVERSED_CLIENT_ID` | The `REVERSED_CLIENT_ID` value from `GoogleService-Info.plist` | Google sign-in |
+| `app-1-YOUR_SENDER_ID-ios-YOUR_APP_HASH` | The **Encoded App ID** shown for your iOS app in Firebase › Project settings | Phone sign-in |
+
+```xml title="ios/Runner/Info.plist"
+<key>CFBundleURLSchemes</key>
+<array>
+  <string>com.googleusercontent.apps.123456789012-abcdefg</string>
+  <string>app-1-123456789012-ios-0a1b2c3d4e5f6a7b</string>
+</array>
+```
+
+## 3. Turn on the sign-in methods
+
+In the Firebase console, open **Authentication › Sign-in method** and enable:
+
+| Provider | Needed for | Notes |
+|---|---|---|
+| **Anonymous** | Guests | **Required.** Every viewer starts as a guest. |
+| **Google** | "Continue with Google" | Add your Android app's **SHA-1** and **SHA-256** fingerprints in **Project settings › Your apps**: the debug key, your upload key and, after your first Play release, the **Play App Signing** key. Then download `google-services.json` again. |
+| **Apple** | "Continue with Apple" | Required on iOS when Google is offered. Set up the Apple provider with your Apple Developer account; until then, the button reports a failure. |
+| **Phone** | "Continue with Phone" | SMS codes. Needs Firebase's pay-as-you-go **Blaze** plan ([common guide › Firebase billing](https://wrteam-in.github.io/common_app_doc/GeneralSettings/firebase-billing)). Can be switched off from the Admin Panel. |
+| **Email/Password** | "Continue with Email" | The app verifies the address with a link. |
+
+Turn off in `app_config.dart` any method you don't enable here ([Defaults & limits](defaults-and-limits.mdx#sign-in-methods)).
+
+Under **Authentication › Settings › Authorized domains**, add your Admin Panel's domain. The Creator Portal signs creators in from it in the browser.
+
+## 4. Push notifications
+
+The full setup, with the APNs key, the server keys and a test push, is on [Push notifications](push-notifications.mdx). In short:
+
+- **Android** works with no extra step: `google-services.json` is enough. The app sorts notifications into four channels, so viewers can mute one kind in Android's settings:
+
+  | Channel ID | Name viewers see in Android's settings |
+  |---|---|
+  | `drops` | New episodes |
+  | `account` | Account & purchases |
+  | `offers` | Offers |
+  | `quiet` | Quiet hours (low importance, silent) |
+
+- **iOS** needs an **APNs key**: in your [Apple Developer account](https://developer.apple.com/account/resources/authkeys/list), create a key with **Apple Push Notifications service** enabled, download it, then upload it in Firebase under **Project settings › Cloud Messaging › Apple app configuration**. In Xcode, check that the **Push Notifications** capability is on.
+
+## 5. App Check (recommended)
+
+App Check proves requests come from your real app on a real device. The app already uses **Play Integrity** on Android and **App Attest** (falling back to DeviceCheck) on iOS in release builds.
+
+<Steps>
+
+1. In Firebase, open **App Check › Apps** and register the Android app with **Play Integrity** and the iOS app with **App Attest**.
+2. **For testing:** a debug build prints an App Check **debug token** in its log on first run. Add it in App Check › your app › **Manage debug tokens**, so your test phones and emulators pass.
+3. On your server, start with `EDRAMA_APP_CHECK=monitor` in `.env` (checks and logs, refuses nothing), then run `php artisan config:cache`.
+4. When the logs show your real app passing, switch to `EDRAMA_APP_CHECK=enforce`.
+
+</Steps>
+
+:::caution
+Don't use `enforce` until the build from the store passes App Check. Older builds and test devices without a debug token would be refused.
+:::
+
+## 6. Give your server the keys
+
+Your server checks every viewer's sign-in token, sends pushes, and signs creators in, so it needs the same project's keys.
+
+<Steps>
+
+1. In Firebase, open **Project settings › General**. Copy the **Project ID**. Under **Your apps**, add a **Web app** if you don't have one, and copy its `apiKey` and `authDomain`.
+2. Open **Project settings › Service accounts › Generate new private key**. A JSON file downloads.
+3. In the Admin Panel, open <Path>Settings › Notifications</Path>, find the **Firebase** card and fill in:
+   - **Project ID**,
+   - **Service account JSON** (paste the whole file),
+   - **Web API key** and **Auth domain** (needed for the Creator Portal's sign-in).
+4. Choose **Save**, then **Test connection**.
+
+</Steps>
+
+:::tip
+Send yourself a test push from <Path>Audience › Push › Test send</Path> after signing in to the app with your own email. It's the quickest way to check the whole chain.
+:::
+
+More: [Firebase integration](../integrations/firebase.mdx).

@@ -6,24 +6,141 @@ description: Install the exact Flutter version eDrama is built with.
 
 # Set up Flutter
 
-Follow the common guide to install Flutter, the Java JDK and your IDE:
+You set up your computer **once**. After that, every build of eDrama (and every update) uses the same tools. Do it before you open the project.
 
-👉 **[Flutter and Java JDK setup](https://wrteam-in.github.io/common_app_doc/GeneralSettings/basicsetup)**
+<CommonGuide to="GeneralSettings/basicsetup" title="Flutter and Java JDK setup" text="Installing Flutter, the Java JDK and your IDE, with screenshots for Windows, macOS and Linux." />
 
-## The Flutter version
+<Anchor id="the-flutter-version" />
 
-eDrama is built and tested with **Flutter 3.47.7**. Use that exact version: a newer one may need code changes.
+## The versions eDrama is built with
 
-```bash
-flutter --version
+These come from the project itself. Use them exactly: a newer Flutter or Java may need code changes.
+
+| Tool | Version | Set in |
+|---|---|---|
+| **Flutter** | **3.47.7** | `.fvmrc` |
+| **Dart** | 3.13 or newer (comes with Flutter) | `pubspec.yaml` › `environment` |
+| **Java (JDK)** | **17** | `android/app/build.gradle.kts` |
+| **Gradle** | 9.3.1 (downloaded by the project's wrapper) | `android/gradle/wrapper/gradle-wrapper.properties` |
+| **Android Gradle Plugin** / **Kotlin** | 9.1.0 / 2.4.0 | `android/settings.gradle.kts` |
+| **Android** | Runs on **Android 7.0 (API 24)** and newer; targets API 36 | `minSdk` in `build.gradle.kts`; Flutter's default target |
+| **iOS** | Runs on **iOS 15.0** and newer | `ios/Podfile`, Xcode deployment target |
+
+## 1. Install Flutter 3.47.7
+
+<Tabs>
+<TabItem value="fvm" label="With FVM (recommended)">
+
+[FVM](https://fvm.app/) (Flutter Version Management) reads the project's `.fvmrc` and installs the matching Flutter **for this project only**, so other Flutter projects on your computer aren't affected.
+
+```bash title="Terminal"
+dart pub global activate fvm   # or: brew install fvm (macOS)
+cd path/to/edrama-app
+fvm install                    # installs Flutter 3.47.7 from .fvmrc
+fvm use 3.47.7
+fvm flutter --version
 ```
 
-The project pins it in `.fvmrc`, so with [FVM](https://fvm.app/) you can run `fvm use` in the project folder and then `fvm flutter …` instead of `flutter …`.
+From now on, write `fvm flutter …` wherever these pages say `flutter …`, and `fvm dart …` for `dart …`. In VS Code or Android Studio, point the Flutter SDK path at `.fvm/flutter_sdk` in the project.
 
-## Check
+</TabItem>
+<TabItem value="manual" label="Without FVM">
 
-```bash
-flutter doctor
+Download Flutter from the [Flutter archive](https://docs.flutter.dev/release/archive), choosing **3.47.7** for your system, unzip it to a folder such as `~/development/flutter`, and add its `bin` folder to your `PATH`:
+
+```bash title="~/.zshrc or ~/.bashrc"
+export PATH="$HOME/development/flutter/bin:$PATH"
 ```
 
-Fix anything it marks before you continue. For iOS you need a Mac with Xcode and CocoaPods.
+On Windows, add `C:\src\flutter\bin` to **Environment Variables › Path**. Then open a new terminal:
+
+```bash title="Terminal"
+flutter --version   # should say Flutter 3.47.7
+```
+
+If you already use another Flutter version for other projects, use FVM instead: it keeps both.
+
+</TabItem>
+</Tabs>
+
+## 2. Android tools (every computer)
+
+<Steps>
+
+1. **Install [Android Studio](https://developer.android.com/studio)**, then its **Flutter** and **Dart** plugins (Settings › Plugins).
+2. **Install the SDK parts.** Android Studio › Settings › **Languages & Frameworks › Android SDK**:
+   - **SDK Platforms:** Android 16 (API 36).
+   - **SDK Tools:** Android SDK Build-Tools, **Android SDK Command-line Tools**, Android SDK Platform-Tools and Android Emulator.
+3. **Use Java 17.** Android Studio's own JDK works: Settings › **Build, Execution, Deployment › Build Tools › Gradle › Gradle JDK** › a JDK 17. From the terminal, check with `java -version`.
+4. **Accept the Android licenses:**
+
+   ```bash title="Terminal"
+   flutter doctor --android-licenses
+   ```
+
+5. **Create an emulator** (Device Manager › Create device), or connect an Android phone with **Developer options › USB debugging** on.
+
+</Steps>
+
+## 3. iOS tools (a Mac only)
+
+The iOS app can only be built on a Mac.
+
+<Steps>
+
+1. **Install Xcode** from the Mac App Store, open it once and let it install its components (including an iOS simulator).
+2. **Point the command-line tools at it and accept the license:**
+
+   ```bash title="Terminal"
+   sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+   sudo xcodebuild -runFirstLaunch
+   sudo xcodebuild -license accept
+   ```
+
+3. **Install CocoaPods** (it installs the iOS libraries):
+
+   ```bash title="Terminal"
+   brew install cocoapods   # or: sudo gem install cocoapods
+   pod --version
+   ```
+
+4. **Sign in to Xcode with your Apple ID:** Xcode › Settings › **Accounts** › **+**. Building for a real iPhone and for the App Store needs an [Apple Developer Program](https://developer.apple.com/programs/) membership (see [Signing & certificates](/mobile-app/signing/)).
+
+</Steps>
+
+## 4. Firebase tools
+
+The app's Firebase files are generated with the Firebase CLI and the FlutterFire CLI ([Firebase](/mobile-app/firebase/)). Install them now:
+
+```bash title="Terminal"
+npm install -g firebase-tools      # needs Node.js: nodejs.org
+firebase login
+dart pub global activate flutterfire_cli
+```
+
+Make sure Dart's global tools are on your `PATH` (`$HOME/.pub-cache/bin` on macOS and Linux), so `flutterfire` runs from any folder.
+
+<Anchor id="check" />
+
+## 5. Check everything
+
+```bash title="Terminal"
+flutter doctor -v
+```
+
+Every line should be ticked: **Flutter**, **Android toolchain**, **Xcode** (on a Mac), **Android Studio** and **Connected device**. Fix anything it marks before you continue; its message says how.
+
+| `flutter doctor` says | Fix |
+|---|---|
+| Android license status unknown | `flutter doctor --android-licenses` |
+| cmdline-tools component is missing | Install **Android SDK Command-line Tools** in Android Studio's SDK Manager |
+| CocoaPods not installed | `brew install cocoapods` |
+| Xcode installation is incomplete | `sudo xcodebuild -runFirstLaunch` |
+| Unable to find bundled Java version | Set **Gradle JDK** to a JDK 17 in Android Studio |
+
+## Recommended editors
+
+- **VS Code** with the **Flutter** and **Dart** extensions, or **Android Studio** with the Flutter plugin.
+- For iOS signing, capabilities and archives you'll also open the project in **Xcode**: always open `ios/Runner.xcworkspace`, never `Runner.xcodeproj`.
+
+**Next:** with your computer ready, start the [first build](/mobile-app/package-name/): your package name comes first.

@@ -1,0 +1,55 @@
+---
+sidebar_position: 1
+title: "System"
+sidebar_label: "System"
+description: "Check the scheduler, scheduled tasks, queues and failed jobs, and fix the server warnings the System page shows."
+---
+
+**System** shows the health of eDrama's background work: whether the scheduler's cron is running, every scheduled task's last run, the queues, and failed jobs you can retry.
+
+<Access area="Settings" view="See System" edit="Retry and delete failed jobs" />
+
+<Screen
+  id="admin-system"
+  type="browser"
+  wire="system"
+  url="/admin/system"
+  title="System"
+  caption="System on a server whose cron isn’t set up yet: overview cards, Server setup and scheduled tasks."
+  markers={[
+    {x: 24.1, y: 22.9, title: 'System at a glance', text: 'Scheduled tasks, last runs, jobs waiting and failed jobs. Each card jumps to its section.'},
+    {x: 86, y: 36.2, title: 'Server setup', text: '“Cron running” once the scheduler runs; until then the steps stay open.'},
+    {x: 23.4, y: 42.8, title: 'Where you set it up', text: 'SSH / crontab, hosting panel (command) or hosting panel (PHP script).'},
+    {x: 57.9, y: 57, title: 'Crontab entry', text: 'The exact line for your server, with a Copy button.'},
+    {x: 57.9, y: 79.2, title: 'Queue workers', text: 'Shown when supervisor runs the workers.'},
+    {x: 83.8, y: 14.6, title: 'Copy all commands', text: 'The cron line and the list of tasks it runs.'},
+    {x: 94, y: 14.6, title: 'Server logs', text: 'Opens the log viewer.'},
+  ]}
+/>
+
+## Sections
+
+| Section | What it shows |
+|---|---|
+| **Server setup** | Whether the cron is running and how to set it up. If `EDRAMA_QUEUE_WORKER_SCHEDULED` is off, also the worker command to keep running under supervisor. See [Cron & queues](/admin-panel/background-jobs/). |
+| **Scheduled tasks** | Every task from the schedule. A task that's **late** asks whether the scheduler's cron is running. |
+| **Queues** | Waiting and running jobs per queue (webhooks, notifications, default, video, reports) and the oldest waiting since. |
+| **Failed jobs** | Newest first, with the first line of the error. **Retry** puts one back on its queue; **Retry all** does them all; **Delete** removes one that no longer needs to run. |
+
+When a task or job fails, the team is alerted by email, Slack and the bell (at most once per job per 15 minutes). Set where alerts go in <Path>Settings › Notifications › System alerts</Path>.
+
+## Warnings
+
+System checks the server and shows a red card when something is unsafe:
+
+| Warning | Fix |
+|---|---|
+| **The .env file can be opened from the web** | Point the domain at the `public` folder, or upload the package's `.htaccess`. Then change the database password and replace `APP_KEY` (put the old one in `APP_PREVIOUS_KEYS`). The check runs once an hour. |
+| **This server isn't set up as a live server** | Set `APP_ENV=production` and `APP_DEBUG=false` in `.env`, then run the commands shown. |
+| **Visitors reach the app through a proxy it doesn't trust** | Add `EDRAMA_TRUSTED_PROXIES=cloudflare` (behind Cloudflare) or `*` (behind your host's CDN or load balancer) to `.env`. |
+
+The "not set up as live" warning also appears on the Dashboard's **Needs attention**.
+
+## Server logs
+
+**Server logs** opens the log viewer, where developers can read the application's logs. Logs are JSON lines with a request ID, and passwords, tokens, receipts and codes are masked.

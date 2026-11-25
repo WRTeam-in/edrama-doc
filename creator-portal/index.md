@@ -6,9 +6,41 @@ description: What the Creator Portal is, who can use it, and how to turn it on.
 
 # Creator Portal
 
-The **Creator Portal** at `https://admin.your-domain.com/creator` lets approved creators publish their own series on your platform. Creators upload episodes from their browser, propose prices within your limits, follow every review, see how their series do and see their earnings. **Every episode is reviewed by your team before it goes live.**
+The **Creator Portal** at `https://admin.your-domain.com/creator` lets approved creators (independent filmmakers, studios, storytellers) publish their own series on your platform. Creators upload episodes from their browser, propose prices within your limits, follow every review, set release times, see how their series do, reply to viewers, see their earnings and, when you allow it, use AI Studio. A creator sees **only their own work**, and **every episode is reviewed by your team before it goes live.**
+
+<Screen
+  id="creator-home"
+  type="browser"
+  wire="dashboard"
+  url="/creator"
+  title="Creator Portal"
+  caption="The Creator Portal for the demo creator Amara Okafor: the menu on the left, the top bar, and Home."
+  markers={[
+    {x: 7.7, y: 3.4, title: 'Platform logo', text: 'The portal wears the platform’s logo, with the Creators tag.'},
+    {x: 7.5, y: 8.7, title: 'New series', text: 'Start a new series from any page.'},
+    {x: 8.4, y: 32.4, title: 'Menu', text: 'Home and Earnings, then My series, Upload episodes, AI Studio, Release schedule, Comments & reviews (with how many wait for your reply) and Notices.'},
+    {x: 89.6, y: 3, title: 'Portal language', text: 'Only you see the portal in the language you pick.'},
+    {x: 93.9, y: 3, title: 'Notices bell', text: 'Review decisions and other news, with the unread count.'},
+    {x: 96.9, y: 3, title: 'Theme', text: 'Light or dark, just for you.'},
+    {x: 7.7, y: 95.8, title: 'You', text: 'Your account: profile, sign-in, preferences and agreement. Sign out sits beside it.'},
+    {x: 49.9, y: 20.5, title: 'Greeting', text: '“Good afternoon” and your name, with shortcuts to New series, My series and Notices.'},
+  ]}
+/>
 
 <DocBanner />
+
+## What creators can do
+
+<Cards
+  items={[
+    {icon: 'film', title: 'Create a series', text: 'Details, artwork, free episodes and price, regions.', to: '/creator-portal/guide/create-series/', tone: 'vip'},
+    {icon: 'server', title: 'Upload episodes', text: 'Straight from the browser, with subtitles.', to: '/creator-portal/guide/upload-episodes/', tone: 'vip'},
+    {icon: 'check', title: 'Send for review', text: 'Every series and episode is checked by the team.', to: '/creator-portal/guide/submit-for-review/', tone: 'vip'},
+    {icon: 'bell', title: 'Set release times', text: 'Pick when each approved episode drops.', to: '/creator-portal/guide/release-times/', tone: 'vip'},
+    {icon: 'users', title: 'Talk to viewers', text: 'Reply to reviews and comments.', to: '/creator-portal/guide/comments-and-reviews/', tone: 'vip'},
+    {icon: 'coin', title: 'See earnings', text: 'Monthly statements and payouts.', to: '/creator-portal/guide/earnings/', tone: 'coin'},
+  ]}
+/>
 
 ## How it works
 
@@ -52,3 +84,28 @@ The price range and free episodes in [Payments](/admin-panel/settings/payments/#
 ## Check it worked
 
 Open `/creator`. The sign-in page shows the sign-in methods. If it says **Creator sign-in isn't set up yet**, the Firebase web keys are missing. If Firebase says the site isn't allowed, add the domain to **Authorized domains**.
+
+## The menu
+
+**New series** sits above the menu on every page. The menu has two groups, *Overview* and *Your work*:
+
+| Item | What it's for |
+|---|---|
+| **Home** | Your series at a glance and what needs you ([Home](/creator-portal/guide/home/)). |
+| **Earnings** | Statements and payouts ([Earnings](/creator-portal/guide/earnings/)). |
+| **My series** | Every series you've made, by status ([My series](/creator-portal/guide/series/)). |
+| **Upload episodes** | Pick a series and upload ([Upload episodes](/creator-portal/guide/upload-episodes/)). |
+| **AI Studio** | Characters, storyboards and video takes, when the platform allows it ([AI Studio](/creator-portal/guide/ai-studio/)). |
+| **Release schedule** | Every episode not out yet, across your series ([Release times](/creator-portal/guide/release-times/)). |
+| **Comments & reviews** | What viewers say about all your series ([Comments & reviews](/creator-portal/guide/comments-and-reviews/)). |
+| **Notices** | Review decisions and news from the team ([Notices & account](/creator-portal/guide/notices-and-account/)). |
+
+## Good to know for creators
+
+- The portal is in your **own language** if the platform offers it: pick it from the language menu. Your app keeps its own language.
+- Times are shown in **your time zone**, which you set in **Your account › Preferences**.
+- A session lasts 12 hours. If your account is suspended, you're signed out at your next click.
+
+:::tip Share the creator's guide
+[The creator's guide](/creator-portal/guide/home/) walks through every screen of the portal, written for creators: share its link with yours.
+:::

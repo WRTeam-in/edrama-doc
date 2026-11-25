@@ -36,7 +36,7 @@ If you moved files to Amazon S3 or another S3-compatible bucket in <AdminPath pa
 <Steps>
 <Step title="Open the Connection tab">
 
-Go to <AdminPath path="Content › Website" /> and open the **Connection & history** tab. It shows **This server's address for the website (EDRAMA_API_URL)**: that is the value for `EDRAMA_API_URL`.
+Go to <AdminPath path="Content › Website" /> and open the **Connection** tab. It shows **This server's address for the website (EDRAMA_API_URL)**: that is the value for `EDRAMA_API_URL`.
 
 </Step>
 <Step title="Set the Website address">

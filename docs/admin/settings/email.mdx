@@ -1,0 +1,69 @@
+---
+title: "Email delivery and templates"
+sidebar_label: "Email"
+description: "Connect your SMTP email server, send a test, and customise the wording of every team and creator email."
+---
+
+## Email delivery (SMTP)
+
+<Path>Settings › Email delivery (SMTP)</Path>
+
+eDrama sends team invites, password resets, every creator email and system alerts. **SMTP** is the standard way a server sends email through your email provider.
+
+The top of the page says how email is sent right now:
+
+| Status | Meaning |
+|---|---|
+| **Through the SMTP server below** | Every email the Studio and the Creator Portal send uses it. |
+| **Not sent: emails are written to the server's log** | Nobody receives emails. Add an SMTP server. |
+| **Through the server's own settings** | From `.env`. An SMTP server added here takes over. |
+
+### Connect it
+
+<Steps>
+
+1. Fill in the **SMTP server** card:
+
+   | Field | Example |
+   |---|---|
+   | **SMTP host** | `smtp.gmail.com` (without `https://`) |
+   | **Port** | `587` with STARTTLS, or `465` with SSL/TLS |
+   | **Encryption** | STARTTLS (port 587), SSL/TLS (port 465), or None (only for a server on your private network) |
+   | **Username** / **Password** | Your SMTP login. For Gmail and Google Workspace, an **app password**, not the account password. |
+   | **From address** | An address your provider lets you send from, such as `no-reply@your-domain.com` |
+   | **From name** | Optional; your app's name when empty |
+
+2. **Save**, then **Send test email**.
+
+</Steps>
+
+Common providers: Gmail `smtp.gmail.com` (587, STARTTLS), Amazon SES `email-smtp.<region>.amazonaws.com`, SendGrid `smtp.sendgrid.net` with the username `apikey`.
+
+:::info
+Emails are sent by the background queue worker. If none runs, they wait (System shows the queues). Saving new details restarts the workers so they use them.
+:::
+
+## Email templates {#email-templates}
+
+<Path>Settings › Email templates</Path> lets you change the **wording** of every email; the button's link and how long it works stay as the system sets them.
+
+| Group | Email | Sent when |
+|---|---|---|
+| **Team** | Team invite | Someone is invited from Team & roles. |
+| | Password reset | A member asks for a reset link. |
+| | System alert | A background job or task fails (to the alert emails). |
+| **Creators** | Creator invite | A creator is invited, an application accepted, or an invite resent. |
+| | Application declined | An application is declined (the team's reason is never included). |
+| | Creator suspended / reactivated | With the reason, for a suspension. |
+| | Work received | A creator sends a series or new episodes for review. |
+| | Work approved / Changes requested / Work rejected | A reviewer decides (with the reason). |
+| | Work unpublished | A live series or episode is unpublished. |
+| | Price changed | The team changes a creator series' prices. |
+| | Regions changed | The team shows a creator's series in other regions than they chose. |
+| | AI Studio budget | A creator's AI Studio spend reaches 80% and 100% of their budget. |
+
+Each template shows **Default** or **Customized** (by whom and when). Choose **Preview** to see it with example values, **Send test** to send it to yourself, **Customize** to edit, or **Reset** to go back to the default wording.
+
+When editing, you can change the **Subject**, **Greeting**, **Text before the button**, **Button** label, **Text after the button** and **Sign-off**. Markdown works (`**bold**`, `*italic*`, `[links](https://example.com)`), and the placeholders listed for each email are filled in when it's sent. Every change is in the audit log.
+
+Team and creator emails are sent in English.

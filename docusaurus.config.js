@@ -1,32 +1,30 @@
 // @ts-check
-import { themes as prismThemes } from 'prism-react-renderer';
+import {themes as prismThemes} from 'prism-react-renderer';
 
-/** Each top-level folder is its own docs section with its own sidebar. */
-const sections = [
-  { id: 'mobile-app', sidebar: './mobileAppSidebar.js' },
-  { id: 'admin-panel', sidebar: './adminPanelSidebar.js' },
-  { id: 'website', sidebar: './websiteSidebar.js' },
-  { id: 'creator-portal', sidebar: './creatorPortalSidebar.js' },
-  { id: 'features', sidebar: './featuresSidebar.js' },
-];
-
-const singlePages = ['support', 'faqs', 'changelog'];
+/**
+ * eDrama documentation site.
+ *
+ * To host it somewhere else, set DOCS_URL and DOCS_BASE_URL when you build, for example:
+ *   DOCS_URL=https://wrteam-in.github.io DOCS_BASE_URL=/eDrama-Doc/ npm run build
+ */
+const siteUrl = process.env.DOCS_URL || 'https://docs.edrama.example';
+const baseUrl = process.env.DOCS_BASE_URL || '/';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'eDrama Documentation',
-  tagline: 'Install, configure and re-brand eDrama: the app, the Admin Panel, the website and the Creator Portal.',
-  favicon: 'images/brand/favicon.png',
+  tagline: 'Install, run and grow your short-drama streaming platform.',
+  favicon: 'img/brand/favicon.png',
 
-  url: 'https://wrteam-in.github.io',
-  baseUrl: '/edrama-doc/',
-  organizationName: 'WRTeam-in',
-  projectName: 'edrama-doc',
-  deploymentBranch: 'gh-pages',
+  url: siteUrl,
+  baseUrl,
   trailingSlash: true,
+  organizationName: 'WRTeam-in',
+  projectName: 'eDrama-Doc',
+  deploymentBranch: 'gh-pages',
 
   onBrokenLinks: 'throw',
-  onBrokenAnchors: 'throw',
+  onBrokenAnchors: 'warn',
   markdown: {
     hooks: {
       onBrokenMarkdownLinks: 'throw',
@@ -38,33 +36,24 @@ const config = {
     locales: ['en'],
   },
 
-  plugins: [
-    ...sections.map(({ id, sidebar }) => [
-      '@docusaurus/plugin-content-docs',
-      {
-        id,
-        path: id,
-        routeBasePath: id,
-        sidebarPath: require.resolve(sidebar),
-      },
-    ]),
-    ...singlePages.map((id) => [
-      '@docusaurus/plugin-content-docs',
-      {
-        id,
-        path: id,
-        routeBasePath: id,
-        sidebarItemsGenerator: async () => [],
-      },
-    ]),
+  headTags: [
+    {tagName: 'meta', attributes: {name: 'theme-color', content: '#000000'}},
   ],
+
+  // A slim reading-progress bar on documentation pages.
+  clientModules: ['./src/clientModules/readingProgress.js'],
 
   presets: [
     [
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        docs: false,
+        docs: {
+          path: 'docs',
+          routeBasePath: 'docs',
+          sidebarPath: './sidebars.js',
+          breadcrumbs: true,
+        },
         blog: false,
         theme: {
           customCss: './src/css/custom.css',
@@ -73,84 +62,33 @@ const config = {
     ],
   ],
 
-  headTags: [
-    { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
-    { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' } },
-  ],
-
-  stylesheets: [
-    'https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap',
+  themes: [
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      /** @type {import('@easyops-cn/docusaurus-search-local').PluginOptions} */
+      ({
+        hashed: true,
+        language: ['en'],
+        indexDocs: true,
+        indexBlog: false,
+        indexPages: false,
+        docsRouteBasePath: 'docs',
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+        searchResultLimits: 12,
+        searchResultContextMaxLength: 70,
+        searchBarShortcutHint: true,
+      }),
+    ],
   ],
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      image: 'images/brand/social-card.jpg',
-      metadata: [{ name: 'theme-color', content: '#000000' }],
-      navbar: {
-        logo: {
-          alt: 'eDrama',
-          src: 'images/brand/logo-horizontal-light.svg',
-          srcDark: 'images/brand/logo-horizontal-dark.svg',
-          height: 30,
-        },
-        items: [
-          { docsPluginId: 'mobile-app', type: 'docSidebar', sidebarId: 'mobileAppSidebar', position: 'left', label: 'Mobile App' },
-          { docsPluginId: 'admin-panel', type: 'docSidebar', sidebarId: 'adminPanelSidebar', position: 'left', label: 'Admin Panel' },
-          { docsPluginId: 'website', type: 'docSidebar', sidebarId: 'websiteSidebar', position: 'left', label: 'Website' },
-          { docsPluginId: 'creator-portal', type: 'docSidebar', sidebarId: 'creatorPortalSidebar', position: 'left', label: 'Creator Portal' },
-          { docsPluginId: 'features', type: 'docSidebar', sidebarId: 'featuresSidebar', position: 'left', label: 'Features' },
-          {
-            type: 'dropdown',
-            label: 'Help',
-            position: 'left',
-            items: [
-              { docId: 'index', docsPluginId: 'support', type: 'doc', label: 'Support' },
-              { docId: 'index', docsPluginId: 'faqs', type: 'doc', label: 'FAQs' },
-              { docId: 'index', docsPluginId: 'changelog', type: 'doc', label: 'Changelog' },
-            ],
-          },
-          { type: 'search', position: 'right' },
-          { href: 'https://www.wrteam.in/', label: 'WRTeam', position: 'right' },
-        ],
-      },
-      footer: {
-        style: 'dark',
-        links: [
-          {
-            title: 'Set up',
-            items: [
-              { label: 'Mobile App', to: '/mobile-app/' },
-              { label: 'Admin Panel', to: '/admin-panel/' },
-              { label: 'Website', to: '/website/' },
-              { label: 'Creator Portal', to: '/creator-portal/' },
-            ],
-          },
-          {
-            title: 'Learn',
-            items: [
-              { label: 'Features', to: '/features/' },
-              { label: 'Earnings calculator', to: '/features/earnings-calculator/' },
-              { label: 'FAQs', to: '/faqs/' },
-              { label: 'Changelog', to: '/changelog/' },
-            ],
-          },
-          {
-            title: 'Help',
-            items: [
-              { label: 'Support', to: '/support/' },
-              { label: 'Common app guides', href: 'https://wrteam-in.github.io/common_app_doc/' },
-              { label: 'WRTeam', href: 'https://www.wrteam.in/' },
-            ],
-          },
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} WRTeam. All rights reserved.`,
-      },
-      prism: {
-        theme: prismThemes.github,
-        darkTheme: prismThemes.dracula,
-        additionalLanguages: ['dart', 'php', 'bash', 'json', 'kotlin', 'ini', 'nginx', 'apacheconf'],
-      },
+      image: 'img/brand/logo-dark-lg.png',
+      metadata: [
+        {name: 'keywords', content: 'eDrama, short drama, streaming app, documentation, admin panel, creator portal, Flutter, Laravel'},
+      ],
       colorMode: {
         defaultMode: 'dark',
         disableSwitch: false,
@@ -159,24 +97,115 @@ const config = {
       docs: {
         sidebar: {
           hideable: true,
+          autoCollapseCategories: true,
         },
       },
+      tableOfContents: {
+        minHeadingLevel: 2,
+        maxHeadingLevel: 3,
+      },
+      announcementBar: {
+        id: 'edrama-v1',
+        content: `<span class="ed-ann-long">eDrama documentation</span><span class="ed-ann-sep">·</span><span class="ed-ann-mid">New here? Start with the</span><span class="ed-ann-short">New here?</span><a href="${baseUrl}docs/getting-started/launch-checklist/">launch checklist</a>`,
+        // The bar is brand black in both themes; these replace Docusaurus's inline white and black.
+        backgroundColor: '#070708',
+        textColor: '#b4b1a8',
+        isCloseable: true,
+      },
+      navbar: {
+        title: 'Docs',
+        hideOnScroll: false,
+        logo: {
+          alt: 'eDrama',
+          src: 'img/brand/logo-light.png',
+          srcDark: 'img/brand/logo-dark.png',
+          height: 28,
+        },
+        items: [
+          {type: 'doc', docId: 'intro', label: 'Introduction', position: 'left'},
+          {
+            type: 'dropdown',
+            label: 'Setup',
+            position: 'left',
+            items: [
+              {type: 'docSidebar', sidebarId: 'install', label: 'Server installation'},
+              {type: 'docSidebar', sidebarId: 'appsetup', label: 'Mobile app setup'},
+              {type: 'docSidebar', sidebarId: 'website', label: 'Website setup'},
+            ],
+          },
+          {type: 'docSidebar', sidebarId: 'admin', label: 'Admin Panel', position: 'left'},
+          {type: 'docSidebar', sidebarId: 'creator', label: 'Creator Portal', position: 'left'},
+          {type: 'docSidebar', sidebarId: 'app', label: 'Viewer App', position: 'left'},
+          {type: 'docSidebar', sidebarId: 'money', label: 'Monetization', position: 'left'},
+          {type: 'docSidebar', sidebarId: 'integrations', label: 'Integrations', position: 'left'},
+          {
+            type: 'dropdown',
+            label: 'Help',
+            position: 'left',
+            items: [
+              {type: 'doc', docId: 'help/faqs', label: 'FAQs'},
+              {type: 'doc', docId: 'help/troubleshooting', label: 'Troubleshooting'},
+              {type: 'doc', docId: 'help/support', label: 'Support'},
+              {type: 'doc', docId: 'help/changelog', label: 'Changelog'},
+            ],
+          },
+          {type: 'search', position: 'right'},
+          {href: 'https://www.wrteam.in/', label: 'WRTeam', position: 'right', className: 'navbar-company'},
+        ],
+      },
+      footer: {
+        style: 'dark',
+        logo: {
+          alt: 'eDrama',
+          src: 'img/brand/logo-dark.png',
+          height: 30,
+        },
+        links: [
+          {
+            title: 'Get started',
+            items: [
+              {label: 'Introduction', to: '/docs/intro/'},
+              {label: 'Launch checklist', to: '/docs/getting-started/launch-checklist/'},
+              {label: 'Server installation', to: '/docs/installation/overview/'},
+              {label: 'Mobile app setup', to: '/docs/app-setup/overview/'},
+              {label: 'Website setup', to: '/docs/website/overview/'},
+            ],
+          },
+          {
+            title: 'Guides',
+            items: [
+              {label: 'Admin Panel', to: '/docs/admin/overview/'},
+              {label: 'Creator Portal', to: '/docs/creator/overview/'},
+              {label: 'Viewer App', to: '/docs/viewer-app/overview/'},
+              {label: 'Monetization', to: '/docs/monetization/overview/'},
+            ],
+          },
+          {
+            title: 'Help',
+            items: [
+              {label: 'FAQs', to: '/docs/help/faqs/'},
+              {label: 'Troubleshooting', to: '/docs/help/troubleshooting/'},
+              {label: 'Integrations', to: '/docs/integrations/overview/'},
+              {label: 'Support', to: '/docs/help/support/'},
+            ],
+          },
+          {
+            title: 'WRTeam',
+            items: [
+              {label: 'Website', href: 'https://www.wrteam.in/'},
+              {label: 'Email support', href: 'mailto:support@wrteam.in'},
+              {label: 'Find your purchase code', href: 'https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code-'},
+            ],
+          },
+        ],
+        copyright: `Copyright © ${new Date().getFullYear()} WRTeam. All rights reserved.`,
+      },
+      prism: {
+        theme: prismThemes.oneDark,
+        darkTheme: prismThemes.oneDark,
+        additionalLanguages: ['bash', 'php', 'dart', 'ini', 'nginx', 'apacheconf', 'kotlin', 'properties', 'yaml', 'json', 'diff'],
+      },
     }),
-
-  themes: [
-    [
-      require.resolve('@easyops-cn/docusaurus-search-local'),
-      ({
-        hashed: true,
-        indexBlog: false,
-        docsRouteBasePath: [...sections.map((s) => s.id), ...singlePages],
-        docsDir: [...sections.map((s) => s.id), ...singlePages],
-        docsPluginIdForPreferredVersion: 'admin-panel',
-        highlightSearchTermsOnTargetPage: true,
-        explicitSearchResultPath: true,
-      }),
-    ],
-  ],
 };
 
 export default config;

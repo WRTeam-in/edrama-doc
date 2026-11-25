@@ -1,0 +1,51 @@
+---
+title: "Coins and pricing"
+sidebar_label: "Coins & pricing"
+description: "How an episode's price is decided, the per-viewer price lock, the cost card, and how bonus and paid coins are spent."
+---
+
+## The price of an episode
+
+Each series has a **coin price per episode** per region, set in the title editor. A region without its own price uses the **default region's**. Creators propose a price within the limits you set (30–90 coins by default), and a reviewer confirms it.
+
+What a particular viewer pays is decided on the server, never on the phone:
+
+<Steps>
+
+1. Take the series' price in the viewer's region (or the default region's).
+2. Cap it by the viewer's **price lock** for that series, if they have one.
+3. Show it in coins and in the region's money in the **unlock quote**, and charge exactly that.
+
+</Steps>
+
+## The price lock
+
+The first time a viewer unlocks an episode of a series **with coins**, the price they paid is locked for them:
+
+- If you later **raise** the price, it **doesn't reach them**.
+- If you **lower** it, the lower price applies to them too.
+
+The title editor's **Change prices** dialog tells you how many viewers have a lock on that series. This is one of the [fair-play rules](fair-play-rules.mdx): a viewer halfway through a story is never squeezed.
+
+## The cost card
+
+Every series page shows **What it costs** before anything is paid: the free range (*E1–E5*), what it costs to **catch up** or **finish**, the Series Pass, and the rule *60 coins (≈ $0.59) an episode, never more. Or 1 ad ≤ 30 s per episode.* You can preview it per region in the title editor's **Monetization** tab.
+
+## How coins are spent
+
+When a viewer unlocks with coins:
+
+1. **Bonus coins first**, earliest expiry first.
+2. Then **paid coins**.
+
+The unlock sheet says which: *Uses 20 bonus first, then 40 paid.* Bonus coins can't be used for tips or creator payouts; a creator's share comes from **paid** coins.
+
+## Charged once, always
+
+Every unlock and purchase is **idempotent**: if a viewer double-taps or the connection retries, they're charged once. Every coin in and out is a new row in the viewer's **append-only ledger**, which they can see in their wallet and your team sees on their user page.
+
+## Changing prices
+
+- One title: **Change prices** in the title editor (with a reason).
+- Many titles: **Import › Prices** on the Titles list ([Bulk imports](../admin/content/bulk-imports.mdx)).
+- Creators are emailed when their series' prices change.

@@ -1,0 +1,107 @@
+---
+title: "Web installer"
+sidebar_label: "Web installer"
+description: "The four screens of the eDrama installer: requirements, purchase code, database and Owner account."
+---
+
+The installer runs in your browser the first time you open your domain. It takes about five minutes and has four steps. When it finishes, it closes itself for good: `/install` then answers "not found".
+
+<Screen
+  id="installer-requirements"
+  type="browser"
+  wire="wizard"
+  url="/install"
+  title="Installer"
+  caption="The installer’s first step, Server requirements, on a server where every check is Ready, with Continue at the bottom."
+  markers={[
+    {x: 26.4, y: 25, title: 'Steps', text: 'Requirements, Purchase code, Database, Owner account. The current step is highlighted.'},
+    {x: 61.9, y: 13.4, title: 'Step heading', text: 'Step 1 of 4, and what this step checks.'},
+    {x: 54.3, y: 18.6, title: 'Summary', text: 'Or how many items to fix, with Check again once they are fixed.'},
+    {x: 52.7, y: 28.6, title: 'PHP', text: 'The version eDrama needs, and the one this server runs.'},
+    {x: 46.7, y: 38.4, title: 'PHP extensions', text: 'Each extension eDrama needs, ticked when the server has it.'},
+    {x: 50.1, y: 56.7, title: 'Writable folders and files', text: 'The web server must be able to write these. Folders 755 (or 775), files 644 (or 664).'},
+    {x: 53.7, y: 86, title: 'Hidden files', text: 'Checks that .env can’t be opened from the web. If it can, point the domain at the public folder.'},
+    {x: 75.5, y: 91.8, title: 'Continue', text: 'Shows once every check passes. Otherwise fix the items marked Missing and choose Check again.'},
+  ]}
+/>
+
+## Step 1: Requirements
+
+The installer checks:
+
+- **PHP** 8.5 or newer, and each required extension.
+- **Writable folders and files**: `storage` and its subfolders, `bootstrap/cache` and `.env`.
+- **Hidden files**: that `https://your-domain.com/.env` can't be opened from the web.
+
+Fix anything marked **Missing**, then choose **Check again**. If the installer can't even write its own files, it shows a **Folder permissions** page listing what to fix: give folders `755` (or `775`) and files `644` (or `664`), owned by the account the site runs as.
+
+## Step 2: Purchase code
+
+Enter the purchase code from your CodeCanyon downloads page. It is checked with WRTeam's license server and **registered to this domain**. [Where is my purchase code?](https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code-)
+
+- A code for another product, or one already used on another domain, is refused and the install stops here.
+- If the license server can't be reached, the install continues and the code is checked again later.
+
+## Step 3: Database
+
+| Field | What to enter |
+|---|---|
+| **Site address** | Your full address, such as `https://admin.your-domain.com`. |
+| **Host** | Usually `127.0.0.1` or `localhost`. |
+| **Port** | Usually `3306`. |
+| **Database name** | The empty database you created. |
+| **Username** / **Password** | The database user. |
+
+**Continue** tests the connection, creates all the tables (this can take a minute) and saves the settings to `.env`.
+
+:::warning
+The database user must be allowed to create and change tables. If you see "Connected, but the tables could not be created", give the user **All privileges** on that database and press **Continue** again.
+:::
+
+## Step 4: Owner account
+
+The **Owner** is the Super Admin: the one account that can do everything, including managing the team.
+
+| Field | Notes |
+|---|---|
+| **Name** | Shown to your team across the panel. |
+| **Work email** | You sign in with this. |
+| **Password** | At least 8 characters. Use the eye to show what you typed. Later password changes inside the Admin Panel need **12 characters** and a password that hasn't appeared in known data leaks, so you may as well choose one like that now. |
+| **Password again** | The same password. |
+| **Import demo data** | Optional. Adds sample dramas, creators, viewers and figures, with artwork drawn for you, so you can look around. You remove it all later with [Clear demo data](../admin/system/clear-demo-data.mdx). |
+
+Press **Install**. The installer:
+
+<Steps>
+
+1. Creates the remaining tables and fills in the starting data: the **Global** (USD) and **India** (INR) regions, their coin packs and VIP plans, ad and reward settings, the starting categories, English and Hindi app languages, the four role templates and the first Home and website layouts.
+2. Creates your Owner account and records the license.
+3. Links the public storage folder.
+4. Switches the server to live settings: `APP_ENV=production`, `APP_DEBUG=false`, sessions, cache and the queue in the database, the installer off and the license check on. From now on `/install` answers **404**.
+5. Imports the demo data, if you ticked it.
+
+</Steps>
+
+## Finished
+
+You see **Your studio is ready**. Choose **Go to sign-in** and sign in with the Owner email and password you just chose. There are no default credentials.
+
+If the demo data couldn't be imported, the install itself still finished; the reason is in `storage/logs`, and you can import it later with:
+
+```bash title="Server"
+php artisan edrama:demo-data
+```
+
+## If something goes wrong
+
+| Message | What to do |
+|---|---|
+| **The .env file could not be written** | PHP must be able to write `.env` (and ideally the project folder, so it can save it safely). Fix the permissions as on [Step 1](#step-1-requirements), then try again. |
+| **Could not connect to the database** | Check the host (often `localhost` on shared hosting), the port (`3306`), the database name, the user and the password, and that the user has all privileges on that database. |
+| **The install could not finish** | The message says why. Fix it and press **Install** again: what was already set up is kept. |
+| **The purchase code is refused** | Check you copied the whole code. If it's registered to another domain, ask [support](../help/support.mdx) to free it ([Move to another domain](license-and-updates.mdx#move-to-another-domain)). |
+| **The license server could not be reached** | Your server can't make outgoing HTTPS calls, or the license server is busy. Try again in a few minutes, or ask your host to allow outgoing connections. |
+| **The demo data could not be imported** | The install itself finished. The reason is in `storage/logs`; import it later with `php artisan edrama:demo-data`. |
+| **`/install` answers 404** | The install already finished (sign in at `/admin`), or `EDRAMA_INSTALLER` isn't `true` in `.env`. To install again on an empty database, contact [support](../help/support.mdx). |
+
+**Next:** [Cron & queues](cron-and-queues.mdx).

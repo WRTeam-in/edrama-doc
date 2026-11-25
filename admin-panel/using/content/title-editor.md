@@ -1,0 +1,132 @@
+---
+sidebar_position: 2
+title: "The title editor"
+sidebar_label: "Title editor"
+description: "Every tab and field of the title editor: details, artwork, ownership, paywall, regions, prices and status actions."
+---
+
+Open any title from <Path>Content › Titles</Path> to edit it. The editor has four tabs: **Overview**, **Episodes**, **Monetization** and **Localization**.
+
+<Screen
+  id="admin-title-editor"
+  type="browser"
+  wire="editor"
+  url="/admin/titles/1/edit"
+  title="Title editor"
+  caption="The Heiress Returns open in the title editor, on the Overview tab."
+  markers={[
+    {x: 49, y: 14.8, title: 'Poster, name and status', text: 'With the format, episode count and owner (“eDrama Original”, “Licensed from…”, “Creator series by…”).'},
+    {x: 32.6, y: 22.6, title: 'At a glance', text: 'Episodes out, free episodes, price per episode, views and revenue (30 days) and completion.'},
+    {x: 38.5, y: 30.8, title: 'Comments & reviews, AI Studio', text: 'Jump to what viewers say about this title, or to its AI Studio.'},
+    {x: 46.4, y: 30.8, title: 'Status actions', text: 'Submit for review, Approve, Request changes, Publish, Unpublish or Delete draft, depending on the status.'},
+    {x: 25.4, y: 39.1, title: 'Tabs', text: 'Overview, Episodes, Monetization and Localization.'},
+    {x: 45.3, y: 46.5, title: 'Details', text: 'Title, slug, synopsis, subtitle, kicker, schedule line, audio languages, categories, age rating, Complete.'},
+    {x: 83, y: 46.5, title: 'Ownership & rights', text: 'Who shares the revenue: owner type, licensor or creator and their share, rights note.'},
+    {x: 83, y: 88.6, title: 'Status', text: 'The current status and its history: who changed it, when and why.'},
+    {x: 89.5, y: 95.5, title: 'Save changes', text: 'Changes take effect when you save.'},
+  ]}
+/>
+
+## Overview tab
+
+### Details
+
+| Field | What it's for |
+|---|---|
+| **Title** | The name viewers see. |
+| **Slug** | The title's address in the app and in share links. It becomes fixed once the title is published, because links use it. |
+| **Subtitle** | A short line under the name on the series page. |
+| **Kicker** | A small label above the name on Home, such as "New this week". |
+| **Release schedule line** | When new episodes come out, such as "New episodes every Friday". |
+| **Audio languages** | The languages it can be heard in. Press Enter after each. |
+| **Synopsis** | Up to 280 characters. No spoilers past episode 3: it shows before people pay. |
+| **Categories** | Drive Home rows, Browse and search. Creator titles pick up to 3. |
+| **Age rating** | All, 13+, 16+ or 18+. |
+| **Complete** | Tells viewers every episode is out: the app shows "Complete" instead of the next drop. It can be turned on only once every episode is released, and a new episode turns it off. |
+
+### Artwork
+
+| Image | Size | Formats |
+|---|---|---|
+| **Poster** | 2:3, at least 600 × 900 (1200 × 1800 is best) | JPG, PNG or WebP, up to 5 MB |
+| **Banner** | 16:9, at least 960 × 540 (1920 × 1080 is best) | JPG, PNG or WebP, up to 5 MB |
+
+The app crops each one for where it's shown.
+
+### Ownership & rights
+
+Choose the **Owner** (eDrama Original, Licensed or Creator). For a licensed title, name the **Licensor** and their **Licensor share** of net revenue once the contract is set. For a creator title, pick the **Creator**; their share shows here ("*Name* gets 50% of net revenue"). Add a **Rights note** if useful.
+
+Once a title has been published, changing its owner asks for a **reason**: its revenue records depend on who owns it.
+
+### Other languages
+
+Under **Other languages**, a tab per app language holds translations of the name, subtitle, kicker, schedule line and synopsis. Leave a box empty to show the default language's text. To translate many titles at once, use **Import › Translations** on the Titles list.
+
+### Comments & reviews
+
+A link to what viewers say about this title, on [Comments & reviews](/admin-panel/using/community/comments-and-reviews/).
+
+## Status actions
+
+The buttons at the top change with the title's status.
+
+| Button | When | What happens |
+|---|---|---|
+| **Submit for review** | Draft or Changes requested | A reviewer checks the episodes, artwork and prices. |
+| **Approve** | In review (your team's titles) | Needs **Review queue** (Edit). The title can then be published. |
+| **Request changes** | In review | Sends it back with your reason. It needs a new review before publishing. |
+| **Publish** | Approved or Unpublished | Released episodes appear in the app for every region with a price. |
+| **Unpublish** | Live | Asks for a reason. The title disappears from Home, Browse and search; viewers keep the episodes they unlocked. |
+| **Delete draft** | Draft, never paid for | Removes it for good. |
+
+## Episodes tab
+
+Lists every episode with its length, access, status, processing, subtitles and release time. See [Episodes & subtitles](/admin-panel/using/content/episodes-and-subtitles/).
+
+## Monetization tab
+
+### Paywall
+
+| Setting | Meaning |
+|---|---|
+| **Free episodes** | How many episodes from the start anyone can watch. The paywall sits at the next one. It can't be more than the number of episodes. |
+| **Included in VIP** | VIP members watch every episode without coins. |
+| **Ads can unlock** | Viewers may watch one ad (30 seconds or less) per episode instead of paying. Each region's daily ad limit applies. |
+
+### Where it's shown
+
+**Every region** (the default), or **Only these regions** when you only have the rights in some places. Viewers elsewhere no longer find it in Home, search, categories or creator pages, and links to it say it isn't available in their region. Viewers who already unlocked an episode or bought its Series Pass keep it.
+
+:::note
+Your public website shows only what the **default region**'s viewers see.
+:::
+
+### Prices
+
+Choose **Change prices** to set, per region:
+
+- **Coin price per episode**,
+- **Series Pass** (optional): one price that unlocks every episode, including future ones.
+
+A region without its own price uses the default region's. Every price change needs a **reason**, kept in the audit log with the old and new prices.
+
+:::info[Price lock]
+Viewers who already started the series keep the price they saw: **a rise doesn't reach them, a drop does.** The dialog shows how many viewers have locked a price for this title. See [Coins & pricing](/features/coins-and-unlocks/).
+:::
+
+### What viewers see
+
+A live preview of the **cost card** on the series page, for the region you pick: which episodes are free, the price per episode ("60 coins an episode, never more"), the ad option, the Series Pass and how many released episodes are left to unlock.
+
+### Fair-play locks
+
+A reminder of the rules that can't be switched off per title: the price lock, unlocks never charge twice, and auto-unlock is off unless the viewer turns it on.
+
+:::note[To confirm]
+This card also lists "A failed rewarded ad still unlocks the episode". The server code does **not** do this: an ad unlocks an episode only once AdMob's server-side verification confirms it was watched to the end (a failed ad unlocks nothing but still counts toward the daily limit). The Ads tab in Monetization describes the code's behaviour correctly. Ask WRTeam which wording is intended.
+:::
+
+## Localization tab
+
+Subtitles, one file per episode and language. See [Episodes & subtitles](/admin-panel/using/content/episodes-and-subtitles/#subtitles).

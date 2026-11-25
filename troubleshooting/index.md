@@ -1,0 +1,78 @@
+---
+title: "Troubleshooting"
+sidebar_label: "Troubleshooting"
+description: "Symptoms, their causes and the fix, for the server, video, money, notifications and the app."
+---
+
+# Troubleshooting
+
+Find the symptom, check the likely cause, apply the fix. Most problems show up first on <Path>System › System</Path>: start there.
+
+## Server and installation
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| The installer shows **Folder permissions** | The web server can't write `storage`, `bootstrap/cache` or `.env`. | Folders 755/775, files 644/664, owned by the site's user. Upload the hidden `.env` if missing. |
+| *Connected, but the tables could not be created* | The database user can't create tables. | Give it All privileges on the database; press Continue again. |
+| A 500 error page after installing | Wrong permissions, or a missing PHP extension. | Check `storage/logs/laravel.log`; the System page names permission problems. |
+| `/.env` opens in the browser | The domain points at the project folder. | Point it at `public`, or upload the package's `.htaccess`. Then change the DB password and `APP_KEY`. |
+| *This server isn't set up as a live server* | `APP_ENV`/`APP_DEBUG` are development values. | `APP_ENV=production`, `APP_DEBUG=false`, then `php artisan config:cache`. |
+| Everyone shares one IP (lockouts hit everybody) | A proxy/CDN isn't trusted. | `EDRAMA_TRUSTED_PROXIES=cloudflare` (or `*`), then `config:cache`. |
+| Both panels redirect to `/activate` | The purchase code was refused (invalid or another domain). | Owner enters the code again; contact WRTeam if it's refused. |
+
+## Background work
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| **Cron not running** on System | No cron line, or the wrong PHP/folder. | Copy the line from System › Server setup; wait 2 minutes. |
+| Tasks marked **late** | The cron stopped. | Same as above; check the hosting panel didn't disable it. |
+| Jobs pile up under **Jobs waiting** | No queue worker. | Shared hosting: keep `EDRAMA_QUEUE_WORKER_SCHEDULED=true`. VPS: start supervisor. |
+| **Failed jobs** | A job hit an error (shown in its first line). | Fix the cause, then **Retry**. |
+| Changes to `.env` have no effect | Config is cached; workers run old code. | `php artisan config:cache` and `php artisan queue:restart`. |
+
+## Video
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| *ffmpeg not found* | Not installed, or not on the path. | Install it, or set `EDRAMA_FFMPEG_PATH`/`EDRAMA_FFPROBE_PATH`. |
+| Stuck on **Processing** | No queue worker. | See Background work. |
+| **Processing**, then **Failed** | The host killed the long job (memory/CPU limits). | Use Cloudflare Stream or a bigger server. |
+| Upload stops at a percentage | Connection dropped. | Choose **Retry**: it resumes. |
+| Upload refused immediately | Over the size limit, or not MP4/MOV/MKV. | Check <Path>Settings › Video pipeline</Path>. |
+| Episodes upload but nginx returns 413 | Request body limit. | `client_max_body_size` ≥ 16M (8 MB chunks). |
+| Video won't play in the app | Not processed, not released, or the viewer hasn't unlocked it. | Play it from the title's Episodes tab; check its status and release. |
+
+## Money
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| Purchases fail verification | Store keys missing or wrong, or the product IDs don't match. | Check the Google Play / App Store cards and press **Test connection**. Check the IDs in Monetization match the store products. (The App Store card's **Environment** doesn't affect purchases: they're checked with production, then the sandbox.) |
+| Refunds made in the store don't show | Notifications not set up. | Set up Google's Pub/Sub push and Apple's Server Notifications. |
+| Ads play but don't reward | No server-side verification. | Set the callback URL on each AdMob unit. |
+| No ads at all on one platform | No ad unit for that platform in the region. | Fill in the unit IDs in Monetization › Ads. |
+| Revenue left out of totals | Missing exchange rate. | Add it in Settings › Regions & languages. |
+| Creator revenue ads pools are zero | AdMob Reporting API not connected. | Connect AdMob in Settings › Creator revenue, or set pools by hand. |
+
+## Notifications and email
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| *Pushes aren't set up yet* | No Firebase keys. | Settings › Notifications › Firebase. |
+| Test push: *No app account … has a device that takes pushes* | Your app account doesn't use the same email, or notifications are off. | Sign in to the app with your Studio email; allow notifications. |
+| iOS gets no pushes | No APNs key in Firebase. | Upload the APNs key in Firebase › Cloud Messaging. |
+| Pushes arrive late | Quiet hours or the daily cap. | Expected; adjust in Settings › Notifications. |
+| No emails at all | Mailer writes to the log. | Add an SMTP server; **Send test email**. |
+| Emails in spam | Missing SPF/DKIM/DMARC. | Add them for your sending domain. |
+
+## The app
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| *No internet connection* on every screen | Wrong `apiBaseUrl`, or `http://`. | `https://…/api/v1/` with the trailing slash. |
+| Signed out right after signing in | Server clock drift, or a different Firebase project. | Sync the server clock; use one Firebase project for app and server. |
+| Google sign-in fails on Android | Missing SHA-1/SHA-256 in Firebase. | Add debug and release fingerprints, re-download `google-services.json`. |
+| *Update required* for everyone | Minimum version set too high. | Lower it in Settings › App & support › App versions. |
+| Maintenance screen won't go away | Maintenance mode is on. | Turn it off in Settings › App & support. |
+| Release build won't sign | No `android/key.properties`. | Create the keystore and the file ([Release build](/mobile-app/release-build/)). |
+
+<HelpBanner title="Still stuck?" text="Send us the symptom, a screenshot, the last lines of storage/logs/laravel.log and your purchase code." />

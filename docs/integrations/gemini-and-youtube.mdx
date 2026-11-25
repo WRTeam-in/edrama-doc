@@ -1,0 +1,34 @@
+---
+title: "Google Gemini and YouTube"
+sidebar_label: "Gemini & YouTube"
+description: "Keys for AI Studio's Gemini models, and the rules for using YouTube videos as episodes."
+---
+
+## Google Gemini (AI Studio)
+
+AI Studio makes images and video with Google's Gemini models. It needs a **Gemini API key** from a Google project **with billing on**: create one at [Google AI Studio](https://aistudio.google.com/apikey).
+
+| Key | Where | Used for |
+|---|---|---|
+| **The platform's key** | <Path>Settings › AI Studio › Keys and billing</Path> (Owner only) | The team's AI Studio, and creators in Admin managed or Hybrid mode. |
+| **A creator's own key** | The creator's **Your account › AI Studio** | Their calls in Creator managed or Hybrid mode, billed to them. |
+
+Google checks a key before it's saved; only its last 4 characters are shown afterwards. Default models: `gemini-nano-banana-2.1` (images), `gemini-3-pro-image` (higher quality), `gemini-omni-1.2-flash` (video). Google retires models often; change the IDs in Settings when it does.
+
+Google's own limits apply to each key: a Tier 1 project allows about **40 videos a day** and 8 requests a minute, which is why eDrama runs 2 calls at once by default.
+
+Prompts and images used in AI Studio are sent to Google, under the account that pays. Every frame Google makes carries its **SynthID** watermark. See [AI Studio settings](../admin/settings/ai-studio.mdx).
+
+## YouTube episodes
+
+With **Allow YouTube videos as episodes** on (<Path>Settings › Video pipeline</Path>, on by default), your team and creators can add a public YouTube video (Shorts suit it best) as an episode. Only the video's ID is stored; the server checks the video may be embedded, with no API key.
+
+Before you use it:
+
+- **Terms**: the app must follow the [YouTube API Services Terms of Service](https://developers.google.com/youtube/terms/api-services-terms-of-service) and the [YouTube Terms of Service](https://www.youtube.com/t/terms).
+- **Privacy policy**: your policy must say the app uses YouTube API Services and link to the [Google Privacy Policy](https://policies.google.com/privacy).
+- **No paywall**: YouTube episodes are **always free**: never sold with coins, an ad unlock, VIP or a Series Pass, and they earn creators nothing. Don't change this.
+- **Player**: YouTube's own player and its ads stay as they are. Its quality and subtitles are YouTube's; the app's quality menu and subtitle files don't apply.
+- **Rights**: add only videos you own or may show. Use the **Credit** field for attribution, such as *Title by Creator, CC BY*.
+
+Uploading a file to the same episode later replaces the YouTube video once it's processed; an episode holding an uploaded video refuses a YouTube link.

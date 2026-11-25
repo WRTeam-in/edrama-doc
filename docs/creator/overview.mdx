@@ -1,0 +1,91 @@
+---
+title: "The Creator Portal"
+sidebar_label: "Overview"
+description: "What the Creator Portal is, who uses it, and a tour of its menu and screens."
+---
+
+The **Creator Portal** is where invited creators (independent filmmakers, studios, storytellers) publish their own series on your platform. A creator sees **only their own work**: they create series, upload episodes, send them for review, set release times, follow their stats and reviews, see their earnings, and can use AI Studio. It's at `https://your-domain.com/creator`.
+
+This section is written for creators: share its link with yours.
+
+<Screen
+  id="creator-home"
+  type="browser"
+  wire="dashboard"
+  url="/creator"
+  title="Creator Portal"
+  caption="The Creator Portal for the demo creator Amara Okafor: the menu on the left, the top bar, and Home."
+  markers={[
+    {x: 7.7, y: 3.4, title: 'Platform logo', text: 'The portal wears the platform’s logo, with the Creators tag.'},
+    {x: 7.5, y: 8.7, title: 'New series', text: 'Start a new series from any page.'},
+    {x: 8.4, y: 32.4, title: 'Menu', text: 'Home and Earnings, then My series, Upload episodes, AI Studio, Release schedule, Comments & reviews (with how many wait for your reply) and Notices.'},
+    {x: 89.6, y: 3, title: 'Portal language', text: 'Only you see the portal in the language you pick.'},
+    {x: 93.9, y: 3, title: 'Notices bell', text: 'Review decisions and other news, with the unread count.'},
+    {x: 96.9, y: 3, title: 'Theme', text: 'Light or dark, just for you.'},
+    {x: 7.7, y: 95.8, title: 'You', text: 'Your account: profile, sign-in, preferences and agreement. Sign out sits beside it.'},
+    {x: 49.9, y: 20.5, title: 'Greeting', text: '“Good afternoon” and your name, with shortcuts to New series, My series and Notices.'},
+  ]}
+/>
+
+## What creators can do
+
+<Cards
+  items={[
+    {icon: 'film', title: 'Create a series', text: 'Details, artwork, free episodes and price, regions.', to: '/docs/creator/create-series/', tone: 'vip'},
+    {icon: 'server', title: 'Upload episodes', text: 'Straight from the browser, with subtitles.', to: '/docs/creator/upload-episodes/', tone: 'vip'},
+    {icon: 'check', title: 'Send for review', text: 'Every series and episode is checked by the team.', to: '/docs/creator/submit-for-review/', tone: 'vip'},
+    {icon: 'bell', title: 'Set release times', text: 'Pick when each approved episode drops.', to: '/docs/creator/release-times/', tone: 'vip'},
+    {icon: 'users', title: 'Talk to viewers', text: 'Reply to reviews and comments.', to: '/docs/creator/comments-and-reviews/', tone: 'vip'},
+    {icon: 'coin', title: 'See earnings', text: 'Monthly statements and payouts.', to: '/docs/creator/earnings/', tone: 'coin'},
+  ]}
+/>
+
+## How it works
+
+<Flow
+  steps={[
+    {label: 'Apply or get invited', note: 'The team accepts you'},
+    {label: 'Accept the terms', note: 'Creator Terms'},
+    {label: 'Create a series', note: 'Upload its episodes'},
+    {label: 'In review', note: 'The team checks it'},
+    {label: 'Live', tone: 'live', note: 'Viewers watch it'},
+    {label: 'Earn', tone: 'vip', note: 'Your share, monthly'},
+  ]}
+/>
+
+## Turn the portal on (for the platform team)
+
+The portal is part of your Admin Panel's server, at <ServerUrl path="/creator" inline />. Before your first creator signs in:
+
+<Steps>
+
+1. **Add the Firebase web keys.** The portal signs creators in with Firebase in the browser, so it needs the **Web API key** and **Auth domain** in <Path>Settings › Notifications</Path> › **Firebase** ([Firebase](../integrations/firebase.mdx)).
+2. **Allow your domain in Firebase.** Firebase console › **Authentication › Settings › Authorized domains** › **Add domain**: your Admin Panel's domain, such as `admin.your-domain.com`.
+3. **Turn on the sign-in methods** creators use in the app: Firebase console › **Authentication › Sign-in method** (Google, Email/Password, Phone). Phone sign-in on the portal also follows the **Phone sign-in** switch in <Path>Settings › App & support</Path>.
+4. **Publish the Creator Terms** in <Path>Settings › Legal pages</Path>. Creators can't create a series until they're published.
+5. **Set the creator limits:** the price range and free episodes in [Payments](../admin/settings/payments-and-revenue.mdx), and the upload limits in [Storage & video](../admin/settings/storage-and-video.mdx) › Video pipeline.
+
+</Steps>
+
+**Check it worked:** open `/creator`. The sign-in page shows the sign-in methods. If it says *Creator sign-in isn't set up yet*, the Firebase web keys are missing. If Firebase says the site isn't allowed, add the domain to **Authorized domains**.
+
+## The menu
+
+**New series** sits above the menu on every page. The menu has two groups, *Overview* and *Your work*:
+
+| Item | What it's for |
+|---|---|
+| **Home** | Your series at a glance and what needs you ([Home](home.mdx)). |
+| **Earnings** | Statements and payouts ([Earnings](earnings.mdx)). |
+| **My series** | Every series you've made, by status ([My series](series.mdx)). |
+| **Upload episodes** | Pick a series and upload ([Upload episodes](upload-episodes.mdx)). |
+| **AI Studio** | Characters, storyboards and video takes, when the platform allows it ([AI Studio](ai-studio.mdx)). |
+| **Release schedule** | Every episode not out yet, across your series ([Release times](release-times.mdx)). |
+| **Comments & reviews** | What viewers say about all your series ([Comments & reviews](comments-and-reviews.mdx)). |
+| **Notices** | Review decisions and news from the team ([Notices & account](notices-and-account.mdx)). |
+
+## Good to know
+
+- The portal is in your **own language** if the platform offers it: pick it from the language menu. Your app keeps its own language.
+- Times are shown in **your time zone**, which you set in **Your account › Preferences**.
+- A session lasts 12 hours. If your account is suspended, you're signed out at your next click.

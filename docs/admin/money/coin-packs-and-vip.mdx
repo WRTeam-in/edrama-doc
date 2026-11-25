@@ -1,0 +1,98 @@
+---
+title: "Monetization › Coin packs and VIP plans"
+sidebar_label: "Coin packs & VIP plans"
+description: "Set each region's coin packs and VIP subscription plans, their store product IDs, and the VIP rules shown in the app."
+---
+
+Both tabs are per region: choose the region with the **Region** switch at the top of <Path>Money › Monetization</Path>.
+
+## Coin packs
+
+A **coin pack** is what viewers buy in the store: a number of coins, often with **bonus coins** on top, for a price.
+
+<Screen
+  id="admin-coin-packs"
+  type="browser"
+  wire="list"
+  url="/admin/monetization?tab=packs"
+  title="Coin packs"
+  caption="The Coin packs tab for the Global region: coins, bonus, price, price per coin, episodes, flags and store IDs."
+  markers={[
+    {x: 21.5, y: 28, title: 'Region', text: 'Coin packs are set per region.'},
+    {x: 92.7, y: 28, title: 'New coin pack', text: 'Add a pack to this region.'},
+    {x: 21, y: 39.6, title: 'Pack', text: 'Coins and bonus coins.'},
+    {x: 45.9, y: 39.7, title: 'Price and per coin', text: 'In the region’s currency.'},
+    {x: 67.6, y: 39.7, title: 'Flags', text: 'Once per account (first top-up), Popular, Best value or Hidden.'},
+    {x: 81.6, y: 38.8, title: 'Store SKU', text: 'The Google Play and App Store product IDs.'},
+    {x: 92.5, y: 39.9, title: 'Edit', text: 'Change the pack, or turn it off.'},
+  ]}
+/>
+
+### The packs you start with (Global)
+
+| Pack | Bonus | Price | Flag |
+|---|---|---|---|
+| 300 coins | +300 | $1.99 | First top-up offer (once per account) |
+| 500 coins | +50 | $4.99 | |
+| 1,000 coins | +200 | $9.99 | Popular |
+| 2,000 coins | +600 | $19.99 | |
+| 5,000 coins | +2,000 | $49.99 | Best value |
+
+India starts with the same coins at ₹99, ₹199, ₹399, ₹799 and ₹1,999 (placeholders).
+
+### Pack fields
+
+| Field | Meaning |
+|---|---|
+| **Coins** / **Bonus coins** | Paid coins never expire; bonus coins expire after the days set on Rewards and are always spent first. |
+| **Price** | In the region's currency. |
+| **Google Play product ID** | Lower-case letters, digits, dots, underscores and dashes. Must match the product in Play Console. |
+| **App Store product ID** | Must match the product in App Store Connect. |
+| **Shown in the app** | Off hides the pack without deleting it. |
+| **Order** | The order in the store. |
+| **First top-up** / **Popular** / **Best value** | Only one pack per region can carry each flag. The first top-up offer can be bought **once per account**. |
+
+See [In-app purchases](../../app-setup/in-app-purchases.mdx) for creating the products in each store.
+
+:::note
+A pack someone has bought can't be deleted, so it stays in their history: turn off **Shown in the app** instead. A pack with a pending purchase can't be deleted either.
+:::
+
+## VIP plans
+
+**VIP** is a subscription that unlocks every drama, with no ads. Each region has three plans: **Weekly**, **Monthly** and **Yearly**.
+
+| Plan | Global | India (placeholder) |
+|---|---|---|
+| Weekly | $5.99 | ₹49 |
+| Monthly | $19.99 | ₹149 |
+| Yearly | $119.99 | ₹999 |
+
+Each plan card shows its price, the weekly equivalent and saving, subscribers and how many have auto-renew on. **Edit** a plan to change:
+
+| Field | Meaning |
+|---|---|
+| **Price** | Above zero. |
+| **Offered in the app** | Off hides the plan. |
+| **Google Play subscription ID** and **base plan ID** | The base plan itself, never an offer. |
+| **App Store product ID** | |
+| **Perks** | One per line, as the app lists them. Default: *Every drama unlocked. No ads.* |
+
+:::danger[No free trials]
+VIP has **no free trial**: the price must be above zero, and no ID or perk may name a trial or a free introductory offer. The server refuses a subscription that started with a free trial.
+:::
+
+### Rules in the app
+
+The VIP page in the app lists the subscription's terms in plain words. By default it shows the **built-in rules**, translated into every app language. Choose **Edit rules** to write your own (one per line, per language), or **Use built-in rules** to go back.
+
+### Locked subscription rules
+
+These can't be switched off:
+
+- No free trial that turns into a charge.
+- A renewal reminder **24 hours** before every charge.
+- Cancel in two taps, in the app.
+- VIP never sees an ad.
+
+See [VIP subscriptions](../../monetization/vip-subscriptions.mdx).

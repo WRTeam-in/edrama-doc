@@ -1,0 +1,89 @@
+---
+title: "Website"
+sidebar_label: "Website"
+description: "Edit your public website's sections, header, footer, style, app links, search settings and languages, preview them, then publish."
+---
+
+**Website** edits your public marketing website: a home page built from sections, plus automatic pages for every series, category and creator. You change a **draft**, check it in the live preview, and **Publish** when you're happy. Visitors see the change within a minute.
+
+<Access area="Website" view="See the editor" edit="Change and publish the website" />
+
+:::info[Setting the website up]
+The website itself is a separate Next.js project that you host (on Vercel or your own Node.js server) and connect to your server. Deploying and connecting it is covered in [Website setup](../../website/overview.mdx); this page covers editing its content.
+:::
+
+<Screen
+  id="admin-website"
+  type="browser"
+  wire="builder"
+  url="/admin/website"
+  title="Website"
+  caption="Website on the Sections tab, with the page’s sections in order and the preview panel."
+  markers={[
+    {x: 21.3, y: 22.3, title: 'Tabs', text: 'Sections, Header & footer, Style, Languages, Search & stats, Connection and more.'},
+    {x: 39.5, y: 28.5, title: 'Page sections', text: 'Your home page, top to bottom. Tips for editing are just below.'},
+    {x: 20.4, y: 48.3, title: 'Drag handle', text: 'Drag to reorder, or move up and down.'},
+    {x: 32.7, y: 48.3, title: 'A section', text: 'Its type and heading. Click to edit its Content, Design and Settings.'},
+    {x: 54.2, y: 55.1, title: 'Show on the website', text: 'The eye hides a section but keeps its content.'},
+    {x: 65, y: 22.7, title: 'Preview', text: 'Updates as you type, on Computer or Phone, in each language. It needs the website’s address (Connection tab).'},
+    {x: 49.5, y: 95.5, title: 'Save draft', text: 'Keep your changes without publishing.'},
+    {x: 57.2, y: 95.5, title: 'Publish', text: 'Visitors see the changes within a minute.'},
+    {x: 94.2, y: 14.6, title: 'Switch website off', text: 'Visitors see a short “back soon” page.'},
+  ]}
+/>
+
+## The tabs
+
+| Tab | What you set |
+|---|---|
+| **Sections** | The home page, top to bottom (below). |
+| **Header & footer** | Header style (Floating bar, Classic full width, Centred logo, Minimal with menu), menu links, header button, an announcement bar; footer style (Columns, Big name, Compact, Download first), about line, link columns, legal pages, store buttons, contact email and copyright line. |
+| **Style** | Theme (Midnight dark, Paper light, or follow the visitor's device), whether visitors can switch light/dark, headings (editorial serif italic or modern), corners and motion (Full, Subtle, None). |
+| **Get the app** | Store buttons (from your App versions store links), an optional direct APK download link with its version and minimum Android, and a QR code for computers. |
+| **Search & stats** | Site title and title pattern, description, share picture (1200 × 630), whether search engines and AI assistants may read the site, pages for every series, category and creator, `llms.txt`, Google Search Console and Bing codes, and per-page titles and descriptions. |
+| **Social & analytics** | Social links (Instagram, YouTube, X, Facebook, TikTok, Threads, LinkedIn, Telegram, WhatsApp, Discord) and visitor statistics (Plausible, Umami or Google Analytics). |
+| **Languages** | Which app languages the website offers, a language menu in the header, and translations of every text. |
+| **Connection** | Where the website lives and how it talks to your server (below). |
+| **History** | Every published version. Load one into the draft, check it, publish it again. |
+
+Your **name, logos and theme colour** come from <Path>Settings › Branding</Path>, so the app, the panels and the website always match.
+
+## Section types
+
+| Section | What it shows | Styles |
+|---|---|---|
+| **Top slider** | Big pictures with your headline and buttons: your most popular series automatically, or slides you make. | Cinematic full width, Poster stack, Split |
+| **Numbers** | Live series, released episodes, categories, creators, app languages, or numbers you type. | Band, Split |
+| **Series showcase** | A row or grid of series: new, popular this week, Top 10 today, complete, one category, one creator, or ones you pick. | Row of posters, Large posters, Top 10 with big numbers, Grid, One big and a list, Wide cards |
+| **What is it?** | What your app is, with feature points and phone pictures. | Text and phone, Editorial, Centred |
+| **Categories** | Your categories with artwork, leading to each category's page. | Artwork tiles, Chips, Mosaic |
+| **Get the app** | Store buttons, a direct APK link and a QR code. Always on the page. | Phone showcase, Band, Glowing card |
+| **Creators** | Creators with live series, and an invitation to become one. | Avatars, Cards with posters |
+| **Questions** | Questions and short answers (search engines and AI assistants read these too). | Accordion, Two columns |
+| **Call to action** | A bold band with a heading and a button. | Band, Split, Glowing card |
+| **Text block** | A heading, paragraphs and an optional picture. | Text only, Text and picture |
+
+Each section also has a **background** (page colour, raised panel, accent glow or accent colour), **spacing** (compact, regular, airy), an optional **section address** for header links, and a feature condition (**Only while** VIP is on, Rewards are on, and so on) so a section disappears when you switch that feature off. Put `*stars*` around a word or two in a heading to set them in the accent style.
+
+While your catalogue is small, **sample series** can fill series sections until they have 4 live series. Turn this off when your catalogue is ready.
+
+## Connect the website
+
+The website is a separate site. On the **Connection** tab:
+
+<Steps>
+
+1. Copy **This server's address for the website** (`EDRAMA_API_URL`) into the website's settings.
+2. Choose **Make a secret** and paste the **Refresh secret** into the website's `REVALIDATE_SECRET`. It's shown only once; **Make a new secret** replaces it.
+3. Enter the **Website address** (such as `https://www.your-domain.com`) and choose **Save address**. It's used for previews and to tell the website about changes.
+
+</Steps>
+
+## Publish, preview, switch off
+
+- **Save draft** keeps your changes without publishing. **Discard draft** goes back to the live version.
+- **Preview** opens the saved draft on your website for 30 minutes, marked "Preview · not published".
+- **Publish** shows the changes to visitors within a minute.
+- **Switch website off** shows visitors a short "back soon" page and asks search engines not to index it.
+
+The status above the tabs reads *Live · version N*, *Unpublished changes* or *Everything is published*.

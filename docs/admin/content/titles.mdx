@@ -1,0 +1,103 @@
+---
+title: "Titles"
+sidebar_label: "Titles"
+description: "The catalogue of every drama, how titles are owned, their statuses, and how to create a new title."
+---
+
+A **title** is one series in your catalogue. **Titles** lists all of them, whoever made them: your own originals, dramas licensed from a studio, and creators' series all share one content model.
+
+<Access area="Titles & episodes" view="See the list and open titles" edit="Create, edit, approve, publish and unpublish titles" />
+
+<Screen
+  id="admin-titles"
+  type="browser"
+  wire="list"
+  url="/admin/titles"
+  title="Titles"
+  caption="Titles on the All tab: status cards, owner tabs and the list with owner, episodes, access, status, views, revenue and completion."
+  markers={[
+    {x: 94.5, y: 14.6, title: 'New title', text: 'Starts a new draft: type its name and choose Create draft.'},
+    {x: 87.2, y: 14.6, title: 'Import', text: 'Add many titles, change prices or import translations from a CSV or Excel file.'},
+    {x: 22.5, y: 22.9, title: 'Status cards', text: 'All titles, Live, In review, Changes requested, Drafts. Click one to filter.'},
+    {x: 26.9, y: 36.3, title: 'Owner tabs', text: 'All, eDrama Originals, Licensed and Creator, with counts.'},
+    {x: 82.4, y: 44, title: 'Search', text: 'Search by title name. Filter, refresh and download sit beside it.'},
+    {x: 35.6, y: 61.6, title: 'A title', text: 'Poster, name and categories. Click to open the title editor.'},
+    {x: 53.7, y: 63.1, title: 'Owner', text: 'eDrama Original, Licensed (with the licensor) or Creator (with the creator).'},
+    {x: 65, y: 63, title: 'Access', text: 'How many episodes are free, and the coin price per episode.'},
+    {x: 72.7, y: 55.7, title: 'Status', text: 'Draft, In review, Changes requested, Approved, Live, Rejected or Unpublished.'},
+    {x: 78.3, y: 63, title: 'Views, revenue, completion', text: 'The last 30 days in the region chosen in the top bar.'},
+  ]}
+/>
+
+## The columns
+
+| Column | Meaning |
+|---|---|
+| **Title** | Poster, name and how many episodes are out (such as "8 of 24 out"). |
+| **Owner** | eDrama Original, Licensed (with the licensor) or Creator (with the creator). |
+| **Episodes** | How many episodes exist. |
+| **Access** | How many are free ("5 free"), or **No price** if no price is set yet. |
+| **Status** | Where the title stands (below). |
+| **Views · Revenue · Completion** | The last 30 days for the region in the top bar. *Completion* is the share of viewers who reached 90% of an episode. |
+
+If some days have no exchange rate into your reporting currency, a note above the table names the currencies left out of **Revenue**.
+
+Each row's **More** menu jumps straight to a part of the editor: **Edit details**, **Episodes**, **Pricing & paywall** or **Localization**.
+
+## Who owns a title
+
+Every title has an **owner type**, which decides who shares its revenue:
+
+| Owner type | Meaning |
+|---|---|
+| **eDrama Original** | Made and owned by you. All revenue stays with you. |
+| **Licensed** | Licensed from a studio or distributor. You name the **licensor** and, once the contract is set, their share of net revenue. |
+| **Creator** | A series by an invited creator, who earns their share of every unlock. Creator series normally arrive from the [Creator Portal](../../creator/overview.mdx). |
+
+## Title statuses
+
+<Flow
+  steps={[
+    'Draft',
+    'In review',
+    {label: 'Approved', tone: 'accent'},
+    {label: 'Live', tone: 'live'},
+    {label: 'Unpublished', tone: 'warn'},
+  ]}
+  caption="A title in review can also be sent back (Changes requested) or Rejected. A live title can be unpublished and published again."
+/>
+
+| Status | Meaning |
+|---|---|
+| **Draft** | Being prepared. Not visible in the app. |
+| **In review** | Waiting for a reviewer's decision. |
+| **Changes requested** | Sent back to its owner with a reason. |
+| **Approved** | Checked and ready to publish. |
+| **Live** | In the app now. |
+| **Rejected** | Won't go live. |
+| **Unpublished** | Taken out of the app. Viewers keep what they unlocked. |
+
+Your team's titles are approved in the [title editor](title-editor.mdx) by a member with **Review queue** (Edit). A creator's series is decided only in the [Review queue](../community/review-queue.mdx).
+
+## Create a title
+
+<Steps>
+
+1. Choose **New title**.
+2. Type its name (such as *The Heiress Returns*) and choose **Create draft**.
+3. The editor opens. Add details and artwork, upload the episodes, and set the free episodes and prices.
+4. Choose **Submit for review**, then **Approve** and **Publish** (with the right permissions).
+
+</Steps>
+
+Every title starts as a draft. Before a title can go live, it needs:
+
+- at least one episode whose video is ready,
+- a coin price in the **default region**,
+- no more free episodes than it has episodes.
+
+To add many titles at once, use **Import › New titles** ([Bulk imports](bulk-imports.mdx)).
+
+## Delete a draft
+
+Only a **draft that no viewer has paid for** can be deleted: open it and choose **Delete draft**. Anything else is unpublished instead, so viewers' unlocks and the money records stay intact.

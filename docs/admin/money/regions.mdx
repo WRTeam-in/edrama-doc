@@ -1,0 +1,78 @@
+---
+title: "Monetization › Regions"
+sidebar_label: "Regions"
+description: "Group countries into regions, each with its own currency, coin value, prices, coin packs, VIP plans, ads and rewards."
+---
+
+**Monetization** is where you set what things cost. It has six tabs: **Regions**, **Coin packs**, **VIP plans**, **Ads**, **Rewards** and **Fair-play rules**. Everything except Regions and Fair-play rules is set **per region**: pick the region with the **Region** switch at the top of the page.
+
+<Access area="Prices & coin packs" view="See every tab" edit="Change regions, packs, plans, ads and rewards" />
+
+A **region** is a group of countries that share a currency and prices. Selling the same drama at fair local prices in, say, India and the United States is what regions are for.
+
+<Screen
+  id="admin-monetization-regions"
+  type="browser"
+  wire="list"
+  url="/admin/monetization?tab=regions"
+  title="Monetization"
+  caption="Monetization on the Regions tab: each region’s currency, coin value, countries, ad unlocks and VIP price."
+  markers={[
+    {x: 21.1, y: 21.8, title: 'Tabs', text: 'Regions, Coin packs, VIP plans, Ads, Rewards and Fair-play rules.'},
+    {x: 93.4, y: 28, title: 'New region', text: 'Starts as a copy of the default region’s prices.'},
+    {x: 58.7, y: 36.3, title: 'Where regions come from', text: 'Says whether viewers’ countries come from your CDN or the app, and what to set.'},
+    {x: 24.4, y: 47.3, title: 'A region', text: 'Name and code. The default region serves every other country.'},
+    {x: 47.4, y: 47.4, title: 'Coin value', text: 'What one coin is worth in the region’s currency.'},
+    {x: 59, y: 47.4, title: 'Countries', text: 'Which countries it covers.'},
+    {x: 86.1, y: 47.3, title: 'Status', text: 'On or off.'},
+    {x: 93.9, y: 56, title: 'Edit / Make default', text: 'Change a region, or make it the default.'},
+  ]}
+/>
+
+## The regions you start with
+
+| Region | Code | Currency | 1 coin is worth | Time zone | Countries |
+|---|---|---|---|---|---|
+| **Global** (default) | `GLOBAL` | USD | $0.0099 | UTC | Every country no other region lists |
+| **India** | `IN` | INR | ₹0.29 | Asia/Kolkata | India |
+
+:::warning[Placeholders]
+India's coin value and prices are placeholders. Replace them with your own before launch.
+:::
+
+## How a viewer's region is chosen
+
+A viewer's region comes from their country: the country their app store reports at sign-in, otherwise the country your CDN reports (Cloudflare's `CF-IPCountry` header), otherwise the default region. A note above the table says which source your server is using. A viewer **can't choose** another region; your team can move one in [Users › Change region](../audience/users.mdx).
+
+## Add a region
+
+<Steps>
+
+1. Choose **New region**.
+2. Fill in:
+   - **Name** and **Code** (capital letters, digits and underscores, such as `JP`; fixed once created).
+   - **Currency** (ISO code, such as `JPY`; fixed once created because prices, purchases and reports are stored in it) and the **Currency symbol** position (before or after the amount; applies to every region in that currency).
+   - **Coin value**: what one coin is worth in that currency, up to six decimals.
+   - **Time zone**.
+   - **Countries**: a country belongs to one region; picking one another region lists **moves** it here.
+3. Leave **Active** off and choose **Save region**.
+4. The new region starts as a **copy of the default region's** coin packs, VIP plans, title prices, ad limits and rewards, with money prices converted between the two coin values. Review them on each tab.
+5. Turn **Active** on.
+
+</Steps>
+
+## Change, make default, delete
+
+- **Turn a region off**: its countries use the default region for new sessions. Purchases, unlocks and price locks keep their region.
+- **Make default**: this region then serves every country no active region lists. Viewers keep the prices they already locked. Exactly one region is the default, and it's always on.
+- **Delete**: only a region that no viewer, purchase, unlock or report belongs to.
+
+Every change can carry an optional reason and is recorded in the audit log.
+
+## How regions work
+
+- **Every country belongs to one region.** A country no active region lists uses the default region.
+- **Prices are set per region.** A title without its own price in a region uses the default region's.
+- **The coin value turns coins into money.** The app shows every price in coins **and** in the region's money before every unlock, and reports convert with it.
+
+Exchange rates into your reporting currency are set separately, in <Path>Settings › Regions & languages</Path>. See [Regions & currencies](../../monetization/regions-and-currencies.mdx).

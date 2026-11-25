@@ -1,0 +1,68 @@
+---
+title: "Server commands"
+sidebar_label: "Server commands"
+description: "The artisan commands you may run on the server, the ones that run by themselves, and the ones never to run on a live server."
+---
+
+Most of eDrama is run from the Admin Panel. A few jobs are done from the server's command line, over **SSH** or in your host's **Terminal** (cPanel › Terminal). Run every command **from the project folder**, the one that holds the `artisan` file:
+
+```bash title="Server"
+cd /var/www/edrama
+php artisan list edrama
+```
+
+:::tip[Which `php`?]
+If `php -v` doesn't print **8.5**, use the full path of PHP 8.5 instead of `php`, for example `/usr/local/bin/php` or the path your host gives. <Path>System › System</Path> shows the PHP binary your server uses.
+:::
+
+## Commands you may run
+
+| Command | What it does |
+|---|---|
+| `php artisan edrama:create-owner` | Creates the **Owner** once, if the installer didn't. It asks for the name, email and password (twice), and refuses when an Owner already exists. For a deploy script, it reads `EDRAMA_OWNER_NAME`, `EDRAMA_OWNER_EMAIL` and `EDRAMA_OWNER_PASSWORD` from `.env` instead: remove the password from `.env` once the Owner exists. |
+| `php artisan edrama:demo-data` | Imports the demo data (dramas, creators, viewers and their activity). Adds nothing if it's already there. On a live server it asks to confirm first; `--force` skips the question. |
+| `php artisan edrama:review-account <email>` | Creates, or resets, an app account that signs in with **email and password**, for store reviewers and testers. [More below](#store-reviewer-account). |
+| `php artisan edrama:video-webhook` | Registers Cloudflare Stream's webhook to `https://<your domain>/api/v1/webhooks/video` and saves its signing secret in Settings. Pass another address as an argument if your panel lives elsewhere. See [Cloudflare Stream](../integrations/storage-and-streaming.mdx#cloudflare-stream). |
+| `php artisan edrama:video-status <episode-id> --refresh` | Shows one episode's video status and a signed playback link. `--refresh` asks the video service for the latest status first. |
+| `php artisan edrama:move-stream-videos` | Moves every episode video off Cloudflare Stream to your own storage (the same as the button on <Path>Settings › Storage & video</Path>). |
+| `php artisan edrama:creator-report --month=2026-10` | Builds the monthly creator report again for a month (last month when `--month` is left out) and sends its link to Finance. |
+| `php artisan edrama:creator-revenue --month=2026-10` | Imports AdMob earnings and calculates creator revenue for review, for a month (last month by default). The same as **Import from AdMob** and **Calculate** on [Creator revenue](../admin/money/creator-revenue.mdx). |
+| `php artisan edrama:ai-recover` | Re-queues, ends or fetches AI Studio calls that a stopped worker left behind. It also runs by itself every 5 minutes. |
+| `php artisan edrama:wallet-reconcile` | Checks that every wallet's balance equals its coin history and bonus lots. It **only reports**: it never changes a balance. Runs by itself daily. |
+| `php artisan queue:restart` | Makes running queue workers finish their current job and load new code. Run it **after every update** and after editing `.env`. |
+| `php artisan config:cache` | Reloads `.env` after you edit it. (`php artisan config:clear` also works; it reads `.env` on every request until you cache again.) |
+| `php artisan storage:link` | Re-creates the public storage link, if images stop showing after a move. The installer runs it for you. |
+
+## Store reviewer account
+
+Google Play and App Review sign in to your app to check it. Give them an account that needs no inbox or phone:
+
+```bash title="Server"
+php artisan edrama:review-account review@your-domain.com --name="App Review"
+```
+
+It asks for a password (at least 8 characters) and never prints it. The account is created in your **Firebase** project with its email already verified, so it signs in straight away with **Continue with Email**. Running it again for the same email sets a new password and turns the account back on.
+
+- **Email/Password** must be turned on in the Firebase console (Authentication › Sign-in method).
+- Put the email and password in Play Console (**App content › App access**) and in App Store Connect (**App Review Information › Sign-in required**).
+
+## Commands that run by themselves
+
+The cron line starts these on their schedule ([Cron & queues](cron-and-queues.mdx#what-runs-in-the-background)). You don't need to run them, but you can, to see their output:
+
+`edrama:publish-episodes`, `edrama:send-scheduled-pushes`, `edrama:expire-bonuses`, `edrama:release-held-pushes`, `edrama:ai-recover`, `edrama:vip-renewal-reminders`, `edrama:rank-top-titles`, `edrama:roll-up-title-stats`, `edrama:roll-up-daily-metrics`, `edrama:roll-up-creator-stats`, `edrama:wallet-reconcile`, `edrama:store-voided-purchases`, `edrama:prune-exports`, `edrama:prune-job-runs`, `edrama:prune-video-uploads`, `edrama:prune-cache`, `edrama:prune-webhook-events`, `edrama:prune-failed-jobs`, `edrama:prune-ai-files`, `edrama:creator-revenue`, `edrama:creator-report` and `edrama:work-queues`.
+
+## Never on a live server
+
+These exist for WRTeam's development, testing and demo server. They refuse to run in production, or would damage live data:
+
+| Command | Why not |
+|---|---|
+| `edrama:seed-demo` | Drops **every table** and rebuilds the database. Local and staging only. |
+| `edrama:demo-data --fresh` | Drops every table before importing. Never in production. |
+| `edrama:load-test-seed` | Creates load-test viewers with coins. Staging and local only. |
+| `edrama:ad-verify` | Fakes an AdMob confirmation, for local testing. |
+| `edrama:video-upload` | Uploads a local file to the video service, for manual checks. |
+| `edrama:repair-encryption --force` | Empties saved secrets the current `APP_KEY` can't read, after a lost key. Without `--force` it only counts them. Keep a copy of `APP_KEY` with your backups so you never need it. |
+
+<HelpBanner title="Not comfortable with the command line?" text="Our team can run these for you, or install and configure the whole server." />

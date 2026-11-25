@@ -1,0 +1,52 @@
+---
+title: "The series page"
+sidebar_label: "Series page"
+description: "Everything on a series page: play, follow, My List, share, the cost card, the episode grid, reviews and more like this."
+---
+
+Tapping a series opens its page. The poster flies into place, so it feels instant even while the rest loads.
+
+<Screen
+  id="app-series"
+  type="phone"
+  wire="app-detail"
+  title="Series"
+  caption="A series page: the poster with the kicker, title, rating, age rating, episode count and schedule line; My List, Follow and Share; the What it costs card; the synopsis; and Play E1."
+  markers={[
+    {x: 37, y: 41.9, title: 'Title and details', text: 'Kicker, name and subtitle, then the rating, age rating, episode count and when new episodes come out.'},
+    {x: 22.9, y: 48.7, title: 'Ratings', text: 'Opens the reviews.'},
+    {x: 18.6, y: 56.8, title: 'My List', text: 'Saves it in the Library.'},
+    {x: 50, y: 56.8, title: 'Follow', text: '“We’ll tell you when new episodes drop.”'},
+    {x: 81.4, y: 56.8, title: 'Share', text: 'Shares a link to the series.'},
+    {x: 30, y: 65.2, title: 'What it costs', text: 'Before anything is paid: the free episodes, the coins to catch up on the rest, and the Series Pass.'},
+    {x: 76.2, y: 72.5, title: 'Series Pass', text: 'All episodes plus future drops, in one purchase.'},
+    {x: 52.9, y: 80.5, title: 'The price, plainly', text: 'Coins per episode with the money it comes to, “never more”, or one short ad per episode.'},
+    {x: 50, y: 94.8, title: 'Play E1 / Continue', text: 'Starts or resumes in the player. The episode list is further down the page.'},
+  ]}
+/>
+
+## What it costs
+
+The cost card shows the full price **before** the viewer spends anything, in coins and in their own money:
+
+| Part | Example |
+|---|---|
+| **Free** | *E1–E5*, no ads to start |
+| **Catch up** / **Finish** | The coins to unlock the released episodes they haven't unlocked yet |
+| **Series Pass** | *≈ $1.49 · all 24*, when the series has one |
+| **The rule** | *60 coins (≈ $0.59) an episode, never more. Or 1 ad ≤ 30 s per episode, watched to the end.* |
+| **Price locked** | Shown once they've started: their price can't rise. |
+
+The card changes for VIP members (*Included with VIP · No ads · Every released episode is unlocked for you*), for viewers with a Series Pass (*Series Pass active · Paid in full*), and when every released episode is free.
+
+## The episode grid
+
+Each tile shows the episode's state: **Free**, **Unlocked**, **Locked · 60 coins**, **Watched**, **Now** (where they are), or **Not yet released**. Tapping a locked one opens the [unlock sheet](unlocking-episodes.mdx).
+
+## Further down
+
+- **About**: the synopsis (**More** / **Less**) and **Created by**, with the creator's followers.
+- **Ratings & reviews**: the score, reviews, and **Rate** once they've reached episode 3 ([Comments & reviews](comments-and-reviews.mdx)).
+- **More like this**: similar series.
+
+A series limited to some regions isn't shown to viewers elsewhere; a link to it says it isn't available in their region.

@@ -50,7 +50,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-For the Admin Panel's preview, set <AdminPath path="Content › Website" /> › **Connection & history** › **Website address** to `http://localhost:3000`. On your computer, a publish shows within 5 minutes: the instant refresh is only sent to a public address.
+For the Admin Panel's preview, set <AdminPath path="Content › Website" /> › **Connection** › **Website address** to `http://localhost:3000`. On your computer, a publish shows within 5 minutes: the instant refresh is only sent to a public address.
 
 </Step>
 </Steps>
@@ -63,6 +63,9 @@ The home page shows your app name and the sections from <AdminPath path="Content
 
 - **A plain "eDrama" page with no sections.** The website couldn't reach the backend. Check `EDRAMA_API_URL`: it is the server's address **without** `/api`, and it must start with `https://`. Plain `http://` is accepted only for `localhost`, `127.0.0.1` and `*.test` hosts.
 - **A "back soon" page.** The website is switched off in the Admin Panel. Use **Switch website on** in <AdminPath path="Content › Website" />.
+- **A publish takes about 5 minutes to show.** The refresh secret doesn't match, the queue isn't running, or the website runs on a private address. See [Connect to the Admin Panel](./connect.md#check-it-worked).
+- **Posters don't show.** Your files are on S3, R2 or a CDN: add its host to `EDRAMA_IMAGE_HOSTS` ([Connect to the Admin Panel](./connect.md#the-websites-settings)).
+- **Something else?** See [Troubleshooting](/troubleshooting/).
 
 ## Checks before you deploy
 

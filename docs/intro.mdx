@@ -1,0 +1,76 @@
+---
+title: "Welcome to eDrama"
+sidebar_label: "Introduction"
+description: "What eDrama is, its four parts, and how to use this documentation."
+slug: /intro
+---
+
+eDrama is a complete short-drama streaming business: a mobile app where viewers watch vertical episodes of 60 to 90 seconds, a back office where your team runs the catalogue and the money, and a portal where invited creators publish their own series. The first few episodes of every series are free. After that, viewers unlock an episode with **coins**, by watching **one short ad**, with a **Series Pass**, or with a **VIP** subscription. Fair, visible pricing is the product's promise, and it is built into the code so nobody can switch it off by accident.
+
+This documentation covers all of it, from installing the server to publishing the app in the stores, and every screen your team, your creators and your viewers will use.
+
+## The four parts of eDrama
+
+<Cards
+  columns={2}
+  items={[
+    {icon: 'phone', title: 'Viewer app', text: 'The Android and iOS app your audience downloads. Built with Flutter.', to: '/docs/viewer-app/overview/', tone: 'info'},
+    {icon: 'studio', title: 'Admin Panel (the “Studio”)', text: 'Your team’s back office at /admin: titles, uploads, creators, users, money and settings.', to: '/docs/admin/overview/'},
+    {icon: 'creator', title: 'Creator Portal', text: 'A second panel at /creator where invited creators upload and manage only their own series.', to: '/docs/creator/overview/', tone: 'vip'},
+    {icon: 'globe', title: 'Public website & API', text: 'Share pages, legal pages, the creator application form and the API the app talks to.', to: '/docs/getting-started/how-it-works/'},
+  ]}
+/>
+
+The Admin Panel, the Creator Portal and the API all run on **one server** (a computer on the internet that you rent from a hosting company). The mobile app is a separate project that you build on your own computer and publish to Google Play and the App Store.
+
+## Who this guide is for
+
+| You are… | Start with |
+|---|---|
+| The **owner** of the platform, setting it up for the first time | [Launch checklist](getting-started/launch-checklist.mdx) |
+| The person **installing** it on a server | [Server installation](installation/overview.mdx) |
+| The person **building the app** for the stores | [Mobile app setup](app-setup/overview.mdx) |
+| A **team member** running content, support or finance | [Admin Panel](admin/overview.mdx) |
+| A **creator** publishing series | [Creator Portal](creator/overview.mdx) |
+| Anyone who wants to know **what viewers see** | [Viewer App](viewer-app/overview.mdx) |
+
+No technical background is needed for the Admin Panel, Creator Portal and Viewer App guides. The installation and app setup guides involve a server and a few commands; each command is given in full, with a copy button.
+
+## How to read these pages
+
+<Steps>
+
+1. **Follow the menu paths.** A chip like <Path>Settings › Branding</Path> tells you exactly where to click: open the panel shown in colour, then each part in turn. Creator Portal paths are gold, such as <Path panel="creator">My series › New series</Path>, and the app's are blue, such as <Path panel="app">Me › Settings</Path>.
+2. **Use the numbered screens.** Most pages show the screen they describe with numbered markers. Each number is explained right below it; point at a number (or tap it) to highlight its explanation.
+3. **Watch for the coloured notes.** A green **Tip** saves you time, a blue **Note** explains why something works the way it does, an amber **Warning** protects you from a mistake, and a red **Danger** is about something that can't be undone.
+
+</Steps>
+
+:::info[Where a behaviour couldn't be confirmed]
+These pages were written from eDrama's source code. Where the code leaves a question open, the page says so in a note titled **To confirm** instead of guessing.
+:::
+
+## Versions covered
+
+<Defaults
+  title="This documentation describes"
+  rows={[
+    ['Admin Panel & Creator Portal', '1.0.0'],
+    ['Viewer app', '1.0.0 (build 1)'],
+    ['Server software', 'Laravel 13 and Filament 5 on PHP 8.5, MySQL 8'],
+    ['App framework', 'Flutter 3.47.7, Android 7+ and iOS 15+'],
+    ['Website', 'Next.js 16 and React 19, on Node.js 20.9+'],
+  ]}
+/>
+
+## Ready to start?
+
+<Cards
+  items={[
+    {icon: 'check', title: 'Launch checklist', text: 'Every step from an empty server to a live app, in order.', to: '/docs/getting-started/launch-checklist/'},
+    {icon: 'book', title: 'How eDrama works', text: 'The pieces, the people and how money moves between them.', to: '/docs/getting-started/how-it-works/'},
+    {icon: 'help', title: 'Glossary', text: 'Plain-language meanings of every term used here.', to: '/docs/getting-started/glossary/'},
+  ]}
+/>
+
+<HelpBanner />

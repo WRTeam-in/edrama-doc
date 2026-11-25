@@ -1,0 +1,66 @@
+---
+sidebar_position: 2.2
+title: "Install on shared hosting"
+sidebar_label: "Shared hosting (cPanel)"
+description: "Install eDrama on shared hosting such as cPanel, including PHP 8.5, the domain's folder, ffmpeg and the single cron line."
+---
+
+Shared hosting (cPanel, Plesk, DirectAdmin, aaPanel and similar) works for eDrama, with two things to check first: that you can choose **PHP 8.5**, and that the host lets you run **ffmpeg** (or you use Cloudflare Stream for video instead). There's no supervisor on shared hosting, and you don't need it: one cron line runs both the schedule and the queues.
+
+## 1. Choose PHP 8.5
+
+In cPanel, open **MultiPHP Manager** (or **Select PHP Version**), choose **PHP 8.5** for your domain, and make sure these extensions are ticked: bcmath, ctype, curl, fileinfo, gd, intl, json, mbstring, openssl, pdo_mysql, sodium, tokenizer, xml, zip.
+
+Then, in **Select PHP Version › Options** (or **MultiPHP INI Editor**):
+
+- remove `proc_open` from `disable_functions` (ffmpeg can't run without it),
+- set `upload_max_filesize` and `post_max_size` to at least `16M` (more to install updates from the browser: up to `320M`).
+
+## 2. Create the database
+
+Open **MySQL Databases**: create a database, create a user, and add the user to the database with **All privileges**. Write down the full names (cPanel adds your account name as a prefix, such as `myacct_edrama`) and the password.
+
+## 3. Upload the package
+
+Open **File Manager**, upload the eDrama server zip and **Extract** it.
+
+Most hosts ask you to put a site in `public_html`. You have two options:
+
+<Tabs>
+<TabItem value="best" label="Best: point the domain at public">
+
+Extract the package into its own folder, such as `/home/myacct/edrama`. Then, in **Domains** (or **Addon Domains / Subdomains**), set the domain's **Document Root** to `/home/myacct/edrama/public`.
+
+Nothing outside `public` can then be reached from the web.
+
+</TabItem>
+<TabItem value="htaccess" label="If you can't change the document root">
+
+Extract everything into the folder your domain already uses (such as `public_html`), **including the hidden `.htaccess` file** at the top of the package. That file serves the app from `public` and keeps everything else (the `.env` file, logs and code) out of reach.
+
+File Manager hides files that start with a dot: turn on **Settings › Show Hidden Files** to check that `.htaccess` and `.env` are there.
+
+</TabItem>
+</Tabs>
+
+:::danger[Check that .env is hidden]
+Open `https://your-domain.com/.env` in your browser. You must see an error page, **not** a list of settings. If you see the settings, anyone can read your database password: fix the document root or upload the `.htaccess` file. The installer and the System page both run this check and warn you.
+:::
+
+## 4. Set up ffmpeg (or skip it)
+
+Shared hosts can't install system programs, but most let you run a ready-made ffmpeg from your home folder. Follow [Video processing › Shared hosting](/admin-panel/settings/storage-and-video/#ffmpeg-on-shared-hosting). If your host refuses, choose **Cloudflare Stream** later in <Path>Settings › Storage & video</Path>.
+
+## 5. Run the installer
+
+Open your domain in the browser and follow [Web installer](/admin-panel/installation/).
+
+## 6. Add the cron line
+
+In cPanel, open **Cron Jobs**, choose **Once Per Minute** (`* * * * *`) and add the command shown on <Path>System › System</Path> under **Server setup** after you sign in. It looks like this:
+
+```bash title="Cron command"
+/usr/local/bin/php /home/myacct/edrama/artisan schedule:run >> /dev/null 2>&1
+```
+
+The System page shows your server's exact PHP path and folder, with a copy button. See [Cron & queues](/admin-panel/background-jobs/).

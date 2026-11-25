@@ -1,0 +1,81 @@
+---
+title: "Roles and access"
+sidebar_label: "Roles and access"
+description: "Who uses eDrama, how each person signs in, and the permission system that keeps your team to the access their job needs."
+---
+
+eDrama has four kinds of people, and each one signs in a different way and sees a different part of the system.
+
+| Person | Signs in with | Uses |
+|---|---|---|
+| **Owner** (the Super Admin) | Email and password, optional two-factor | Everything, including the team and its roles. There is exactly one Owner. |
+| **Team member** | Email and password, optional two-factor | The Admin Panel, limited by their role. |
+| **Creator** | Google, email or phone, through Firebase | The Creator Portal, and only their own series. |
+| **Viewer** | Google, Apple, phone, email, or as a guest | The mobile app. |
+
+## The Owner
+
+The Owner is created during installation (by the web installer, or with the `php artisan edrama:create-owner` command). Nobody can delete, disable or change the Owner or the Owner's role, not even another member with full access. Only the Owner can:
+
+- create, edit and delete roles,
+- require two-factor sign-in for the whole team,
+- activate the license and install updates,
+- change AI Studio's keys and billing,
+- clear the demo data.
+
+## Team roles and permissions
+
+The Admin Panel is divided into **18 permission areas**. For each area a role gets **None** (the screen is hidden), **View** (they can look) or **Edit** (they can change things; Edit includes View). The server checks the permission on every screen, button and action, so hiding a menu item is never the only protection.
+
+| Permission area | Covers |
+|---|---|
+| Titles & episodes | The Titles list and title editor |
+| Categories | Categories (the genres on titles and in onboarding) |
+| Uploads | Upload & pipeline |
+| Schedule & Home | Release schedule and Home builder |
+| Website | The public website editor |
+| Review queue | Approving creators' work and viewer problem reports |
+| Comments & reviews | Moderating what viewers post |
+| Creators | Inviting and managing creators |
+| Users | Viewers and their accounts |
+| Support tickets | Help requests from the app |
+| Balance adjustments | Adding or removing coins |
+| Refunds | Refunding store purchases |
+| Transactions | Purchases, exports, creator reports and Creator revenue |
+| Prices & coin packs | Monetization: regions, coin packs, VIP plans, ads, rewards |
+| Push | Sending push notifications |
+| Settings | Settings and System |
+| Team & roles | Members, invites and roles |
+| Audit log | The history of every change |
+
+### Ready-made roles
+
+Four roles are created at installation. The Owner can edit them or create new ones.
+
+| Role | What it can do | Refund limit |
+|---|---|---|
+| **Admin** | Edit everywhere except Team & roles (None); the audit log is view only. | 100.00 in the reporting currency |
+| **Content Manager** | Titles, uploads and the release schedule; can look at the review queue. | No refunds |
+| **Moderator** | The review queue and creators. | No refunds |
+| **Finance & Support** | Users, balance adjustments and refunds; can look at transactions and prices. | 20.00 in the reporting currency |
+
+The **refund limit** is the largest single refund a member with that role may make. A role without one can't refund. The Owner can refund any amount. See [Team & roles](../admin/system/team-and-roles.mdx).
+
+:::tip[Least access]
+Give each person the smallest role their job needs. Every role change, sign-in and decision is recorded in the [Audit log](../admin/system/audit-log.mdx).
+:::
+
+## Team sign-in rules
+
+- Five wrong passwords for one email from one address lock that sign-in for 15 minutes.
+- A session ends 12 hours after sign-in, and at the next click when a member is disabled.
+- Passwords need at least 12 characters and must not appear in a known data breach.
+- A member added with a temporary password must choose their own before anything else.
+
+## Creators
+
+A creator is **Invited** until they accept their invite, then **Active**. A **Suspended** creator can't sign in to the portal or send new work, but their live series stay live unless a reviewer unpublishes them. See [Becoming a creator](../creator/becoming-a-creator.mdx).
+
+## Viewers
+
+A viewer who opens the app for the first time becomes a **guest** automatically, with a welcome bonus. Signing in turns the guest into an account and carries over their coins and unlocks. Buying coins or VIP requires a signed-in account. A banned viewer is refused on their next request. See [Accounts](../viewer-app/accounts.mdx).

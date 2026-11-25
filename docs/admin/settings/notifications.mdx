@@ -1,0 +1,54 @@
+---
+title: "Notifications settings"
+sidebar_label: "Notifications"
+description: "Push limits and quiet hours, the wording of automatic notifications, Firebase keys and system alerts."
+---
+
+<Path>Settings › Notifications</Path>
+
+## Push limits
+
+The app reads these at its next start.
+
+| Setting | Default | Meaning |
+|---|---|---|
+| **Maximum per viewer per day** | 3 | Pushes above this wait for the next day. The inbox still gets every message. |
+| **Quiet hours start** / **end** | 23:00 / 08:00 | In each viewer's own time. Pushes wait until quiet hours end. |
+
+## Notification messages
+
+The wording of the automatic notifications, in each app language. A line left empty uses the language file's text.
+
+| Message | When it's sent | You can use |
+|---|---|---|
+| **New episodes (drop alerts)** | To a series' followers when episodes come out; several in a day merge into one. Lines for one episode, two episodes, a run, many episodes, and the text under it. | `{title}` `{number}` `{episode}` `{first}` `{second}` `{last}` `{count}` |
+| **Reply to a comment** | When someone replies to a viewer's comment. | `{name}` |
+| **New series from a followed creator** | When a creator a viewer follows publishes a new series. | `{creator}` `{title}` |
+| **VIP renewal reminder** | A day before each VIP charge. Always sent; viewers can't switch it off. | `{plan}` `{date}` `{period}` `{amount}` `{store}` |
+| **Several notifications in one** | When notifications are grouped while quiet hours or the daily limit hold them. | `{count}` |
+
+Choose **Edit** on a message, write each line in the languages you want to change, and **Save messages**. Titles are limited to 120 characters and body lines to 240. **Restore default wording** puts every language back to the language files' text.
+
+## Firebase
+
+Viewer sign-in, push on Android and iOS, and the Creator Portal's sign-in.
+
+| Field | Where to find it |
+|---|---|
+| **Project ID** | Firebase › Project settings › General |
+| **Service account JSON** | Firebase › Project settings › Service accounts › Generate new private key (paste the whole file) |
+| **Web API key** | The web app's config (`apiKey`). Needed for the Creator Portal's sign-in. |
+| **Auth domain** | Such as `your-project.firebaseapp.com`. Needed for the Creator Portal's sign-in. |
+
+**Save**, then **Test connection**. Without these keys, inbox notifications are still written but pushes are skipped. See [Firebase](../../integrations/firebase.mdx).
+
+## System alerts
+
+Who hears within minutes when a background job or scheduled task fails.
+
+| Field | Meaning |
+|---|---|
+| **Alert emails** | One or more addresses, separated by commas. Members with Settings (Edit) also get a bell notification. |
+| **Slack webhook URL** | Optional: an incoming webhook for your team's alerts channel. |
+
+**Test connection** sends a test alert. Alerts are throttled to one per job per 15 minutes. See [Email & alerts](../../integrations/email-and-alerts.mdx).

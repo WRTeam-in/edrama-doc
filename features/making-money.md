@@ -1,0 +1,48 @@
+---
+sidebar_position: 2.5
+title: "How eDrama makes money"
+sidebar_label: "Overview"
+description: "The six ways eDrama earns, how coins work as the app's currency, and where each is configured."
+---
+
+eDrama earns the way short-drama apps do, with one difference: **fair, visible pricing is built in** and locked, because viewers who trust the price keep coming back.
+
+## The six sources
+
+| Source | How it earns | Configure it |
+|---|---|---|
+| **Coin packs** | Viewers buy coins in Google Play or the App Store. The server checks every receipt before coins land. | [Coin packs](/admin-panel/monetization/#coin-packs) |
+| **Coin unlocks** | Viewers spend coins to unlock an episode, at the series' price. | [Title editor › Prices](/admin-panel/using/content/title-editor/#prices) |
+| **Series Pass** | Viewers spend coins once to unlock every episode of a series, including future ones. | Title editor › Prices |
+| **VIP** | A weekly, monthly or yearly store subscription: every episode, no ads. Never a free trial. | [VIP plans](/admin-panel/monetization/#vip-plans) |
+| **Rewarded ads** | A viewer watches one ad (30 seconds at most) to unlock an episode or earn coins. AdMob pays you. | [Ads](/admin-panel/monetization/#ads) |
+| **Free episodes** | The first episodes of every series. They earn nothing directly, but they're the hook. | Title editor › Paywall |
+
+## Coins: the app's currency
+
+<Flow
+  steps={[
+    {label: 'Money in', tone: 'coin', note: 'A coin pack from the store'},
+    {label: 'Coins', note: 'Paid + bonus in the wallet'},
+    {label: 'Coins out', note: 'Unlocks and Series Passes'},
+    {label: 'Shares', tone: 'vip', note: 'Creators and licensors'},
+  ]}
+/>
+
+- **Paid coins** come from purchases and **never expire**.
+- **Bonus coins** come from pack bonuses, the welcome bonus, the daily spin, streak titles, ads and goodwill credits. They **expire** (7 days by default) and are **always spent first**, earliest expiry first.
+- A coin's money value is set **per region** (for example $0.0099 in the Global region), so prices are fair in every currency. See [Regions & currencies](/features/regions-and-currencies/).
+
+## Where money goes
+
+Each unlock and purchase records the **share** in force at that moment (creator or licensor share, store fee), so later changes never rewrite the past. Creators are paid monthly: their coin share, plus their part of the ad and VIP pools. See [Creator earnings](/features/how-earnings-work/).
+
+## Read next
+
+<Cards
+  items={[
+    {icon: 'coin', title: 'Coins & pricing', text: 'Price per episode, price lock, the cost card.', to: '/features/coins-and-unlocks/', tone: 'coin'},
+    {icon: 'bolt', title: 'Unlock methods', text: 'Coins, ads, Series Pass, VIP, free and grants.', to: '/features/coins-and-unlocks/#four-ways-to-unlock'},
+    {icon: 'shield', title: 'Fair-play rules', text: 'The promises that can’t be switched off.', to: '/features/fair-play-rules/'},
+  ]}
+/>

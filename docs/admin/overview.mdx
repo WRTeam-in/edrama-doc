@@ -1,0 +1,62 @@
+---
+title: "The Admin Panel"
+sidebar_label: "Overview"
+description: "A tour of the eDrama Admin Panel (the Studio): its menu, top bar, search, region switcher and shared controls."
+---
+
+The **Admin Panel**, also called the **Studio**, is where your team runs eDrama: the catalogue, the release schedule, creators, viewers, money and settings. Open it at `https://your-domain.com/admin`.
+
+<Screen
+  id="admin-overview"
+  type="browser"
+  wire="dashboard"
+  url="/admin"
+  title="Admin Panel"
+  caption="The Admin Panel’s Dashboard, with the sidebar menu on the left and the top bar above."
+  markers={[
+    {x: 2.3, y: 3.4, title: 'Your logo', text: 'From Settings › Branding, with the STUDIO label. Click it to return to the Dashboard.'},
+    {x: 14.2, y: 3.4, title: 'Hide sidebar', text: 'More room for wide tables. Shortcut: Ctrl + B (⌘ + B on a Mac).'},
+    {x: 8.4, y: 18.8, title: 'Menu', text: 'Grouped into Overview, Content, Community, Audience, Money and System. You only see the screens your role allows; numbers show what’s waiting.'},
+    {x: 68.6, y: 3, title: 'Search or jump to…', text: 'The command palette (Ctrl + K or ⌘ + K): find a title, creator or user by email, phone or ID, or jump to any page.'},
+    {x: 83.1, y: 3, title: 'Region', text: 'Choose the region that region-based screens show, or All regions.'},
+    {x: 90.4, y: 3, title: 'Studio language', text: 'The language you see the Studio in. Only you see your choice.'},
+    {x: 94.3, y: 3, title: 'Notifications', text: 'The bell: export links, approvals waiting for you, failed jobs and new support tickets.'},
+    {x: 96.9, y: 3, title: 'Theme', text: 'Switch between the paper (light) and ink (dark) theme. Your choice stays in your browser.'},
+    {x: 7.7, y: 95.8, title: 'You', text: 'Your name and role. Open Your account (profile, password, two-factor); the arrow signs you out.'},
+  ]}
+/>
+
+## The menu
+
+| Group | Screens |
+|---|---|
+| **Overview** | [Dashboard](dashboard.mdx) |
+| **Content** | [Titles](content/titles.mdx), [Categories](content/categories.mdx), [Upload & pipeline](content/upload-pipeline.mdx), [AI Studio](content/ai-studio.mdx), [Release schedule](content/release-schedule.mdx), [Home builder](content/home-builder.mdx), [Website](content/website.mdx) |
+| **Community** | [Creators](community/creators.mdx), [AI usage](community/ai-usage.mdx), [Review queue](community/review-queue.mdx), [Comments & reviews](community/comments-and-reviews.mdx) |
+| **Audience** | [Users](audience/users.mdx), [Balance adjustments](audience/balance-adjustments.mdx), [Support tickets](audience/support-tickets.mdx), [Push](audience/push.mdx) |
+| **Money** | [Monetization](money/regions.mdx), [Transactions](money/transactions.mdx), [Creator revenue](money/creator-revenue.mdx) |
+| **System** | [Settings](settings/overview.mdx), [Team & roles](system/team-and-roles.mdx), [Audit log](system/audit-log.mdx), [System](system/system-health.mdx), [License & updates](system/license-and-updates.mdx), [Clear demo data](system/clear-demo-data.mdx) |
+
+Small numbers next to a menu item show what's waiting: open review items, comments and reviews held for a decision, and failed uploads.
+
+Hide the sidebar for more room with **Ctrl + B** (**⌘ + B** on a Mac).
+
+## Things every screen shares
+
+**Status cards.** Most lists start with a row of cards (for example *All titles · Live · In review · Changes requested · Drafts*). Click a card to filter the list to that status.
+
+**Search, filters and tabs.** Above each table: a search box, a **Filter** button and, where it helps, tabs.
+
+**Refresh and Download.** Next to the search, **Refresh** reloads the table and **Download** saves exactly what the table shows (with your search and filters) as CSV, Excel, JSON, XML, TXT or SQL. Each download is recorded in the audit log.
+
+**Save bar.** Long forms (Settings, the title editor) end with a bar that sticks to the bottom of the window: *Changes take effect when you save.*
+
+**Reasons.** Anything that touches money, prices, a viewer's account or a creator's work asks for a reason. The reason is stored in the [audit log](system/audit-log.mdx) with who made the change and when.
+
+## Permissions
+
+What you see depends on your role. A screen you have **View** access to shows its data but hides the buttons that change it; with **None**, it isn't in your menu at all. The server checks your permission on every action too. See [Roles and access](../getting-started/roles-and-access.mdx).
+
+## The Studio's language
+
+The Studio is in English by default and can offer more languages, including right-to-left ones. Pick yours from the language menu in the top bar; the default for the team is set in <Path>Settings › Regions & languages</Path>.

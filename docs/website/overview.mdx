@@ -1,0 +1,107 @@
+---
+title: "Website setup"
+sidebar_label: "Overview & local setup"
+description: "What the eDrama public website is, how it gets its content, what you need, and how to run it on your computer."
+---
+
+eDrama comes with a public **website**: a landing page, a page for every series, category and creator, plus a sitemap, `robots.txt` and `llms.txt`. It helps people find your series on Google and leads every visitor to the app.
+
+<Flow
+  steps={[
+    {label: 'Admin Panel', note: 'Content › Website'},
+    {label: 'Publish', tone: 'live'},
+    {label: 'Website API', note: '/api/v1/website…'},
+    {label: 'Your website', tone: 'vip', note: 'Next.js'},
+  ]}
+  caption="You edit and publish in the Admin Panel; the website reads it from your server."
+/>
+
+## How it works
+
+- The website is a **Next.js** app, hosted **separately** from the Admin Panel: on Vercel, or any server that runs Node.js.
+- It has no database of its own. It reads your server's public website API (`/api/v1/website…`), which holds no viewer data and needs no keys.
+- Everything it shows is edited in <Path>Content › Website</Path>: sections, layouts, texts, header and footer, theme, languages, search text and social links ([Website](../admin/content/website.mdx)).
+- The name, logos and theme colour come from <Path>Settings › Branding</Path>, so the app, the panels and the website always match.
+- Series are **shown, never played**: every poster and button leads to the app.
+- Pages are built once, shared by every visitor and rebuilt in the background every **5 minutes**. When you **Publish** in the Admin Panel, your server tells the website to refresh **at once**.
+- If your server can't be reached, the website keeps showing its last good copy.
+
+## Set it up in this order
+
+<Steps>
+
+1. **Install the Admin Panel first.** The website needs a running server ([Server installation](../installation/overview.mdx)).
+2. **Run it on your computer** (below), to check it works.
+3. **[Connect it](connect.mdx)** to your Admin Panel: the server's address, the website's address and the refresh secret.
+4. **[Deploy it](deploy.mdx)** to Vercel or your own Node.js server.
+5. **Fill in the content** in <Path>Content › Website</Path>, then **Publish**.
+
+</Steps>
+
+| Address | What runs there |
+|---|---|
+| `your-domain.com` (or `www.`) | This website |
+| `admin.your-domain.com` | The server: Admin Panel, Creator Portal and API |
+
+## Requirements
+
+| What | Version |
+|---|---|
+| **Node.js** | **20.9 or newer** (the current LTS is a good choice). Check with `node -v`. |
+| **npm** | Comes with Node.js. The website ships with a `package-lock.json`. |
+| **A running eDrama server** | Reachable over `https://`. On your computer, the Admin Panel at `http://localhost:8000` works too. |
+
+The website is built with **Next.js 16** and **React 19**.
+
+## Run it on your computer
+
+<Steps>
+
+1. **Open the folder.** Unzip `edrama-website-<version>.zip` from your download and open the folder in a terminal or an editor such as VS Code.
+2. **Install the packages.**
+
+   ```bash title="Terminal, in the website folder"
+   npm install
+   ```
+
+3. **Create your settings file** and set at least `EDRAMA_API_URL` ([every setting](connect.mdx#the-websites-settings)):
+
+   ```bash title="Terminal"
+   cp .env.example .env.local
+   ```
+
+   ```ini title=".env.local"
+   EDRAMA_API_URL=http://localhost:8000
+   ```
+
+4. **Start it.**
+
+   ```bash title="Terminal"
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000). The home page shows your app name and the sections from <Path>Content › Website</Path>.
+
+</Steps>
+
+For the Admin Panel's live preview, set <Path>Content › Website</Path> › **Connection & history** › **Website address** to `http://localhost:3000`. On your computer, a publish shows within 5 minutes: the instant refresh is only sent to a public address.
+
+### Before you deploy
+
+```bash title="Terminal"
+npm run lint
+npm run build
+```
+
+Both should finish without errors.
+
+## Troubleshooting
+
+| What you see | Why, and what to do |
+|---|---|
+| A plain "eDrama" page with no sections | The website couldn't reach your server. Check `EDRAMA_API_URL`: it's the server's address **without** `/api`, and it must start with `https://` (plain `http://` only works for `localhost`, `127.0.0.1` and `*.test`). |
+| A "back soon" page | The website is switched off in the Admin Panel: **Switch website on** in <Path>Content › Website</Path>. |
+| A publish takes about 5 minutes to show | The refresh secret doesn't match, the queue isn't running, or the website runs on a private address ([Connect](connect.mdx#check-it-worked)). |
+| Posters don't show | Your files are on S3 or a CDN: add its host to `EDRAMA_IMAGE_HOSTS` ([Connect](connect.mdx#the-websites-settings)). |
+
+<HelpBanner title="Want us to put it live?" text="Our team can deploy the website, connect your domain and link it to your Admin Panel." />

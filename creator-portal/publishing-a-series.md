@@ -6,17 +6,17 @@ description: What a creator does in the portal, from creating a series to going 
 
 # Publishing a series
 
-This is the creator's side. Share this page with your creators.
+This is the creator's side. Share this page with your creators. Each step has its own detailed page, screen by screen, in [the creator's guide](/creator-portal/guide/home/).
 
 <Steps>
 <Step title="Accept the Creator terms">
 
-At the first sign-in, the portal shows the **Creator Terms**. Tick **I have read and agree to the Creator Terms** and click **Accept and continue**. When the terms change, the portal asks again.
+At the first sign-in, the portal shows the **Creator Terms**. Tick **I have read and agree to the Creator Terms** and click **Accept and continue**. When the terms change, the portal asks again ([Becoming a creator](./becoming-a-creator.md#accepting-the-creator-terms)).
 
 </Step>
 <Step title="Create the series">
 
-**New series**: the name, synopsis, categories, age rating, a 2:3 poster (at least 600 × 900) and an optional 16:9 banner. The series starts as a **Draft**.
+**New series**: the name, synopsis, categories, age rating, a 2:3 poster (at least 600 × 900) and an optional 16:9 banner. The series starts as a **Draft** ([Create a series](/creator-portal/guide/create-series/)).
 
 </Step>
 <Step title="Set the free episodes and price">
@@ -28,12 +28,12 @@ In the same form, **Free episodes** and **Coin price per episode**, within the p
 
 On the series, **Upload episodes**: drop the video files (MP4, MOV or MKV) straight from the browser. Each one shows its progress as it uploads and processes. Add **Subtitles** (an SRT or WebVTT file per language) for each episode.
 
-If the platform allows YouTube episodes, **Add YouTube video** adds one by its link. YouTube episodes are always free.
+If the platform allows YouTube episodes, **Add YouTube video** adds one by its link. YouTube episodes are always free. More: [Upload episodes](/creator-portal/guide/upload-episodes/).
 
 </Step>
 <Step title="Send it for review">
 
-**Submit for review**, tick the rights declaration and **Send for review**. Each episode must have finished processing and be at least 45 seconds long. The series shows **In review** and can't be changed until there's a decision.
+**Submit for review**, tick the rights declaration and **Send for review**. Each episode must have finished processing and be at least 45 seconds long. The series shows **In review** and can't be changed until there's a decision ([Submit for review](/creator-portal/guide/submit-for-review/)).
 
 </Step>
 </Steps>
@@ -49,12 +49,14 @@ The review team can approve, **request changes** (with the reason), or reject. E
 
 Upload the new episodes, then **Submit new episodes**. Each one is reviewed on its own, and the series stays live as it is meanwhile.
 
-To choose when they drop, turn on **Hold them for my release times** when you submit. Once an episode is approved, open **Release times** and set when it goes out. The earliest is a number of hours after approval, set by the platform (2 by default). Without the hold, each episode goes out as soon as it's approved.
+To choose when they drop, turn on **Hold them for my release times** when you submit. Once an episode is approved, open **Release times** and set when it goes out. The earliest is a number of hours after approval, set by the platform (2 by default). Without the hold, each episode goes out as soon as it's approved. More: [Release times](/creator-portal/guide/release-times/).
 
 Changes to a live series' details (**Edit series**) also go to the review team as an update. Viewers keep seeing the series as it is until a reviewer approves the update.
 
 ## Stats and earnings
 
-Each series has a **Stats** page for the last 28 days: views, unlocks and followers, and for each episode, the share of viewers who watched to 90%, unlocks by method, and how many went on to the next episode. The creator's own viewing isn't counted, and the numbers refresh every 15 minutes. **Comments & reviews** shows what viewers wrote.
+Each series has a **Stats** page for the last 28 days: views, unlocks and followers, and for each episode, the share of viewers who watched to 90%, unlocks by method, and how many went on to the next episode. The creator's own viewing isn't counted, and the numbers refresh every 15 minutes. **Comments & reviews** shows what viewers wrote. More: [Stats](/creator-portal/guide/stats/) and [Comments & reviews](/creator-portal/guide/comments-and-reviews/).
 
-**Earnings** shows what the creator earned in closed months, what was paid to them, what is waiting to be paid and this month so far, with monthly statements and payouts. Payouts are made by the platform outside the app ([How earnings work](/features/how-earnings-work/)).
+**Earnings** shows what the creator earned in closed months, what was paid to them, what is waiting to be paid and this month so far, with monthly statements and payouts. Payouts are made by the platform outside the app ([Earnings](/creator-portal/guide/earnings/), [How earnings work](/features/how-earnings-work/)).
+
+When the platform allows it, creators can also make characters, storyboards and video takes with [AI Studio](/creator-portal/guide/ai-studio/) and change an episode with the [AI episode editor](/creator-portal/guide/ai-episode-editor/).

@@ -12,6 +12,7 @@ eDrama starts with three plans per region: **weekly**, **monthly** and **yearly*
 
 :::danger No free trials
 eDrama's VIP has **no free trial and no introductory offer**, a fair-play rule that the server enforces. Don't add trial or intro offers in either store. The Admin Panel also refuses a product ID, base plan ID or perk that names a trial, an intro offer or a "free week"/"7 days free".
+The server also refuses a subscription the store started with a free trial (and leaves a Google Play one unacknowledged, so Google refunds it).
 :::
 
 ## Before you start
@@ -19,6 +20,16 @@ eDrama's VIP has **no free trial and no introductory offer**, a fair-play rule t
 - Your app is created in Play Console and App Store Connect, with your own [package name](./package-name.md).
 - **Google Play:** a payments profile is set up for your developer account, and an app build with billing has been uploaded to a testing track at least once. Play Console only lets you create products after that.
 - **App Store:** the **Paid Applications Agreement** is signed, with your banking and tax details, in App Store Connect › **Business**. See the [common in-app purchase guide](https://wrteam-in.github.io/common_app_doc/GeneralSettings/iap) for both.
+
+## The IDs the installer created
+
+You can keep these or change them, as long as each store and the Admin Panel agree:
+
+| Plan | Google Play | App Store |
+|---|---|---|
+| Weekly | Subscription `vip`, base plan `weekly` | `com.edrama.app.vip.weekly` |
+| Monthly | Subscription `vip`, base plan `monthly` | `com.edrama.app.vip.monthly` |
+| Yearly | Subscription `vip`, base plan `yearly` | `com.edrama.app.vip.yearly` |
 
 ## Google Play
 
@@ -132,6 +143,6 @@ Renewals, cancellations and refunds reach eDrama only through the stores' server
 | Store | How | Renewals |
 |---|---|---|
 | Google Play | Add **License testers** in Play Console › **Settings › License testing**, and install the app from a testing track | Speeded up: a weekly or monthly plan renews about every 5 minutes, a yearly one about every 30 minutes |
-| App Store | Sign in with a **Sandbox** account (App Store Connect › **Users and Access › Sandbox**) on a TestFlight or development build. Set the App Store card's **Environment** to **Sandbox**. | Speeded up: 1 week ≈ 3 minutes, 1 month ≈ 5 minutes, 1 year ≈ 1 hour |
+| App Store | Sign in with a **Sandbox** account (App Store Connect › **Users and Access › Sandbox**) on a TestFlight or development build. Nothing to switch on the server: every purchase is checked with the live App Store first, then the sandbox (the App Store card's **Environment** only decides where **Test connection** sends its test). | Speeded up: 1 week ≈ 3 minutes, 1 month ≈ 5 minutes, 1 year ≈ 1 hour |
 
 After a few renewals, the test subscription shows on the viewer in <AdminPath path="Audience › Users" />, with **Auto-renew** on.

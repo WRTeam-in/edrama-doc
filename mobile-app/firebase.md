@@ -6,32 +6,37 @@ description: Connect the app to your Firebase project for sign-in, push, analyti
 
 # Firebase
 
-The app uses Firebase for **sign-in** (Authentication), **push notifications** (Cloud Messaging), **Analytics**, **Crashlytics** and **App Check**. Use **one Firebase project** for the app, the Admin Panel and the Creator Portal.
+**Firebase** is Google's app platform. eDrama uses it for viewer **sign-in** (Authentication), **push notifications** (Cloud Messaging), **App Check** (proof that requests come from your real app), crash reports (**Crashlytics**) and **Analytics**. Use **one Firebase project** for the app, the Admin Panel and the Creator Portal.
 
-## Create the project and connect the app
+<CommonGuide to="GeneralSettings/firebase" title="Firebase setup" text="Create the Firebase project, install the Firebase CLI and run flutterfire configure, with screenshots." />
 
-Follow the common guide to create the project, install the Firebase CLI and run `flutterfire configure`:
+:::warning[Do this after changing the package name]
+Firebase apps are tied to your package name and bundle ID. Change those first ([Name & package name](/mobile-app/package-name/)).
+:::
 
-👉 **[Common guide › Firebase setup](https://wrteam-in.github.io/common_app_doc/GeneralSettings/firebase)**
+<Anchor id="create-the-project-and-connect-the-app" />
 
-The download has **no Firebase files**: they are tied to a Firebase project, so you make your own. Until you do, the Android build stops and Xcode can't find `GoogleService-Info.plist`.
+## 1. Create the project
 
 <Steps>
-<Step title="Add the apps">
 
-[Change the package name](./package-name.md) first, then add an Android app and an iOS app with those IDs to your Firebase project.
+1. Open the [Firebase console](https://console.firebase.google.com/) and choose **Create a project**.
+2. Give it a name and finish the steps (Google Analytics is optional).
 
-</Step>
-<Step title="Run flutterfire configure">
+</Steps>
 
-From the project folder. The `--out` path matters: eDrama reads its options from `lib/app/config/`, not from FlutterFire's default `lib/firebase_options.dart`.
+## 2. Connect the app with FlutterFire
 
-```bash
+The download has **no Firebase files**: they belong to a Firebase project, so you make your own. Until you do, the Android build stops (no `google-services.json`), Xcode can't find `GoogleService-Info.plist`, and the placeholder `firebase_options.dart` stops the app at start with *Firebase is not configured yet*. The project's Firebase keys are generated, not typed by hand.
+
+```bash title="Terminal, in the app folder"
+npm install -g firebase-tools
+firebase login
 dart pub global activate flutterfire_cli
 flutterfire configure --project=<your-project> --out=lib/app/config/firebase_options.dart
 ```
 
-It writes:
+Choose **android** and **ios**. The command registers both apps in your Firebase project and writes three files:
 
 | File | Platform |
 |---|---|
@@ -39,59 +44,99 @@ It writes:
 | `android/app/google-services.json` | Android |
 | `ios/Runner/GoogleService-Info.plist` | iOS |
 
-</Step>
-<Step title="Fill in the iOS URL schemes">
+:::warning[Keep the `--out` path]
+eDrama reads its options from `lib/app/config/`, not from FlutterFire's default `lib/firebase_options.dart`. Without `--out`, the app keeps the placeholder and won't start.
+:::
 
-In `ios/Runner/Info.plist` › `CFBundleURLSchemes`, replace the two placeholders:
+### Fill in the iOS URL schemes
 
-- `com.googleusercontent.apps.YOUR_REVERSED_CLIENT_ID`: the `REVERSED_CLIENT_ID` value from `GoogleService-Info.plist` (Google sign-in).
-- `app-1-YOUR_SENDER_ID-ios-YOUR_APP_HASH`: the **Encoded App ID** shown for your iOS app in Firebase › Project settings (phone sign-in).
+Google and phone sign-in on iPhone return to the app through two URL schemes. In `ios/Runner/Info.plist` › `CFBundleURLSchemes`, replace the two placeholders:
 
-</Step>
-</Steps>
+| Placeholder | Replace with | Used by |
+|---|---|---|
+| `com.googleusercontent.apps.YOUR_REVERSED_CLIENT_ID` | The `REVERSED_CLIENT_ID` value from `GoogleService-Info.plist` | Google sign-in |
+| `app-1-YOUR_SENDER_ID-ios-YOUR_APP_HASH` | The **Encoded App ID** shown for your iOS app in Firebase › Project settings | Phone sign-in |
 
-## Turn on the sign-in methods
+```xml title="ios/Runner/Info.plist"
+<key>CFBundleURLSchemes</key>
+<array>
+  <string>com.googleusercontent.apps.123456789012-abcdefg</string>
+  <string>app-1-123456789012-ios-0a1b2c3d4e5f6a7b</string>
+</array>
+```
 
-Firebase console › **Authentication** › **Sign-in method**:
+<Anchor id="turn-on-the-sign-in-methods" />
 
-| Provider | Used for |
-|---|---|
-| **Anonymous** | Guest mode: viewers watch before signing in. **Required.** |
-| **Google** | Sign in with Google |
-| **Apple** | Sign in with Apple (needed on iOS when Google is offered) |
-| **Phone** | Phone sign-in. Needs the Blaze plan: [common guide › Firebase billing](https://wrteam-in.github.io/common_app_doc/GeneralSettings/firebase-billing). |
-| **Email/Password** | Email sign-in, with a verified address |
+## 3. Turn on the sign-in methods
 
-Turn off any method you don't use in `app_config.dart` (`signInWithGoogle`, `signInWithApple`, `signInWithPhone`, `signInWithEmail`). Phone sign-in also follows the **Phone sign-in** switch in Admin Panel › Settings › App & support.
+In the Firebase console, open **Authentication › Sign-in method** and enable:
 
-For Google sign-in on Android, add your app's **SHA-1** and **SHA-256** fingerprints (debug, upload and Play App Signing keys) in Firebase › Project settings › your Android app, then download `google-services.json` again.
+| Provider | Needed for | Notes |
+|---|---|---|
+| **Anonymous** | Guests | **Required.** Every viewer starts as a guest. |
+| **Google** | "Continue with Google" | Add your Android app's **SHA-1** and **SHA-256** fingerprints in **Project settings › Your apps**: the debug key, your upload key and, after your first Play release, the **Play App Signing** key. Then download `google-services.json` again. |
+| **Apple** | "Continue with Apple" | Required on iOS when Google is offered. Set up the Apple provider with your Apple Developer account; until then, the button reports a failure. |
+| **Phone** | "Continue with Phone" | SMS codes. Needs Firebase's pay-as-you-go **Blaze** plan ([common guide › Firebase billing](https://wrteam-in.github.io/common_app_doc/GeneralSettings/firebase-billing)). Can be switched off from the Admin Panel. |
+| **Email/Password** | "Continue with Email" | The app verifies the address with a link. |
 
-## Connect the Admin Panel
+Turn off in `app_config.dart` any method you don't enable here (`signInWithGoogle`, `signInWithApple`, `signInWithPhone`, `signInWithEmail`) ([Defaults & limits](/mobile-app/defaults-and-limits/#sign-in-methods)).
 
-Add the **Project ID**, **Service account JSON**, **Web API key** and **Auth domain** in Admin Panel › Settings › Notifications: [Firebase and notifications](/admin-panel/settings/firebase-and-notifications/).
+Under **Authentication › Settings › Authorized domains**, add your Admin Panel's domain. The Creator Portal signs creators in from it in the browser.
 
-## App Check
+## 4. Push notifications
 
-App Check proves requests come from your real app. The app uses **Play Integrity** on Android and **App Attest** (with DeviceCheck as a fallback) on iOS in release builds, and the debug providers in debug builds.
+The full setup, with the APNs key, the server keys and a test push, is on [Push notifications](/mobile-app/push-notifications/). In short:
+
+- **Android** works with no extra step: `google-services.json` is enough. The app sorts notifications into four channels, so viewers can mute one kind in Android's settings:
+
+  | Channel ID | Name viewers see in Android's settings |
+  |---|---|
+  | `drops` | New episodes |
+  | `account` | Account & purchases |
+  | `offers` | Offers |
+  | `quiet` | Quiet hours (low importance, silent) |
+
+- **iOS** needs an **APNs key**: in your [Apple Developer account](https://developer.apple.com/account/resources/authkeys/list), create a key with **Apple Push Notifications service** enabled, download it, then upload it in Firebase under **Project settings › Cloud Messaging › Apple app configuration**. In Xcode, check that the **Push Notifications** capability is on.
+
+<Anchor id="app-check" />
+
+## 5. App Check (recommended)
+
+App Check proves requests come from your real app on a real device. The app already uses **Play Integrity** on Android and **App Attest** (falling back to DeviceCheck) on iOS in release builds.
 
 <Steps>
-<Step title="Register the apps">
 
-Firebase console › **App Check** › **Apps**: register the Android app with **Play Integrity** and the iOS app with **App Attest**.
+1. In Firebase, open **App Check › Apps** and register the Android app with **Play Integrity** and the iOS app with **App Attest**.
+2. **For testing:** a debug build prints an App Check **debug token** in its log on first run. Add it in App Check › your app › **Manage debug tokens**, so your test phones and emulators pass.
+3. On your server, start with `EDRAMA_APP_CHECK=monitor` in `.env` (checks and logs, refuses nothing), then run `php artisan config:cache` (or `php artisan config:clear`).
+4. When the logs show your real app passing, switch to `EDRAMA_APP_CHECK=enforce`.
 
-</Step>
-<Step title="Add debug tokens for testing">
-
-A debug build prints a debug token in its log on first run. Add it in App Check › your app › **Manage debug tokens**.
-
-</Step>
-<Step title="Turn it on in the backend">
-
-In the backend's `.env`, start with `EDRAMA_APP_CHECK=monitor` (requests without a valid token are only logged). When your released app works, switch to `enforce`, then run `php artisan config:clear`.
-
-</Step>
 </Steps>
 
 :::caution
-Don't use `enforce` until the release build from the store passes App Check, or older builds and test devices will be refused.
+Don't use `enforce` until the build from the store passes App Check. Older builds and test devices without a debug token would be refused.
 :::
+
+<Anchor id="connect-the-admin-panel" />
+
+## 6. Give your server the keys
+
+Your server checks every viewer's sign-in token, sends pushes, and signs creators in, so it needs the same project's keys.
+
+<Steps>
+
+1. In Firebase, open **Project settings › General**. Copy the **Project ID**. Under **Your apps**, add a **Web app** if you don't have one, and copy its `apiKey` and `authDomain`.
+2. Open **Project settings › Service accounts › Generate new private key**. A JSON file downloads.
+3. In the Admin Panel, open <Path>Settings › Notifications</Path>, find the **Firebase** card and fill in:
+   - **Project ID**,
+   - **Service account JSON** (paste the whole file),
+   - **Web API key** and **Auth domain** (needed for the Creator Portal's sign-in).
+4. Choose **Save**, then **Test connection**.
+
+</Steps>
+
+:::tip
+Send yourself a test push from <Path>Audience › Push › Test send</Path> after signing in to the app with your own email. It's the quickest way to check the whole chain.
+:::
+
+More: [Firebase integration](/admin-panel/settings/firebase-and-notifications/).

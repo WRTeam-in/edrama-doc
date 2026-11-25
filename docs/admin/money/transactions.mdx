@@ -1,0 +1,79 @@
+---
+title: "Transactions"
+sidebar_label: "Transactions"
+description: "Every coin purchase from Google Play and the App Store, with receipt checks, refunds, CSV exports and the monthly creator report."
+---
+
+**Transactions** lists every coin-pack purchase across Google Play and the App Store. Receipts are verified on the server **before** coins land, and every purchase opens into a drawer with its receipt checks, ledger rows and refund.
+
+<Access area="Transactions" view="See purchases, export and create reports" edit="(Refunds need the Refunds area)" />
+
+<Screen
+  id="admin-transactions"
+  type="browser"
+  wire="list"
+  url="/admin/transactions"
+  title="Transactions"
+  caption="Transactions: the stat cards and every purchase with store, amount, coins, status and receipt check."
+  markers={[
+    {x: 94.1, y: 14.6, title: 'Export CSV', text: 'The transactions in a date range, with your filters.'},
+    {x: 83.7, y: 14.6, title: 'Monthly creator report', text: 'Per series and region, so Finance can pay creators.'},
+    {x: 70.7, y: 14.6, title: 'Close month', text: 'Writes each creator’s statement for a finished month.'},
+    {x: 24.3, y: 22.9, title: 'Stats', text: 'Gross over 30 days, refund rate, chargebacks, and deliveries auto-retried.'},
+    {x: 32.8, y: 39.4, title: 'Show', text: 'All, Completed, Refunds & chargebacks, Needs attention.'},
+    {x: 54.1, y: 39.4, title: 'Search', text: 'Order ID or viewer.'},
+    {x: 23.1, y: 50.3, title: 'A purchase', text: 'The user, order ID and pack. Click the row for its drawer: receipt checks, ledger rows and refund.'},
+    {x: 81.9, y: 51.3, title: 'Receipt', text: 'Verified, Retried, Awaiting store or Check failed.'},
+  ]}
+/>
+
+## Filters and totals
+
+Filter by **date**, **product** and **amount** (in each purchase's own currency, or in the reporting currency at each day's rate). Under the table, **Totals for the matching rows** add up every page: the number of purchases, gross, refunds, and the **net** in your reporting currency. Currencies with no exchange rate on some days are named and left out rather than guessed.
+
+## The purchase drawer
+
+| Section | What it shows |
+|---|---|
+| **Item and user** | The pack, coins credited (paid + bonus) and the viewer. |
+| **Order ID**, **store product**, **country · region**, **store fee** | The fee saved at the time of purchase. |
+| **Verification** | Four checks: *Receipt signature valid*, *Purchase token unused (no replay)*, *Coins delivered to the ledger*, *Store notification received*, each Passed, Passed after a retry, Waiting for the store, Failed or Not reached. |
+| **Ledger rows** | The coin movements this purchase caused, with the balance after. |
+| **Refund** | If refunded: the source (Admin Panel, store notification or Google Play voided purchases), coins taken back, any shortfall, who asked and when. |
+
+## Refund a purchase {#refund-a-purchase}
+
+Refunds from the panel are for **Google Play** purchases. **Apple decides App Store refunds**: the drawer has a link to send the viewer to Apple's refund request page, and Apple's notification updates the purchase when it's done.
+
+<Steps>
+
+1. Open the purchase and choose **Refund…**.
+2. Pick the **Reason**: Charged twice, Coins not delivered, Accidental purchase, A child or family member bought it, or Something else (then a **Note** is required).
+3. Decide **Take the coins back**:
+   - **On**: a reversal is written to the viewer's ledger. If they already spent some, what's left is taken back and the rest is recorded as the **shortfall**: the balance never goes below zero.
+   - **Off**: the money goes back and the viewer keeps the coins.
+4. Choose **Refund**.
+
+</Steps>
+
+The panel first checks your role's **refund limit** (shown in the dialog), then asks Google to refund. **Only if Google agrees** are the refund, the reversal and the audit record written. If Google refuses, nothing is written.
+
+| Your role's limit | What happens |
+|---|---|
+| Within the limit | You can refund. |
+| Over the limit | Someone with a higher limit must refund it. |
+| No limit set | Your role can't refund. |
+| Owner | Any amount. |
+
+Partial or second refunds aren't offered.
+
+:::info[Refunds the store makes]
+Refunds and chargebacks made directly by Google or Apple arrive through the stores' notifications and a daily check of Google's voided purchases. They update the purchase and reverse the coins the same way, never twice.
+:::
+
+## Exports
+
+- **Export CSV**: the transactions in the dates you pick, with the filters you have on. A short export downloads at once; a long one is built in the background and its download link (good for 24 hours) arrives in the **bell**.
+- **Monthly creator report**: for each series and region, the paid coins spent, Series Pass coins, ad unlocks and VIP minutes for one month, with the settings used. Its link arrives in the bell. It's also made automatically on the 1st of each month.
+
+Cells that look like spreadsheet formulas are written as plain text, for safety. Every export is in the audit log.

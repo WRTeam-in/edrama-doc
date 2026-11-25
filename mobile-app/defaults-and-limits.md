@@ -1,0 +1,53 @@
+---
+sidebar_position: 8.5
+title: "Defaults and limits"
+sidebar_label: "Defaults & limits"
+description: "The app's built-in defaults for the player, spend guard, Home slider, sign-in and notifications, and where to change them."
+---
+
+`lib/core/constants/constant.dart` holds the defaults a viewer starts with and a few timings. Several are only used **until the server answers**: your Admin Panel's values then take over.
+
+| Setting | Default | Meaning |
+|---|---|---|
+| `spendLimitSteps` | 100, 300, 600, 1000 | The daily coin limits a viewer can pick, until the server sends its own (<Path>Settings › Payments › Daily spend cap</Path>). |
+| `defaultSpendLimit` | 300 | The limit a new viewer starts with, until the server says. |
+| `heroAutoAdvance` | 5 seconds | How long each featured series stays on the Home slider. A swipe restarts the wait. |
+| `defaultAutoplayNext` | on | Play the next episode when one ends. Viewers can turn it off. |
+| `defaultDataSaver` | off | Start every episode at 360p, then sharpen. Viewers can turn it on. |
+| `dataSaverPreloadAt` | 60% | With data saver on, how far into an episode the next one starts loading. |
+| `upNextCountdown` | 3 seconds | The countdown on the Up Next card before the next episode plays. |
+| `cleanExitFade` | 2 seconds | In the player's clean view, how long the way out stays before fading. |
+| `playbackSpeeds` | 0.75×, 1×, 1.25×, 1.5×, 2× | The player's speed menu. |
+| `emailVerifyPoll` | 3 seconds | How often the "check your email" page checks whether the link was opened. |
+| `emailResendSeconds` | 30 | How long before the verification email may be sent again. |
+| `defaultQuietHours` | 23:00 to 08:00 | Quiet hours in the viewer's time, until the server sends its own (<Path>Settings › Notifications</Path>). |
+| `defaultHaptics` | on | Vibration feedback. Viewers can turn it off. |
+
+## What isn't in the app
+
+Prices, coin amounts, ad limits, rewards, VIP plans and feature switches all come from the Admin Panel, so they can change without a new release. See [Monetization](/features/making-money/) and [App & support](/admin-panel/settings/app-and-support/).
+
+## Sign-in methods
+
+Turn off any sign-in method you haven't set up in Firebase, in `lib/app/config/app_config.dart`:
+
+```dart title="lib/app/config/app_config.dart"
+static const bool signInWithGoogle = true;
+static const bool signInWithApple = true;
+static const bool signInWithPhone = true;
+static const bool signInWithEmail = true;
+```
+
+:::warning[Apple's rule]
+Apple requires **Sign in with Apple** on iOS whenever Google sign-in is offered. Keep both on, or both off.
+:::
+
+Phone sign-in can also be switched off for everyone from <Path>Settings › App & support › Features</Path>, without a new release.
+
+## Screen protection
+
+```dart title="lib/app/config/app_config.dart"
+static const bool protectScreen = true;
+```
+
+While on, Android blocks screenshots and recordings of the player, and iOS hides the video while the screen is being recorded or mirrored (the viewer sees "Screen recording is on"). Turn it off only if your content may be captured freely.

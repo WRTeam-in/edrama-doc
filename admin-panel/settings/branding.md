@@ -8,37 +8,54 @@ description: Your app name, logos, favicon and theme colour, and the photos and 
 
 ## Branding
 
-**Where:** <AdminPath path="System › Settings › Branding" />
+<Path>Settings › Branding</Path> sets your identity once for the app, the Studio, the Creator Portal, the public pages and the website.
 
-One place sets your brand for the app, the Admin Panel, the Creator Portal and the website. A preview of the app and the Admin Panel sits beside the form.
+<Screen
+  id="admin-settings-branding"
+  type="browser"
+  wire="form"
+  url="/admin/settings?s=branding"
+  title="Branding"
+  caption="Settings › Branding: identity, logos and the live preview."
+  markers={[
+    {x: 39.3, y: 26, title: 'App name', text: 'Replaces “eDrama” everywhere, including the app at its next start.'},
+    {x: 57.4, y: 26, title: 'Tagline', text: 'Shown on the splash and public pages.'},
+    {x: 40.2, y: 34.6, title: 'Wordmark font', text: 'Instrument Serif Italic or Geist Bold, when no logo is uploaded.'},
+    {x: 55.4, y: 47, title: 'Logos', text: 'Horizontal for dark and light backgrounds, vertical, favicon and square logo. PNG or WebP up to 1 MB.'},
+    {x: 57.5, y: 73.3, title: 'Favicon', text: 'The browser-tab icon, at least 64 × 64.'},
+    {x: 85.4, y: 22.6, title: 'Preview', text: 'Your theme colour on the app and on the Studio and Creator Portal. The colour choices are further down.'},
+    {x: 92.1, y: 95.5, title: 'Save', text: 'The Studio changes at once; the app at its next start.'},
+  ]}
+/>
 
-| Field | What it is |
+| Setting | Details |
 |---|---|
-| **App name**, **Tagline** | Your product's name (up to 40 characters, `eDrama` to start) and one-line tagline (up to 120). The app shows the name once it reaches the server. |
-| **Horizontal logo for dark backgrounds** | A logo with a light name. It replaces the mark and name in the sidebar and on the share and error pages. |
-| **Horizontal logo for light backgrounds** | A logo with a dark name, for the top bar and public pages in the light theme. |
+| **App name** | Replaces "eDrama" everywhere: the app (at its next start), the Studio, emails, share pages. Default *eDrama*. |
+| **Tagline** | Default *Stories that hook you. Prices that don't.* |
+| **Horizontal logo for dark backgrounds** | With a light name. Replaces the mark and name in the sidebar and on share and error pages. |
+| **Horizontal logo for light backgrounds** | With a dark name. Top bar and public pages in the light theme. |
 | **Vertical logo** | The mark above the name, with a light name, for the dark sign-in screens. |
-| **Favicon** | The small icon on the browser tab. Square, at least 64 × 64 pixels. |
-| **Square logo** | The mark alone, for small spots such as the organisation card and the push preview. Without one, they show the built-in mark. |
-| **Wordmark font** | Instrument Serif Italic (default) or Geist Bold, for the name where it's written out. |
-| **Theme colour** | One colour for the app, the Admin Panel and the Creator Portal: buttons, switches, progress and highlights. Pick Greenlight (default), Ember, Iris, Rosé, Aqua, Gold, Sky, or a **Custom colour** by hex code. Text on it switches between ink and white so it stays readable. |
-| **Studio opens in** | The theme the Admin Panel and Creator Portal open in: Paper (light, the default), Ink (dark) or Follow the device. Each member can still switch with the moon icon. |
+| **Favicon** | The browser-tab icon. Square, at least 64 × 64. |
+| **Square logo** | The mark alone, for small spots such as the push preview. |
+| **Wordmark font** | Instrument Serif Italic or Geist Bold, when no logo is uploaded. |
+| **Theme colour** | Greenlight (default), Ember, Iris, Rosé, Aqua, Gold, Sky, or **Custom colour** (any hex code). Text on it switches between ink and white automatically so it stays readable. Charts keep their own palette. |
+| **Studio opens in** | Paper (light), Ink (dark) or Follow the device. Each member can still switch with the moon in the top bar. |
 
-Logos are PNG or WebP, up to 1 MB, on a transparent background.
+Logos are **PNG or WebP, up to 1 MB, on a transparent background**. The mobile app's own logo ships inside the app ([Logo & icons](/mobile-app/logo-and-icons/)).
 
-Press **Save**. The Admin Panel and the Creator Portal change at once; the app picks up the change at its next start.
+The previews show the theme colour on the app (a "Continue E7" card and an "Unlock E8 · 60 coins" button) and on the Studio. Choose **Save**: the Studio and Creator Portal change at once; the app picks it up at its next start.
 
-:::note The app's own logo
-The logo inside the app (splash screen, Home header) ships with the app. Change it in the app's code: see [Mobile App › Logo and icons](/mobile-app/logo-and-icons/). The app picks up the **App name** and **Theme colour** from here at its next start.
+## Sign-in screen {#sign-in-screen}
+
+<Path>Settings › Sign-in screen</Path> designs the stage beside the sign-in pages of the Studio and the Creator Portal.
+
+| Setting | Details |
+|---|---|
+| **Photos** | **Built-in photos** or **Your own photos**: up to 3 landscape photos, JPEG, PNG or WebP, up to 4 MB each (1600 × 1000 or larger looks best). Drag to set their order; fewer than 3 repeat. |
+| **Motion** | **Cinematic** (photos cross-fade and drift, posters scroll, the tagline rises word by word), **Subtle** (only the photos cross-fade, slowly) or **Still**. Anyone whose device asks for less motion always gets a still stage. |
+| **Show the live titles' posters** | A strip of the newest live titles beside the photos. Off: the photos fill the stage. |
+| **Words** | The **Tagline** and **Line under it**, separately for **Studio sign-in** and **Creator Portal sign-in**. Leave one blank to keep the standard wording shown in grey. |
+
+:::tip
+The built-in photos are stock images. Replace them with your own key art before launch.
 :::
-
-## Sign-in screen
-
-<AdminPath path="System › Settings › Sign-in screen" /> sets the stage beside the Admin Panel's and the Creator Portal's sign-in forms.
-
-- **Photos**: **Built-in photos**, or **Your own photos**: up to 3 landscape photos (JPEG, PNG or WebP up to 4 MB each; 1600 × 1000 or larger looks best). Drag to set their order; fewer than 3 repeat.
-- **Motion**: **Cinematic** (the default: photos cross-fade and drift, posters scroll, the tagline rises word by word), **Subtle** (only the photos cross-fade) or **Still**. Anyone whose device asks for less motion always gets a still stage.
-- **Show the live titles' posters**: a strip of your newest live series beside the photos. Off, the photos fill the stage.
-- **Words**: the **Tagline** and the **Line under it**, separately for the Admin Panel's and the Creator Portal's sign-in. Leave a box blank to keep the standard wording shown in grey.
-
-Press **Save**: the sign-in pages show the change at once.

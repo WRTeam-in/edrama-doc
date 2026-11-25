@@ -1,0 +1,91 @@
+---
+title: "Creator earnings"
+sidebar_label: "Creator earnings"
+description: "How creators earn from coins, ads and VIP, how shares are saved, and the monthly statement and payout cycle."
+---
+
+Creators earn a **share** (50% by default, set per creator) of what their series bring in. Three streams make up a creator's month.
+
+## The three streams
+
+| Stream | How the creator's part is worked out |
+|---|---|
+| **Coins** | Paid coins spent on their episodes and Series Passes (less refunds) × the region's **paid coin value** × (1 − store fee) × their share. The share saved **with each unlock** is used, so a later share change never rewrites the past. [Worked example below](#from-a-coin-to-money). |
+| **Ads** | The region's **ads pool** (unlock-ad earnings from AdMob × the ads pool percent) × their verified ad unlocks ÷ all verified ad unlocks in the region × their share. |
+| **VIP** | The region's **VIP pool** (VIP charges less refunds and store fees × the VIP pool percent) × their VIP minutes on locked episodes ÷ all VIP minutes in the region × their share. |
+
+Not counted: bonus coins, the creator's own viewing and unlocks, accounts under a day old (for ads), free and YouTube episodes, and granted episodes.
+
+Your own and licensed titles count in each region's totals, so their part of the pools stays with the platform. Licensed titles have their own **licensor share**.
+
+## From a coin to money
+
+Only **paid coins** earn money. Bonus coins (the welcome bonus, coin-pack bonuses, the spin, streak titles, Rewards ads) are given away, so they earn nobody anything. For each series, each region and each month:
+
+```text title="The coins part of a statement"
+paid coins     = paid coins spent on its episodes and Series Passes − paid coins taken back by refunds
+gross money    = paid coins × paid coin value
+net money      = gross money × (1 − store fee ÷ 100)
+creator money  = net money × the creator's share ÷ 100
+your money     = net money − creator money
+```
+
+| Term | What it means |
+|---|---|
+| **Coin value** | What one coin is worth in the region's currency (0.0099 USD in Global and 0.29 INR in India to start), set in <Path>Money › Monetization › Regions</Path>. |
+| **Paid coin value** | What one paid coin **really** brought in that month in the region: the store money of completed purchases divided by every paid coin added (team adjustments included). It's **never above the coin value**, so discounted packs, test purchases or coins your team added never pay out more than you received. When every purchase paid full price, it equals the coin value. |
+| **Store fee** | Google Play's and the App Store's cut (15% each to start, in <Path>Settings › Payments</Path>). The fees saved on that month's purchases in the region are used, weighted by amount. |
+| **Saved at the time** | Each unlock saves the share in force when it happened; each purchase saves its store fee. Changing a setting never rewrites past money. |
+| **Refunds** | When a store refund or chargeback arrives after the coins were spent, what those coins earned is taken back in the month of the refund. |
+
+**Example.** A creator series priced at 60 coins in the Global region. In one month, viewers unlock 1,000 episodes with paid coins, all from full-price packs:
+
+| | |
+|---|---|
+| Paid coins | 1,000 × 60 = **60,000** |
+| Gross money | 60,000 × 0.0099 = **594.00 USD** |
+| Store fees (15%) | **89.10 USD** |
+| Net money | **504.90 USD** |
+| Creator (50%) | **252.45 USD** |
+| You | **252.45 USD** |
+
+### Try your own numbers
+
+Move the sliders or type a number. It uses the same formula as the monthly statements, with eDrama's starting values filled in.
+
+<EarningsCalculator />
+
+:::note[What the calculator leaves out]
+Refunds, discounted packs (which lower the paid coin value), and the ads and VIP pools, which are shared separately (above). It also leaves out your own running costs: hosting, video storage and streaming, taxes and payout fees.
+:::
+
+## The monthly cycle
+
+<Flow
+  steps={[
+    {label: 'Month ends'},
+    {label: 'Statement', note: 'Coins share, closed on the 1st'},
+    {label: 'Creator revenue', note: 'Ads & VIP, imported on the 5th'},
+    {label: 'Approve', tone: 'live'},
+    {label: 'Pay', tone: 'vip', note: 'Recorded as a payout'},
+  ]}
+/>
+
+<Steps>
+
+1. On the **1st**, the month before is **closed**: each creator's statement gets their coin share (minus refunds). The monthly creator report is also built.
+2. On the **import day** (the 5th by default), [Creator revenue](../admin/money/creator-revenue.mdx) imports AdMob's earnings and calculates the ads and VIP pools and each creator's part.
+3. Your team **reviews**, sets a pool by hand or adjusts a creator if needed, and **approves**. The ads, VIP and adjustments go onto the statements.
+4. Finance **pays** each creator outside the app and records the payout (amount, method, reference, date) on the creator's page.
+
+</Steps>
+
+Creators follow the same figures on their [Earnings](../creator/earnings.mdx) page: earned, paid, waiting to be paid, and this month so far.
+
+## Monthly creator report
+
+**Transactions › Monthly creator report** (also built automatically each month) gives one row per series and region: paid coins spent, Series Pass coins, ad unlocks and VIP minutes, with the settings used. Useful for licensors and auditing.
+
+:::note[To confirm]
+Earlier project notes said the Creator Portal shows no money figures and payouts are manual. The current code adds the **Earnings** page and **Creator revenue** workflow described here; payouts are still made outside the app and recorded by hand.
+:::

@@ -1,0 +1,307 @@
+{
+  "admin-ai-studio": {
+    "src": "admin-ai-studio.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-ai-usage": {
+    "src": "admin-ai-usage.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-audit-log": {
+    "src": "admin-audit-log.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-balance-adjustments": {
+    "src": "admin-balance-adjustments.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-categories": {
+    "src": "admin-categories.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-coin-packs": {
+    "src": "admin-coin-packs.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-community": {
+    "src": "admin-community.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-creator-revenue": {
+    "src": "admin-creator-revenue.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-creators": {
+    "src": "admin-creators.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-dashboard": {
+    "src": "admin-dashboard.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-home-builder": {
+    "src": "admin-home-builder.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-license-updates": {
+    "src": "admin-license-updates.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-monetization-regions": {
+    "src": "admin-monetization-regions.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-overview": {
+    "src": "admin-overview.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-push": {
+    "src": "admin-push.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-release-schedule": {
+    "src": "admin-release-schedule.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-review-queue": {
+    "src": "admin-review-queue.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-rewards": {
+    "src": "admin-rewards.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-settings-branding": {
+    "src": "admin-settings-branding.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-settings-storage": {
+    "src": "admin-settings-storage.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-settings": {
+    "src": "admin-settings.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-sign-in": {
+    "src": "admin-sign-in.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-support-tickets": {
+    "src": "admin-support-tickets.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-system-setup": {
+    "src": "admin-system-setup.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-system": {
+    "src": "admin-system.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-team": {
+    "src": "admin-team.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-title-editor": {
+    "src": "admin-title-editor.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-title-episodes": {
+    "src": "admin-title-episodes.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-titles": {
+    "src": "admin-titles.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-transactions": {
+    "src": "admin-transactions.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-upload": {
+    "src": "admin-upload.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-users": {
+    "src": "admin-users.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "admin-website": {
+    "src": "admin-website.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "app-help": {
+    "src": "app-help.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-home": {
+    "src": "app-home.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-library": {
+    "src": "app-library.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-me": {
+    "src": "app-me.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-onboarding-language": {
+    "src": "app-onboarding-language.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-onboarding": {
+    "src": "app-onboarding.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-player": {
+    "src": "app-player.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-rewards": {
+    "src": "app-rewards.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-search": {
+    "src": "app-search.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-series": {
+    "src": "app-series.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-settings": {
+    "src": "app-settings.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-sign-in": {
+    "src": "app-sign-in.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-splash": {
+    "src": "app-splash.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-unlock-sheet": {
+    "src": "app-unlock-sheet.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "app-wallet": {
+    "src": "app-wallet.webp",
+    "w": 720,
+    "h": 1600
+  },
+  "creator-community": {
+    "src": "creator-community.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "creator-dashboard": {
+    "src": "creator-dashboard.webp",
+    "w": 1600,
+    "h": 1590
+  },
+  "creator-earnings": {
+    "src": "creator-earnings.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "creator-episode-editor": {
+    "src": "creator-episode-editor.webp",
+    "w": 1600,
+    "h": 1422
+  },
+  "creator-home": {
+    "src": "creator-home.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "creator-my-series": {
+    "src": "creator-my-series.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "creator-new-series": {
+    "src": "creator-new-series.webp",
+    "w": 1600,
+    "h": 3088
+  },
+  "creator-release-times": {
+    "src": "creator-release-times.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "creator-series-page": {
+    "src": "creator-series-page.webp",
+    "w": 1600,
+    "h": 1260
+  },
+  "creator-sign-in": {
+    "src": "creator-sign-in.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "creator-stats": {
+    "src": "creator-stats.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "creator-upload": {
+    "src": "creator-upload.webp",
+    "w": 1600,
+    "h": 1000
+  },
+  "installer-requirements": {
+    "src": "installer-requirements.webp",
+    "w": 1600,
+    "h": 1228
+  }
+}

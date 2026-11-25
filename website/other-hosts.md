@@ -38,6 +38,12 @@ It listens on port 3000. Use `PORT=8080 npm run start` for another port.
 
 Use a process manager such as [PM2](https://pm2.keymetrics.io/) or a systemd service so it restarts after a crash or a reboot.
 
+```bash title="With PM2"
+npm install --global pm2
+pm2 start npm --name edrama-website -- run start
+pm2 save && pm2 startup
+```
+
 </Step>
 <Step title="Put it behind HTTPS">
 
@@ -55,6 +61,8 @@ server {
     }
 }
 ```
+
+Let's Encrypt adds the certificate to nginx for you: `sudo certbot --nginx -d your-domain.com -d www.your-domain.com`.
 
 </Step>
 </Steps>

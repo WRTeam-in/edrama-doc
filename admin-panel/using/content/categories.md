@@ -1,0 +1,57 @@
+---
+sidebar_position: 4
+title: "Categories"
+sidebar_label: "Categories"
+description: "Create and order the categories (genres) shown on titles, in Browse and in the app's onboarding."
+---
+
+**Categories** are the genre labels on your titles, such as *Revenge*, *Rebirth* or *CEO Romance*. They power the app's **Browse** pages, the **category chips** on Home, "Because you like…" rows, search, and the **What hooks you?** step of onboarding, where new viewers pick three or more. (In the code they're called *tropes*.)
+
+<Access area="Categories" view="See the list" edit="Create, edit, reorder, switch off and delete categories" />
+
+<Screen
+  id="admin-categories"
+  type="browser"
+  wire="list"
+  url="/admin/categories"
+  title="Categories"
+  caption="Categories: each category’s image, name, slug, number of titles and Active switch."
+  markers={[
+    {x: 93.6, y: 14.6, title: 'New category', text: 'Name, slug, image and Active.'},
+    {x: 82.9, y: 14.6, title: 'Import translations', text: 'Translate every category name from a CSV or Excel file.'},
+    {x: 20.4, y: 35.1, title: 'Image', text: 'Without one, the app shows the poster of the category’s most-watched series. Drag rows to set the order.'},
+    {x: 39.8, y: 35.1, title: 'Name', text: 'What viewers see.'},
+    {x: 60.9, y: 35.1, title: 'Slug', text: 'Used in app links, so it can’t change once saved.'},
+    {x: 72.8, y: 35.1, title: 'Titles', text: 'How many titles use it.'},
+    {x: 86.5, y: 35, title: 'Active', text: 'Off removes the category from the app; titles keep it.'},
+  ]}
+/>
+
+## Add a category
+
+<Steps>
+
+1. Choose **New category**.
+2. Fill in:
+   - **Name**: what viewers see.
+   - **Slug**: lowercase letters, numbers and single hyphens, such as `ceo-romance`. The app's links use it, so it can't change once saved.
+   - **Image**: JPG, PNG or WebP, at least 300 × 300, up to 2 MB. Without one, the app shows the poster of the category's most-watched series.
+   - **Active**: on to show it in the app.
+3. Save.
+
+</Steps>
+
+Translations of the name for other app languages are in the form's **Other languages** tabs. To translate them all at once, use **Import translations** ([Bulk imports](/admin-panel/using/content/bulk-imports/)).
+
+## Order
+
+Drag the rows. The app shows categories in this order in Browse, in onboarding and in "Every active category" chips on Home.
+
+## Switch off or delete
+
+- **Switch off** (Active off): the category leaves the app, but titles keep it, so you can turn it back on later.
+- **Delete**: only for a category **no title uses**. Otherwise the panel tells you how many titles use it; switch it off instead.
+
+## The starting categories
+
+The installer creates a starting set, and [Clear demo data](/admin-panel/first-steps/#demo-data) restores it if none would be left, so an install never ends up with no categories.

@@ -1,0 +1,90 @@
+---
+sidebar_position: 2
+title: "Accounts and sign-in"
+sidebar_label: "Accounts & sign-in"
+description: "Guests, the sign-in methods, how a guest's history moves into an account, editing the profile, signing out and deleting an account."
+---
+
+## Guests
+
+Every viewer starts as a **guest**: they can watch, follow, save series and earn bonus coins straight away, and they get the **welcome bonus** (100 bonus coins for 7 days by default, once per device). Their progress is saved on that phone.
+
+A guest must **sign in to buy** coins or VIP, so purchases are tied to an account and follow them to a new phone.
+
+<Screen
+  id="app-me"
+  type="phone"
+  wire="app-settings"
+  title="Me"
+  caption="The Me tab for a guest: Guest with Sign in, the reminder to sign in, coins, day streak and titles, Your activity, More, and Settings."
+  markers={[
+    {x: 25, y: 13.1, title: 'Guest', text: '“Your progress is saved on this phone.” A signed-in viewer sees their name, photo and how they signed in.'},
+    {x: 87.8, y: 13.1, title: 'Sign in', text: 'Opens the sign-in sheet.'},
+    {x: 50, y: 20.2, title: 'Reminder', text: '“Sign in to keep your coins and unlocks safe on any phone.”'},
+    {x: 50, y: 27.8, title: 'Coins · Day streak · Titles', text: 'Each opens its page.'},
+    {x: 50, y: 46, title: 'Your activity', text: 'My List, Wallet and Spend guard.'},
+    {x: 50, y: 62.3, title: 'More', text: 'Become a creator, Invite friends, Restore purchases, Help & refunds and Settings.'},
+    {x: 92.2, y: 5.7, title: 'Settings', text: 'Also at the top, beside the notifications bell.'},
+  ]}
+/>
+
+## Signing in
+
+The app asks the viewer to sign in when it matters (before a purchase, for example), or they choose **Sign in** on the Me tab.
+
+<Screen
+  id="app-sign-in"
+  type="phone"
+  wire="app-sheet"
+  title="Sign in"
+  caption="The sign-in sheet on Android: Sign in to keep what you buy, with Continue with Google (Recommended), Apple, Email and Phone, the carry-over note and Keep browsing."
+  markers={[
+    {x: 35.5, y: 46.4, title: 'Sign in to keep what you buy', text: '“So your coins and unlocks follow you to a new phone.”'},
+    {x: 50, y: 57.6, title: 'Continue with Google', text: 'The phone’s own provider comes first, marked Recommended: Google on Android, Apple on iPhone.'},
+    {x: 50, y: 64.6, title: 'Continue with Apple', text: 'One tap with the Apple account. Each provider can be turned off in the app’s config.'},
+    {x: 50, y: 71.6, title: 'Continue with Email', text: 'Sign in or create an account with an email address.'},
+    {x: 50, y: 78.6, title: 'Continue with Phone', text: 'A 6-digit code by SMS.'},
+    {x: 53.1, y: 85.9, title: 'Carry-over note', text: '“Your guest history and welcome bonus move into the account.”'},
+    {x: 50, y: 93, title: 'Keep browsing', text: 'Closes the sheet; they stay a guest.'},
+  ]}
+/>
+
+The phone's own provider is listed first and marked **Recommended**: **Google** on Android, **Apple** on iPhone. Email and Phone follow.
+
+| Method | How it works |
+|---|---|
+| **Google** | The phone's Google account. |
+| **Apple** | Sign in with Apple, on iPhone and Android alike. Keep it on if you offer Google: Apple requires Sign in with Apple on iOS whenever Google is offered. |
+| **Email** | Enter email and password (6+ characters) to sign in, or **create an account**. A new address is confirmed with a link: *Check your email* waits and carries on by itself once the link is tapped. **Forgot password?** emails a reset link. |
+| **Phone** | Pick the country code, enter the number, then the **6-digit code** sent by SMS (can be resent after a short wait). Can be switched off from the Admin Panel. |
+
+Which methods appear is set in the app ([Defaults & limits](/mobile-app/defaults-and-limits/#sign-in-methods)) and, for phone, in <Path>Settings › App & support › Features</Path>.
+
+### What happens to the guest's history
+
+When a guest signs in, their **coins, unlocks, progress and welcome bonus move into the account**: *Your history and bonus moved to your account.* If they sign in to an account that already exists, the guest's history is merged into it.
+
+## The profile
+
+<Path panel="app">Me › Edit profile</Path>:
+
+- **Name**: others see it on their comments and reviews (at least 2 characters).
+- **Photo**: choose from photos, take a photo, or remove it.
+
+The Me tab shows how they signed in ("Signed in with Google") and that *your coins and unlocks are kept in your account*.
+
+## Sign out
+
+<Path panel="app">Me › Settings › Sign out</Path>. Coins, unlocks and history stay in the account; signing in again brings them back. The app continues as a guest.
+
+## Delete the account
+
+<Path panel="app">Me › Settings › Delete account</Path> removes the account, history, coins and unlocks **for good**. For security the viewer may be asked to sign in again first.
+
+:::warning[VIP keeps billing until it's cancelled in the store]
+Deleting the account doesn't cancel a VIP subscription: the store bills it. The app says so: *Your VIP subscription is still active: cancel it in your app store so it stops billing.*
+:::
+
+## Banned accounts
+
+If your team bans an account, the viewer sees *This account has been suspended. Contact support if you think this is a mistake.* and continues as a new guest; they can't sign in to the banned account.

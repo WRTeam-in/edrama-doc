@@ -1,0 +1,43 @@
+---
+title: "Regions and currencies"
+sidebar_label: "Regions & currencies"
+description: "How regions give each market its own currency and prices, how a viewer's region is decided, and how money is reported in one currency."
+---
+
+## Why regions
+
+A price that's fair in the United States is too high in India. **Regions** let each market have its own currency, coin value, coin packs, VIP plans, title prices, ad limits and rewards, while one server runs them all.
+
+| Region setting | Example (India) |
+|---|---|
+| Currency | INR (₹ before the amount) |
+| Coin value | 1 coin = ₹0.29 |
+| Time zone | Asia/Kolkata |
+| Countries | India |
+| Coin packs | 300 + 300 for ₹99 … |
+| VIP | Weekly ₹49, Monthly ₹149, Yearly ₹999 |
+| Ads | 20 unlock ads a day |
+
+The **default region** (Global, USD) serves every country no other active region lists.
+
+## How a viewer's region is decided
+
+1. The country the **app store** reports at sign-in.
+2. Otherwise the country your **CDN** reports (Cloudflare's `CF-IPCountry` header, from a proxy you trust).
+3. Otherwise the default region.
+
+Viewers can't pick their region. Your team can move one ([Users › Change region](../admin/audience/users.mdx)). Purchases, unlocks and price locks always keep the region they were made in.
+
+:::warning[Behind Cloudflare?]
+Set `EDRAMA_TRUSTED_PROXIES=cloudflare` so the country header is believed. Without a trusted header, the app's reported country is used (`EDRAMA_TRUST_APP_COUNTRY`), which a determined viewer could change. Monetization › Regions says which source is in use.
+:::
+
+## A new region
+
+A new region starts as a **copy** of the default region's packs, plans, prices, ads and rewards, with money prices converted between the two coin values. Review, then turn it on ([Regions](../admin/money/regions.mdx)).
+
+## Reporting in one currency
+
+The Dashboard, Transactions totals, refund limits and creator payouts use one **reporting currency** (USD by default). Each currency needs an **exchange rate** into it, dated from when it applies ([Regions & languages](../admin/settings/regions-and-languages.mdx#reporting-currency-and-exchange-rates)). Rows on days without a rate are **left out and named**, never guessed.
+
+Amounts are stored in each currency's smallest unit (cents, paise), with each currency's own decimals (0 for JPY, 3 for KWD).

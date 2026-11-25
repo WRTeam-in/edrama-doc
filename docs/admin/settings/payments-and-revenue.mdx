@@ -1,0 +1,81 @@
+---
+title: "Payments and creator revenue settings"
+sidebar_label: "Payments & revenue"
+description: "Revenue share, store fees, creator price limits, daily spend cap, adjustment approval limit, store keys, and the creator revenue schedule."
+---
+
+## Payments
+
+<Path>Settings › Payments</Path>
+
+### Revenue share
+
+Saved on each unlock and purchase, so a change never rewrites past money.
+
+| Setting | Default | Meaning |
+|---|---|---|
+| **Default creator share** | 50% | A new creator's share of what their series earn. A creator's own percent, set on their page, wins. |
+| **Google Play fee** | 15% | The store's cut, used for "after store fee" figures and creator pools. |
+| **App Store fee** | 15% | |
+| **Reason for the change** | | Recorded in the audit log. New unlocks and purchases use the new values; past ones keep theirs. |
+
+### Creator price limits
+
+What a creator may ask for an episode, and the free episodes every creator series starts with. Prices already set stay until they next change.
+
+| Setting | Default |
+|---|---|
+| **Lowest coin price** | 30 coins |
+| **Highest coin price** | 90 coins |
+| **Free episodes at least** | 5 |
+
+### Daily spend cap
+
+The daily coin limits viewers can choose in the app ("spend guard"). The cap itself is a fair-play rule and stays on.
+
+| Setting | Default |
+|---|---|
+| **Choices, in coins** | 100, 300, 600, 1000 (press Enter after each) |
+| **Default cap** | 300 (must be one of the choices) |
+
+You can switch the whole daily limit off in <Path>Settings › App & support › Features</Path>.
+
+### Balance adjustments
+
+**Approval limit** (default **1,000 coins**): above this, a second member must approve a coin adjustment ([Balance adjustments](../audience/balance-adjustments.mdx)).
+
+### Store keys
+
+Two cards let your server check purchases and hear about refunds and renewals:
+
+- **Google Play**: package name, service account JSON, and the optional Pub/Sub push service account, plus the **real-time notifications push URL** to copy. See [Google Play](../../integrations/google-play.mdx).
+- **App Store**: bundle ID, issuer ID, key ID, private key (.p8) and environment (Production or Sandbox), plus the **server notifications URL (version 2)** to copy. See [App Store](../../integrations/app-store.mdx).
+
+## Creator revenue {#creator-revenue}
+
+<Path>Settings › Creator revenue</Path> controls how each month's ad and VIP money is shared with creators ([Creator revenue](../money/creator-revenue.mdx)).
+
+| Setting | Default | Meaning |
+|---|---|---|
+| **Prepare each month by itself** | On | On the import day, the month before is imported from AdMob (when connected) and calculated, and members with Transactions (Edit) get a bell. |
+| **Import day of the month** | 5 | 1 to 28. AdMob finalises a month's earnings in the first days of the next. |
+| **Ads pool** | 100% | Of each region's unlock-ad earnings. |
+| **VIP pool** | 100% | Of each region's VIP revenue, after refunds and store fees. |
+| **A second member approves** | Off | Whoever last changed a month (a pool or an adjustment) can't approve it. |
+
+Each creator's own share percent is on their page and starts from the default share. A country's earnings go to the region that lists it.
+
+### AdMob Reporting API
+
+A card to connect AdMob **read-only**, so the monthly import can read your unlock ads' earnings by country and ad unit:
+
+<Steps>
+
+1. In Google Cloud, enable the **AdMob API**, set up and **publish** the OAuth consent screen (in testing mode, Google ends the connection after 7 days).
+2. Create an **OAuth client ID** of type **Web application** and add the **Authorised redirect URI** shown on the card.
+3. Paste the **OAuth client ID** and **client secret**, and **Save**.
+4. Choose **Connect AdMob** and sign in with the Google account that owns the AdMob account. The **refresh token** (and the **publisher ID**, when there's one AdMob account) are filled in for you.
+
+</Steps>
+
+See [AdMob](../../integrations/admob.mdx).

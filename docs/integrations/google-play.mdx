@@ -1,0 +1,58 @@
+---
+title: "Google Play"
+sidebar_label: "Google Play"
+description: "Let your server verify Google Play purchases and subscriptions, receive real-time notifications, and refund from the panel."
+---
+
+Your server talks to Google Play to **verify** every coin-pack purchase and VIP subscription, to **refund** from the Admin Panel, and to hear about refunds, renewals and cancellations through **real-time developer notifications**.
+
+## 1. Service account
+
+<Steps>
+
+1. In the [Google Cloud console](https://console.cloud.google.com/), in the project linked to your Play account, enable the **Google Play Android Developer API**.
+2. **IAM & Admin › [Service accounts](https://console.cloud.google.com/iam-admin/serviceaccounts) › Create service account**, then its **Keys › Add key › JSON**. A file downloads.
+3. In [Play Console](https://play.google.com/console) › **Users and permissions › Invite new users**: invite the service account's email (it ends in `iam.gserviceaccount.com`), with **View financial data, orders and cancellation survey responses** and **Manage orders and subscriptions**, for your app.
+
+:::note
+New Play Console access can take **up to a day** to start working. If **Test connection** fails straight after, try again later.
+:::
+
+</Steps>
+
+## 2. Enter the keys
+
+<Path>Settings › Payments</Path> › **Google Play** card:
+
+| Field | Value |
+|---|---|
+| **Package name** | Your app's ID, such as `com.yourcompany.drama`. |
+| **Service account JSON** | The whole file. |
+| **Pub/Sub push service account** | The account the push subscription signs with (step 3 below). **Required** for real-time notifications: without it, every Google Play notification is refused. |
+
+**Save**, then **Test connection**.
+
+## 3. Real-time notifications (refunds and renewals)
+
+<Steps>
+
+1. In Google Cloud **Pub/Sub**, create a **topic**. On the topic's **Permissions**, give `google-play-developer-notifications@system.gserviceaccount.com` the **Pub/Sub Publisher** role, so Google Play can post to it.
+2. Create a **push subscription** on the topic. Set the endpoint to the **Real-time notifications push URL** shown on the card:
+
+   <ServerUrl path="/api/v1/webhooks/google-play" />
+
+   Turn on **authentication**, pick a service account, and set the **audience** to the same URL.
+3. Enter that service account's email in **Pub/Sub push service account** on the Google Play card and **Save**.
+4. In Play Console › **Monetize with Play › Monetization setup › Real-time developer notifications**, enter the topic's full name (`projects/<project>/topics/<topic>`) and choose **Send test notification**.
+
+</Steps>
+
+Google Play notifications are refused without it. Each notification is checked, stored once, and processed in the background (up to 5 tries). Google's **voided purchases** list is also checked daily, so refunds and chargebacks are never missed.
+
+## 4. Products
+
+Create the coin packs (consumable) and the `vip` subscription with base plans `weekly`, `monthly` and `yearly`, matching the IDs in Monetization. See [In-app purchases](../app-setup/in-app-purchases.mdx).
+
+:::warning
+A purchase must be for the product the app names; the server refuses mismatches. VIP base plans must not carry a free-trial offer.
+:::

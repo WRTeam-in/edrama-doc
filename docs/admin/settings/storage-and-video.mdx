@@ -1,0 +1,87 @@
+---
+title: "Storage, video and the video pipeline"
+sidebar_label: "Storage & video"
+description: "Choose where files are kept and what processes and streams videos, move files safely, and set upload limits."
+---
+
+## Storage & video
+
+<Path>Settings › Storage & video</Path> makes two separate choices:
+
+| Choice | Options | What it decides |
+|---|---|---|
+| **Storage (files)** | **This server** (default), **Amazon S3** (or another S3-compatible service), **Cloudflare R2** | Where images, documents, subtitles and the videos this server makes are kept. |
+| **Video streaming** | **This server** (default, with ffmpeg), **Cloudflare Stream** | What processes episode videos and streams them to viewers. |
+
+<Screen
+  id="admin-settings-storage"
+  type="browser"
+  wire="form"
+  url="/admin/settings?s=storage"
+  title="Storage & video"
+  caption="Settings › Storage & video: where files are kept and what streams videos."
+  markers={[
+    {x: 49, y: 29.9, title: 'Storage (files)', text: 'Where images, documents and subtitles are kept: this server, Amazon S3 or Cloudflare R2.'},
+    {x: 76.4, y: 29.5, title: 'Video streaming', text: 'What processes and streams videos: this server (ffmpeg) or Cloudflare Stream.'},
+    {x: 52.3, y: 53, title: 'In use', text: 'The option in use now.'},
+    {x: 65.5, y: 76.4, title: 'Set up', text: 'An option that needs keys says so; set it up, then switch.'},
+    {x: 42.7, y: 82.7, title: 'How switching works', text: 'Files are copied and checked first; nothing is deleted.'},
+    {x: 62.9, y: 91.8, title: 'Key cards', text: 'Amazon S3, Cloudflare R2 and Cloudflare Stream, each with “Where do I find these?”.'},
+  ]}
+/>
+
+### Which to choose
+
+| Option | Best for |
+|---|---|
+| **This server** (files) | Getting started and small catalogues. Nothing to set up. |
+| **Amazon S3** | When you already run on AWS. Amazon bills for every GB viewers download. Works with DigitalOcean Spaces, Wasabi, Backblaze B2 and MinIO too. |
+| **Cloudflare R2** | Streaming at scale: R2 has no download fees, so viewers watching costs nothing extra. |
+| **This server** (video) | Keeping videos with your files, at no extra cost. Needs ffmpeg ([Video processing](../../installation/video-processing.mdx)). |
+| **Cloudflare Stream** | No video work on your server. Cloudflare bills for minutes stored and watched. |
+
+### Switch storage
+
+<Steps>
+
+1. If the option says **Needs setup**, choose **Set up** and follow the steps: fill in its key card, **Save**, then **Test connection**.
+2. Choose **Switch to …** and confirm.
+3. Every image, document and video is **copied** to the new place in the background, in batches, and **checked**. The switch happens only once every file is there. The page shows the progress.
+
+</Steps>
+
+Nothing is ever deleted from where it was, and links in the app keep working throughout. If some files can't be copied, nothing switches: fix the cause and choose **Retry failed files**. You can **Cancel move** at any time; files already copied are skipped by the next move.
+
+:::warning
+While a bucket holds your files, its service, region, endpoint and name can't change: move back to this server first. Keys can be replaced at any time.
+:::
+
+### Switch the video engine
+
+A new engine applies to **new uploads**. Videos already uploaded keep playing from the engine that holds them: nothing is moved or deleted. Images, documents and subtitles stay where **Storage (files)** keeps them.
+
+**Videos still on Cloudflare Stream?** If you move from Cloudflare Stream back to this server, choose **Move videos off Cloudflare Stream**: each episode's video is downloaded from Cloudflare as MP4, transcoded here and stored with your files. Viewers keep playing the Stream video until its copy is ready. Nothing is deleted from Cloudflare.
+
+### Key cards
+
+| Card | Fields |
+|---|---|
+| **Amazon S3 bucket** | Service, access key ID, secret access key, region, bucket, endpoint (for other S3 services), public URL (optional, such as a CloudFront domain) |
+| **Cloudflare R2 bucket** | Cloudflare account ID, jurisdiction (Default, EU or FedRAMP), access key ID, secret access key, bucket, public URL (optional) |
+| **Cloudflare Stream** | Account ID, API token, webhook secret, signing key ID, signing key, customer subdomain, plus the webhook URL to register |
+
+Without a public URL, posters and banners are served through secure links that last six days. Step-by-step guides: [Storage & streaming](../../integrations/storage-and-streaming.mdx).
+
+## Video pipeline {#video-pipeline}
+
+<Path>Settings › Video pipeline</Path>
+
+| Setting | Default | Meaning |
+|---|---|---|
+| **Largest file** | 20 GB | Larger episode files are refused before they upload. Up to 200 GB. |
+| **Allow YouTube videos as episodes** | On | Adds **Add YouTube video** for the team and creators. These episodes are always free. Turning it off keeps those already added. |
+| **Largest file a creator uploads** | 2 GB | Up to the team's limit. |
+| **Episodes a creator has processing at once** | 10 | Uploading or processing; more wait until one finishes. |
+| **Earliest release after approval** | 2 hours | A creator's release time must be at least this long after the review team approves the episode. 0 allows any time from now. |
+
+The **episode length floor** (45 seconds) is also part of this pipeline ([Episodes & subtitles](../content/episodes-and-subtitles.mdx#the-45-second-floor)). A **Where videos live** card links back to Storage & video.

@@ -1,0 +1,31 @@
+---
+sidebar_position: 3
+title: "AI usage"
+sidebar_label: "AI usage"
+description: "See what AI Studio made this month, its estimated cost, whose key paid, and the calls that failed."
+---
+
+**AI usage** shows what AI Studio produced this month: images and video takes, by creator and for the team, with the **estimated** cost and **whose Gemini key paid**: the platform's or the creator's own.
+
+<Screen
+  id="admin-ai-usage"
+  type="browser"
+  wire="list"
+  url="/admin/ai-usage"
+  title="AI usage"
+  caption="AI usage for the current month on the Usage by creator tab."
+  markers={[
+    {x: 22.8, y: 23.8, title: 'Usage by creator', text: 'What each creator made this month.'},
+    {x: 31.5, y: 23.8, title: 'Problems', text: 'Calls that failed, were blocked or ended unknown.'},
+    {x: 57.9, y: 28.1, title: 'The platform’s key', text: 'Spent this month against its cap, and the team studio’s part.'},
+    {x: 57.9, y: 35.6, title: 'Creators this month', text: 'Images, takes, estimated cost, and how much was on their own key or the platform’s.'},
+  ]}
+/>
+
+## Reading the figures
+
+- **Estimates** use the prices set in <Path>Settings › AI Studio › Prices for estimates</Path>. Google's own bill is the final word.
+- **On the platform's key** means your company paid; **on their own key** means the creator paid Google directly.
+- **Unknown** calls are ones where the answer from Google was lost after the request was sent: they may already be on the bill.
+
+To change who pays, the monthly caps and per-creator allowances, see [AI Studio settings](/admin-panel/settings/ai-studio/). To allow or block AI Studio for one creator, use **AI Studio** on their row in [Creators](/admin-panel/using/community/creators/).

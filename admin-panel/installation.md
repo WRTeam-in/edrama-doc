@@ -6,61 +6,110 @@ description: The four steps of the eDrama web installer, and what happens when y
 
 # Installation wizard
 
-Open `https://admin.your-domain.com/install`. The wizard has four steps: **Requirements**, **Purchase code**, **Database** and **Owner account**.
+The installer runs in your browser the first time you open your domain. It takes about five minutes and has four steps. When it finishes, it closes itself for good: `/install` then answers "not found".
+
+<Screen
+  id="installer-requirements"
+  type="browser"
+  wire="wizard"
+  url="/install"
+  title="Installer"
+  caption="The installer’s first step, Server requirements, on a server where every check is Ready, with Continue at the bottom."
+  markers={[
+    {x: 26.4, y: 25, title: 'Steps', text: 'Requirements, Purchase code, Database, Owner account. The current step is highlighted.'},
+    {x: 61.9, y: 13.4, title: 'Step heading', text: 'Step 1 of 4, and what this step checks.'},
+    {x: 54.3, y: 18.6, title: 'Summary', text: 'Or how many items to fix, with Check again once they are fixed.'},
+    {x: 52.7, y: 28.6, title: 'PHP', text: 'The version eDrama needs, and the one this server runs.'},
+    {x: 46.7, y: 38.4, title: 'PHP extensions', text: 'Each extension eDrama needs, ticked when the server has it.'},
+    {x: 50.1, y: 56.7, title: 'Writable folders and files', text: 'The web server must be able to write these. Folders 755 (or 775), files 644 (or 664).'},
+    {x: 53.7, y: 86, title: 'Hidden files', text: 'Checks that .env can’t be opened from the web. If it can, point the domain at the public folder.'},
+    {x: 75.5, y: 91.8, title: 'Continue', text: 'Shows once every check passes. Otherwise fix the items marked Missing and choose Check again.'},
+  ]}
+/>
+
+Open `https://admin.your-domain.com/install` (or just your domain: until the install is done, every page sends you there).
+
+## Step 1: Requirements
+
+The installer checks:
+
+- **PHP** 8.5 or newer, and each required extension.
+- **Writable folders and files**: `storage` and its subfolders, `bootstrap/cache` and `.env`.
+- **Hidden files**: that `https://your-domain.com/.env` can't be opened from the web.
+
+Fix anything marked **Missing**, then choose **Check again**. If the installer can't even write its own files, it shows a **Folder permissions** page listing what to fix: give folders `755` (or `775`) and files `644` (or `664`), owned by the account the site runs as.
+
+## Step 2: Purchase code
+
+Enter the purchase code from your CodeCanyon downloads page. It looks like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. It is checked with WRTeam's license server and **registered to this domain**. [Where is my purchase code?](https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code-)
+
+- A code for another product, or one already used on another domain, is refused and the install stops here.
+- If the license server can't be reached, the install continues and the code is checked again later.
+
+## Step 3: Database
+
+| Field | What to enter |
+|---|---|
+| **Site address** | Your full address, such as `https://admin.your-domain.com`. It becomes `APP_URL`, and its domain is the one your purchase code is registered to: use `https://` and the exact domain you will run on. |
+| **Host** | Usually `127.0.0.1` or `localhost`. |
+| **Port** | Usually `3306`. |
+| **Database name** | The empty database you created. |
+| **Username** / **Password** | The database user. |
+
+**Continue** tests the connection, creates all the tables (this can take a minute) and saves the settings to `.env`.
+
+:::warning
+The database user must be allowed to create and change tables. If you see "Connected, but the tables could not be created", give the user **All privileges** on that database and press **Continue** again.
+:::
+
+## Step 4: Owner account
+
+The **Owner** is the Super Admin: the one account that can do everything, including managing the team.
+
+| Field | Notes |
+|---|---|
+| **Name** | Shown to your team across the panel. |
+| **Work email** | You sign in with this. |
+| **Password** | At least 8 characters. Use the eye to show what you typed. Later password changes inside the Admin Panel need **12 characters** and a password that hasn't appeared in known data leaks, so you may as well choose one like that now. |
+| **Password again** | The same password. |
+| **Import demo data so you can look around first** | Optional. Adds sample dramas, creators, viewers and figures, with artwork drawn for you, so you can look around. You remove it all later with [Clear demo data](/admin-panel/first-steps/#demo-data). |
+
+Press **Install**. The installer:
+
+<Anchor id="what-install-does" />
 
 <Steps>
-<Step title="Requirements">
 
-The wizard checks the PHP version, every PHP extension, and that `storage`, `bootstrap/cache` and `.env` are writable. Anything **Missing** is marked. Fix it (or ask your host to), then press **Check again**. You can only continue when everything is **Ready**.
+1. Creates the remaining tables and fills in the starting data: the **Global** (USD) and **India** (INR) regions, their coin packs and VIP plans, ad and reward settings, the starting categories, English and Hindi app languages, the four role templates and the first Home and website layouts.
+2. Creates your Owner account and records the license.
+3. Links the public storage folder (`php artisan storage:link`).
+4. Switches the server to live settings: `APP_ENV=production`, `APP_DEBUG=false`, sessions, cache and the queue in the database, the installer off and the license check on. From now on `/install` answers **404**.
+5. Imports the demo data, if you ticked it.
 
-</Step>
-<Step title="Purchase code">
-
-Enter your **Purchase code**. It looks like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`. Find it on your CodeCanyon downloads page: [Where is my purchase code?](https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code-)
-
-The wizard checks the code with the licence server, so your server needs outgoing HTTPS. The code is registered to this domain when you press **Install**. One purchase code is for one domain.
-
-</Step>
-<Step title="Database">
-
-Enter the **Site address** (your backend's full address, such as `https://admin.your-domain.com`; it's filled in from the address you opened), and the MySQL **Host** (`127.0.0.1` by default), **Port** (`3306`), **Database name**, **Username** and **Password**. The database must be empty.
-
-The Site address becomes `APP_URL`, and its domain is the one your purchase code is registered to. Use `https://` and the exact domain you will run on.
-
-The wizard tests the connection before it moves on, then writes these settings to `.env`.
-
-</Step>
-<Step title="Owner account">
-
-Create the **Owner**: the Super Admin who can do everything, including managing the team. Enter a **Name**, a **Work email** and a **Password** of 12 characters or more, twice. A password that appears in known data leaks is refused.
-
-Tick **Import demo data so you can look around first** if you want sample dramas, creators, viewers and figures to explore. You can remove all of it later (see [First steps](./first-steps.md#demo-data)).
-
-Press **Install**. Setting up the database can take a minute.
-
-</Step>
 </Steps>
 
-## What Install does
+## Finished
 
-1. Creates every database table and the reference data: regions, coin packs, VIP plans, ad and reward settings, role templates and default settings.
-2. Activates your purchase code. If the licence server can't be reached at that moment, the code is kept and checked again as soon as it answers.
-3. Creates the Owner account.
-4. Switches `.env` to production: `APP_ENV=production`, `APP_DEBUG=false`, database sessions, cache and queue.
-5. Links the public storage folder (`php artisan storage:link`).
-6. Closes the installer. From now on `/install` answers **404**.
-7. Imports the demo data, if you ticked it.
+You see **Your studio is ready**. Choose **Go to sign-in** and sign in with the Owner email and password you just chose. There are no default credentials.
 
-When it's done, you land on the sign-in page at `/admin`. Sign in with the Owner account. If you ticked the demo data, **Your studio is ready** appears first, saying whether the demo data was imported; click **Go to sign-in**.
+If the demo data couldn't be imported, the install itself still finished; the reason is in `storage/logs`, and you can import it later with:
 
-## Troubleshooting
+```bash title="Server"
+php artisan edrama:demo-data
+```
 
-- **"The .env file could not be written"**: PHP must be able to write the `.env` file and the backend folder it's in ([Upload the code](./upload.md)).
-- **"Could not connect to the database"**: check the host (often `localhost` on shared hosting), port (`3306`), database name, username and password, and that the user has all privileges on the database.
-- **"The install could not finish"**: the message says why. Fix it and press **Install** again. What was already set up is kept.
-- **"The demo data could not be imported"**: the install itself finished. The reason is in `storage/logs`. Import it later with `php artisan edrama:demo-data`.
-- **The purchase code is refused**: check you copied the whole code. If it's registered to another domain, free it there first ([Moving to another domain](./license-and-updates.md#moving-to-another-domain)) or contact [support](/support/).
-- **"The license server could not be reached"**: your server can't make outgoing HTTPS calls, or the licence server is busy. Try again in a few minutes, or ask your host to allow outgoing connections.
-- **`/install` answers 404**: the install already finished, or `EDRAMA_INSTALLER` isn't `true` in `.env`.
+<Anchor id="troubleshooting" />
 
-Next: [start the background jobs](./background-jobs.md).
+## If something goes wrong
+
+| Message | What to do |
+|---|---|
+| **"The .env file could not be written"** | PHP must be able to write `.env` (and ideally the project folder, so it can save it safely). Fix the permissions as on [Step 1](#step-1-requirements), then try again. |
+| **"Could not connect to the database"** | Check the host (often `localhost` on shared hosting), the port (`3306`), the database name, the user and the password, and that the user has all privileges on that database. |
+| **"The install could not finish"** | The message says why. Fix it and press **Install** again: what was already set up is kept. |
+| **The purchase code is refused** | Check you copied the whole code. If it's registered to another domain, ask [support](/support/) to free it ([Move to another domain](/admin-panel/license-and-updates/#move-to-another-domain)). |
+| **"The license server could not be reached"** | Your server can't make outgoing HTTPS calls, or the license server is busy. Try again in a few minutes, or ask your host to allow outgoing connections. |
+| **"The demo data could not be imported"** | The install itself finished. The reason is in `storage/logs`; import it later with `php artisan edrama:demo-data`. |
+| **`/install` answers 404** | The install already finished (sign in at `/admin`), or `EDRAMA_INSTALLER` isn't `true` in `.env`. To install again on an empty database, contact [support](/support/). |
+
+**Next:** [Cron & queues](/admin-panel/background-jobs/).

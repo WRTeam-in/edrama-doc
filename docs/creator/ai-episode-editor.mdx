@@ -1,0 +1,78 @@
+---
+title: "AI episode editor"
+sidebar_label: "Episode editor"
+description: "Cut kept takes and imported videos into an episode on a timeline, then export it to the episode."
+---
+
+The **Episode editor** in AI Studio turns your kept takes (and videos made outside eDrama) into one episode. You arrange, trim and split pieces on a timeline; nothing ever changes the original files. When it's right, **export**: the finished video goes to the episode through the normal upload pipeline.
+
+<Screen
+  id="creator-episode-editor"
+  type="browser"
+  wire="studio"
+  url="/creator/titles/13/ai-studio?tab=episodes"
+  title="Episode editor"
+  caption="AI Studio’s Episodes step, the Episode editor, for a series with no takes yet: the library, the preview, Properties with the export checks, and the V1/A1 timeline."
+  markers={[
+    {x: 25.9, y: 15.5, title: 'Steps', text: 'Characters, Shots, Episodes. The editor is the Episodes step.'},
+    {x: 87.8, y: 16.1, title: 'Your Gemini key', text: 'AI Studio runs on your own Gemini key, added on Your account, so it has no eDrama limits.'},
+    {x: 27.5, y: 25, title: 'Episode tabs', text: 'One tab per episode, and New episode.'},
+    {x: 93.8, y: 25, title: 'Import video', text: 'Bring in a video made elsewhere to use on the timeline.'},
+    {x: 25.9, y: 33, title: 'Library', text: 'Takes by shot and imported videos. Click to preview; drag onto the timeline, or press + to add after the last clip.'},
+    {x: 56.9, y: 55.1, title: 'Episode / Clip preview', text: 'Plays the whole timeline as one episode, or the clip picked in the library.'},
+    {x: 88.9, y: 33, title: 'Properties', text: 'Trim the selected clip, set its sound or replace it, and the export settings.'},
+    {x: 86.5, y: 63.9, title: 'Export checks', text: 'Each must pass: clips on the timeline, every shot placed, files available, at least 45 seconds.'},
+    {x: 92.1, y: 29.3, title: 'Export', text: 'Renders the episode once every check passes.'},
+    {x: 39.2, y: 88.3, title: 'Timeline', text: 'V1 video and A1 audio with the playhead: Split, Delete, Ripple, Snap, Close gaps and Add kept takes.'},
+  ]}
+/>
+
+## Build the timeline
+
+- **Add kept takes** puts the kept take of every shot not on the timeline yet, in shot order.
+- **Drag** a take or imported video onto the timeline: drop on a clip to put it before or after, or in empty space to place it there. The **+** after the last clip adds another video at the end.
+- Select a clip to edit it in **Properties**: **In** and **Out** points (set to the playhead with **I** and **O**, or one frame at a time), **Volume**, **Mute this clip**, or **Use another take of this shot**.
+
+## Tools
+
+| Tool | Shortcut | What it does |
+|---|---|---|
+| **Split** | S | Splits the clip at the playhead. |
+| **Delete** | Delete | Removes the clip and leaves a gap (gaps play as black). |
+| **Delete and close the gap** | Shift + Delete | Removes it and moves the rest left. |
+| **Ripple** | R | When on, trimming or deleting moves the clips after it. |
+| **Snap** | N | Snaps to clip edges and the playhead. |
+| **Close gaps** | | Moves every clip left so nothing plays black. |
+| **Zoom** | + / − | Zoom in and out; **Fit** shows the whole timeline. |
+| **Undo / Redo** | ⌘Z / ⇧⌘Z | |
+| **Mute the audio track** | | The export is silent. |
+
+The editor **saves automatically**. If the timeline changed in another tab, it asks you to reload.
+
+## Import a video
+
+**Import video** brings in a video made outside eDrama. It joins the series' library, ready for any episode. Nothing is sent to Google and nothing is charged.
+
+- Confirm you own the video or have permission to use it.
+- Limits (defaults): **300 MB**, **30 minutes**, **200** imported videos per series.
+- If a file can't be read, export it again as **MP4 (H.264)**.
+- You can also **merge an episode's existing video** with new clips, when the original upload is kept on the server.
+
+## Export
+
+**Export** settings: **Frame** (same as the first clip, 720p or 1080p), **Frame rate** (same as the first clip, 24, 25 or 30 fps) and **Quality** (Standard, High, Best). The panel shows the output, such as *1080 × 1920 · 30 fps · 1:32*.
+
+Export waits until every check passes:
+
+- [x] Clips are on the timeline
+- [x] Every shot of the episode is on the timeline
+- [x] Every clip's file is available
+- [x] It's at least **45 seconds** long
+- [x] The episode can take a new video (it isn't in review or released)
+- [x] The server can render video
+
+If the episode already has a video, you're asked to confirm replacing it. The export goes through **Waiting for the server → Gathering the clips → Rendering → Handing to the video pipeline → Processing as an upload**. When it's done you get a notice: *Episode 3 is assembled*. Then [send it for review](submit-for-review.mdx) as usual.
+
+:::info[Labelled as AI-generated]
+Episodes made in AI Studio carry an **AI-generated** label for the review team, with how each shot was made. Every frame also carries Google's **SynthID** watermark.
+:::

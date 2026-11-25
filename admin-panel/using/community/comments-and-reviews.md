@@ -1,0 +1,62 @@
+---
+sidebar_position: 2
+title: "Comments and reviews"
+sidebar_label: "Comments & reviews"
+description: "Moderate what viewers post: approve held comments and reviews, act on reports, remove or restore posts, and reply as the team."
+---
+
+Viewers comment on episodes and rate and review series in the app. **Comments & reviews** is where your team checks what was reported, approves what was held, removes what breaks the rules and replies.
+
+<Access area="Comments & reviews" view="See posts" edit="Approve, keep, remove, restore and reply" />
+
+<Screen
+  id="admin-community"
+  type="browser"
+  wire="list"
+  url="/admin/comments-and-reviews"
+  title="Comments & reviews"
+  caption="Comments & reviews on the Comments tab, with held comments waiting for a decision."
+  markers={[
+    {x: 21.6, y: 21.8, title: 'Comments, Reviews, Likes', text: 'Three tabs.'},
+    {x: 40.1, y: 28.5, title: 'States', text: 'All, Needs attention, Reported, Held and Removed.'},
+    {x: 38.1, y: 53.7, title: 'A comment', text: 'The viewer, the text, where it was posted and when.'},
+    {x: 30.4, y: 56.4, title: 'Why it’s held', text: 'Blocked word, link, phone number or spam.'},
+    {x: 76.4, y: 55.1, title: 'Status', text: 'Held, Reported, Visible or Removed.'},
+    {x: 89.4, y: 55.1, title: 'Approve', text: 'A held comment now shows in the app.'},
+    {x: 94.8, y: 55.1, title: 'Remove', text: 'Hides it from everyone but its author; can be restored.'},
+    {x: 90, y: 95.6, title: 'Reply', text: 'Reply as the team; the viewer gets a notification.'},
+  ]}
+/>
+
+## Why a post is held
+
+A post is held automatically (only its author sees it, marked "Waiting for a quick check before others see it") when it contains:
+
+- a word or phrase from your **comment blocklist** (<Path>Settings › App & support › Comment blocklist</Path>),
+- a link,
+- a phone number or long run of digits,
+- text that looks like spam (such as many repeated characters).
+
+## Actions
+
+| Action | What it does |
+|---|---|
+| **Approve** | A held post now shows in the app. |
+| **Keep** | A reported post stays; its reports are closed. |
+| **Remove** | Viewers stop seeing it (its author still does). Reports are closed. Add an optional note for the audit log; the viewer doesn't see it. |
+| **Restore** | A removed post shows again. |
+| **Reply** (comments) | Your reply joins the thread in the app under the app's name, marked **Team**, and the viewer gets a notification. |
+| **Reply** (reviews) | One public reply under the review, from the team. It replaces a reply the creator wrote. Leave it empty to remove the reply. |
+| **Who liked** | On the **Likes** tab: the newest likes of an episode. |
+
+If two people act on the same post at once, the second is told someone already decided it.
+
+## Ratings and reviews in the app
+
+- A viewer can rate a series once they've reached **episode 3**.
+- The score shown is a **weighted average**, so a handful of 5-star ratings can't outrank a series with thousands of ratings.
+- Viewers can mark a review **helpful**, flag a comment as a **spoiler**, and report posts.
+
+Creators can reply to reviews and comments on their own series from the Creator Portal; those replies show with a **Creator** badge. See [Comments & reviews in the Creator Portal](/creator-portal/guide/comments-and-reviews/).
+
+Comments and reviews can each be switched off for everyone in <Path>Settings › App & support › Features</Path>.

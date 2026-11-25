@@ -41,7 +41,7 @@ In the project, open **Settings › Domains**, add your domain (for example `you
 </Step>
 <Step title="Tell the Admin Panel">
 
-Set the same address in <AdminPath path="Content › Website" /> › **Connection & history** › **Website address**.
+Set the same address in <AdminPath path="Content › Website" /> › **Connection** › **Website address**.
 
 </Step>
 </Steps>

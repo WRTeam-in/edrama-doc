@@ -1,0 +1,92 @@
+---
+sidebar_position: 8
+title: "Home builder"
+sidebar_label: "Home builder"
+description: "Design the app's Home tab from sections, choose who sees each one, preview it live and publish it."
+---
+
+The app's **Home** tab is built from **sections** you arrange here: a hero carousel at the top, Continue Watching, rows and grids of series, banners, category chips, notes and promo cards. A phone preview updates as you work, and nothing reaches viewers until you **Publish**.
+
+<Access area="Schedule & Home" view="See the layout" edit="Change and publish it" />
+
+<Screen
+  id="admin-home-builder"
+  type="browser"
+  wire="builder"
+  url="/admin/home-builder"
+  title="Home builder"
+  caption="The Home builder: the sections in order, the selected section’s settings and the live phone preview."
+  markers={[
+    {x: 91.4, y: 15, title: 'Status', text: 'Live on the app, the version and when it was published, or Unpublished changes.'},
+    {x: 24.7, y: 24.5, title: 'Sections', text: 'Home’s sections top to bottom, how many are on, up to 30.'},
+    {x: 34.8, y: 25, title: 'Add section', text: 'It goes after the selected one; its settings open next.'},
+    {x: 29.5, y: 31, title: 'A section', text: 'Its type and style. Drag to move it; click to see its settings.'},
+    {x: 36.8, y: 31.9, title: 'Show on Home', text: 'Turns the section on or off without removing it.'},
+    {x: 70.5, y: 26.2, title: 'Section settings', text: 'Heading, style, titles, who sees it, regions and time window. Edit, Duplicate or Remove.'},
+    {x: 88, y: 24.5, title: 'Phone preview', text: 'What a returning viewer sees, updated live.'},
+    {x: 71.6, y: 95.5, title: 'Publish layout', text: 'Sends the layout to the app; the version goes up only if something changed.'},
+  ]}
+/>
+
+## Section types
+
+| Type | What it shows | Styles |
+|---|---|---|
+| **Hero carousel** | Big swipeable cards for up to 5 live titles you pick, at the top of Home. Can move on by itself every 4, 6, 8 or 10 seconds. | Carousel, Spotlight, Billboard, Slim, Clean |
+| **Continue watching** | Each viewer's series in progress, with the next episode. | Cards, Compact, Posters, Progress rings |
+| **Series row** | A row of series that scrolls sideways. | Posters, Large posters, Landscape, Ranked (Top 10), Circles, Detailed, Title on poster, Compact |
+| **Series grid** | Series in columns, a list or a mosaic. | 3 columns, 2 columns, 4 columns, List, Mosaic, Landscape |
+| **Banner** | An image that opens a series, a category, the store, VIP, Rewards or a web link. | Wide (16:9), Strip (3:1), Tall (4:5), Edge to edge, Square, Picture beside text |
+| **Category chips** | Categories viewers tap to browse. | Chips, Tiles, Circles, Chips all showing, Tile grid |
+| **Note** | A short line of text, such as your fair-pricing promise. | Plain, Highlight, Callout, Ticker, Solid |
+| **Promo card** | A heading, a line of text and a button. | Tinted, Accent, Outline, Centred, With picture |
+
+Home can have up to **30** sections, with **one** hero and **one** Continue watching at most.
+
+## Where a row's series come from
+
+Series rows and grids take their titles from a **source**:
+
+| Source | Shows |
+|---|---|
+| **Titles you pick** | Up to 30 live titles, in the order you drag them. |
+| **Because you like…** | Series from the categories the viewer picked in onboarding. The heading reads "Because you like *Revenge*". |
+| **One category** | Series from the category you choose ("Best of *Rebirth*"). |
+| **New releases** | Newest first. |
+| **Complete series** | Series with every episode out ("Complete: binge to the end"). |
+| **Top 10 today** | The top 10 in the viewer's region, recounted every 15 minutes. |
+| **Trending this week** | Rising in the viewer's region. |
+| **Most popular** | The most watched overall. |
+
+Choose how many **Titles shown** and whether to **Show "See all"**, which opens the full list in the app.
+
+## Section settings
+
+| Setting | Meaning |
+|---|---|
+| **Heading** / **Subtitle** | Leave the heading empty to use the standard one in the viewer's own language. |
+| **Style** | How the section looks (table above). |
+| **Image** (banners) | JPEG, PNG or WebP, up to 2 MB, in the shape of the style: 16:9 (1920 × 1080), 3:1 (1800 × 600), 4:5 (1080 × 1350) or 1:1 (1080 × 1080). |
+| **Opens** (banners, promos) | A series, a category, or a web link; promos and banners can also open the store, VIP or Rewards. |
+| **Text** / **Button label** (notes, promos) | Up to 280 characters; a button label up to 32. |
+| **Show on Home** | On or off. |
+| **Audience** | Everyone, Guests only, Signed-in viewers, VIP members, or Viewers without VIP. |
+| **Regions** | Leave empty for every region. |
+| **Show from** / **Show until** | An optional time window, in the default region's time zone. Shows as *Scheduled* in the list. |
+
+A section that would be empty for a viewer is left out, so Home never shows a blank row.
+
+## Publish
+
+<Steps>
+
+1. Make your changes. The list says **Unpublished changes**.
+2. Choose **Publish layout**, then **Publish**.
+
+</Steps>
+
+The app shows the new layout the next time viewers open Home. The layout gets a new **version number** only if something changed; publishing an identical layout tells you there's nothing to publish. Each publish is recorded in the audit log.
+
+:::warning
+If a title in the hero was unpublished, it shows **Not live**: viewers no longer see it there. Remove it before you can publish the layout.
+:::

@@ -1,293 +1,150 @@
-import React, { useMemo, useState } from 'react';
+import React, {useMemo, useState} from 'react';
+import clsx from 'clsx';
 import styles from './styles.module.css';
 
 /**
- * Mirrors the backend's monthly creator report:
- *   net money         = paid coins × coin value × (1 − store fee ÷ 100)
- *   creator's money   = paid coins × share ÷ 100 × coin value × (1 − store fee ÷ 100)
- * Bonus coins earn nothing. Ad and VIP money come from pools the platform fills in,
- * split by verified ad unlocks and by VIP minutes on locked episodes.
+ * One month of a series' paid unlocks, split between the stores, the creator (or licensor) and the platform,
+ * with the same formula as the monthly creator report:
+ *   net money     = paid coins × paid coin value × (1 − store fee ÷ 100)
+ *   creator money = net money × creator share ÷ 100
+ * Starting values are eDrama's defaults.
  */
+const REGIONS = [
+  {code: 'GLOBAL', label: 'Global · USD', currency: 'USD', coinValue: 0.0099},
+  {code: 'IN', label: 'India · INR', currency: 'INR', coinValue: 0.29},
+  {code: 'CUSTOM', label: 'Your own', currency: '', coinValue: null},
+];
 
-const REGIONS = {
-  GLOBAL: { label: 'Global (USD)', currency: 'USD', coinValue: 0.0099 },
-  IN: { label: 'India (INR)', currency: 'INR', coinValue: 0.29 },
-  CUSTOM: { label: 'My own coin value', currency: 'USD', coinValue: 0.01 },
-};
-
-const OWNERS = {
-  creator: { label: 'A creator', note: 'Their own share, or the Default creator share (50%).', share: 50 },
-  licensed: { label: 'A licensor', note: "The licensor's share from your contract (30% is only an example).", share: 30 },
-  original: { label: 'You (your own series)', note: 'No one shares it: you keep all the net money.', share: 0 },
-};
-
-function money(value, currency) {
-  if (!Number.isFinite(value)) return '-';
-  try {
-    return new Intl.NumberFormat('en', { style: 'currency', currency, maximumFractionDigits: 2 }).format(value);
-  } catch {
-    return `${value.toFixed(2)} ${currency}`;
-  }
-}
-
-function num(value) {
-  return new Intl.NumberFormat('en').format(Math.round(value));
-}
-
-function Field({ label, hint, value, onChange, min = 0, max, step = 1, suffix, slider = true }) {
-  const id = label.replace(/\W+/g, '-').toLowerCase();
+function Field({label, hint, value, onChange, min, max, step, suffix, slider = true}) {
   return (
-    <div className={styles.field}>
-      <label htmlFor={id} className={styles.label}>
-        {label}
-        {hint && <span className={styles.hint}>{hint}</span>}
-      </label>
-      <div className={styles.inputRow}>
-        {slider && max !== undefined && (
+    <label className={styles.field}>
+      <span className={styles.fieldHead}>
+        <span className={styles.fieldLabel}>{label}</span>
+        <span className={styles.fieldValue}>
           <input
-            className={styles.range}
-            type="range"
+            type="number"
+            inputMode="decimal"
+            value={value}
             min={min}
             max={max}
             step={step}
-            value={Math.min(value, max)}
-            onChange={(e) => onChange(Number(e.target.value))}
-            aria-label={label}
+            onChange={(e) => onChange(e.target.value === '' ? '' : Number(e.target.value))}
           />
-        )}
-        <div className={styles.numberWrap}>
-          <input
-            id={id}
-            className={styles.number}
-            type="number"
-            min={min}
-            step={step}
-            value={value}
-            onChange={(e) => onChange(Math.max(min, Number(e.target.value) || 0))}
-          />
-          {suffix && <span className={styles.suffix}>{suffix}</span>}
-        </div>
-      </div>
-    </div>
+          {suffix && <em>{suffix}</em>}
+        </span>
+      </span>
+      {slider && (
+        <input
+          className={styles.range}
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={Number(value) || 0}
+          onChange={(e) => onChange(Number(e.target.value))}
+          style={{'--fill': `${(100 * ((Number(value) || 0) - min)) / (max - min)}%`}}
+        />
+      )}
+      {hint && <span className={styles.hint}>{hint}</span>}
+    </label>
   );
 }
 
 export default function EarningsCalculator() {
-  const [regionKey, setRegionKey] = useState('GLOBAL');
+  const [region, setRegion] = useState('GLOBAL');
   const [customValue, setCustomValue] = useState(0.01);
-  const [customCurrency, setCustomCurrency] = useState('USD');
-  const [owner, setOwner] = useState('creator');
-  const [share, setShare] = useState(OWNERS.creator.share);
+  const [customCurrency, setCustomCurrency] = useState('EUR');
   const [price, setPrice] = useState(60);
-  const [unlocks, setUnlocks] = useState(5000);
-  const [bonusPercent, setBonusPercent] = useState(30);
-  const [passes, setPasses] = useState(40);
-  const [passPrice, setPassPrice] = useState(1200);
+  const [unlocks, setUnlocks] = useState(1000);
+  const [passCoins, setPassCoins] = useState(0);
   const [fee, setFee] = useState(15);
-  const [pools, setPools] = useState(false);
-  const [adPool, setAdPool] = useState(500);
-  const [adShare, setAdShare] = useState(10);
-  const [vipPool, setVipPool] = useState(1000);
-  const [vipShare, setVipShare] = useState(5);
+  const [share, setShare] = useState(50);
 
-  const region = REGIONS[regionKey];
-  const coinValue = regionKey === 'CUSTOM' ? customValue : region.coinValue;
-  const currency = regionKey === 'CUSTOM' ? customCurrency || 'USD' : region.currency;
-  const creatorShare = owner === 'original' ? 0 : share;
+  const r = REGIONS.find((x) => x.code === region);
+  const coinValue = r.coinValue ?? (Number(customValue) || 0);
+  const currency = r.currency || customCurrency || '';
 
   const result = useMemo(() => {
-    const unlockCoins = unlocks * price;
-    const bonusCoins = unlockCoins * (bonusPercent / 100);
-    const paidUnlockCoins = unlockCoins - bonusCoins;
-    const passCoins = passes * passPrice;
-    const paidCoins = paidUnlockCoins + passCoins;
-    const gross = paidCoins * coinValue;
-    const storeFees = gross * (fee / 100);
-    const net = gross - storeFees;
-    const creatorCoins = net * (creatorShare / 100);
-    const adPart = pools ? adPool * (adShare / 100) : 0;
-    const vipPart = pools ? vipPool * (vipShare / 100) : 0;
-    const poolCreator = (adPart + vipPart) * (creatorShare / 100);
-    const creatorTotal = creatorCoins + poolCreator;
-    const platformTotal = net - creatorCoins + (adPart + vipPart - poolCreator);
-    return {
-      unlockCoins,
-      bonusCoins,
-      paidCoins,
-      gross,
-      storeFees,
-      net,
-      creatorCoins,
-      adPart,
-      vipPart,
-      poolCreator,
-      creatorTotal,
-      platformTotal,
-    };
-  }, [unlocks, price, bonusPercent, passes, passPrice, coinValue, fee, creatorShare, pools, adPool, adShare, vipPool, vipShare]);
+    const coins = (Number(unlocks) || 0) * (Number(price) || 0) + (Number(passCoins) || 0);
+    const gross = coins * coinValue;
+    const storeFee = gross * ((Number(fee) || 0) / 100);
+    const net = gross - storeFee;
+    const creator = net * ((Number(share) || 0) / 100);
+    const platform = net - creator;
+    return {coins, gross, storeFee, net, creator, platform};
+  }, [unlocks, price, passCoins, coinValue, fee, share]);
 
-  const total = result.storeFees + result.creatorTotal + result.platformTotal;
-  const part = (v) => (total > 0 ? `${Math.max(0, (v / total) * 100)}%` : '0%');
+  const fmt = (n) =>
+    `${n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}${currency ? ` ${currency}` : ''}`;
+  const pct = (n) => (result.gross > 0 ? (100 * n) / result.gross : 0);
 
   return (
     <div className={styles.calc}>
       <div className={styles.inputs}>
-        <fieldset className={styles.group}>
-          <legend>Region</legend>
-          <div className={styles.segments} role="radiogroup" aria-label="Region">
-            {Object.entries(REGIONS).map(([key, r]) => (
-              <button
-                key={key}
-                type="button"
-                role="radio"
-                aria-checked={regionKey === key}
-                className={styles.segment}
-                onClick={() => setRegionKey(key)}
-              >
-                {r.label}
-              </button>
-            ))}
-          </div>
-          {regionKey === 'CUSTOM' ? (
-            <div className={styles.twoCols}>
-              <Field label="Coin value" hint="One coin in money" value={customValue} onChange={setCustomValue} step={0.0001} slider={false} />
-              <div className={styles.field}>
-                <label htmlFor="ed-currency" className={styles.label}>
-                  Currency<span className={styles.hint}>ISO code, such as EUR</span>
-                </label>
-                <input
-                  id="ed-currency"
-                  className={styles.text}
-                  maxLength={3}
-                  value={customCurrency}
-                  onChange={(e) => setCustomCurrency(e.target.value.toUpperCase().replace(/[^A-Z]/g, ''))}
-                />
-              </div>
-            </div>
-          ) : (
-            <p className={styles.note}>
-              1 coin = <strong>{coinValue}</strong> {currency} (the value eDrama starts with)
-            </p>
-          )}
-        </fieldset>
-
-        <fieldset className={styles.group}>
-          <legend>Who owns the series?</legend>
-          <div className={styles.segments} role="radiogroup" aria-label="Owner">
-            {Object.entries(OWNERS).map(([key, o]) => (
-              <button
-                key={key}
-                type="button"
-                role="radio"
-                aria-checked={owner === key}
-                className={styles.segment}
-                onClick={() => {
-                  setOwner(key);
-                  if (key !== 'original') setShare(OWNERS[key].share);
-                }}
-              >
-                {o.label}
-              </button>
-            ))}
-          </div>
-          <p className={styles.note}>{OWNERS[owner].note}</p>
-          {owner !== 'original' && (
-            <Field label={owner === 'creator' ? 'Creator share' : 'Licensor share'} value={share} onChange={(v) => setShare(Math.min(100, v))} max={100} suffix="%" />
-          )}
-        </fieldset>
-
-        <fieldset className={styles.group}>
-          <legend>One month of the series</legend>
-          <Field label="Coin price per episode" hint="Creators: 30 to 90 by default" value={price} onChange={setPrice} min={1} max={200} suffix="coins" />
-          <Field label="Episodes unlocked with coins" value={unlocks} onChange={setUnlocks} max={100000} step={100} />
-          <Field label="Paid with bonus coins" hint="Bonus coins earn nothing" value={bonusPercent} onChange={(v) => setBonusPercent(Math.min(100, v))} max={100} suffix="%" />
-          <Field label="Series Passes sold" value={passes} onChange={setPasses} max={2000} step={5} />
-          <Field label="Series Pass price" value={passPrice} onChange={setPassPrice} max={5000} step={50} suffix="coins" />
-          <Field label="Store fee" hint="Google Play and App Store: 15% by default" value={fee} onChange={(v) => setFee(Math.min(100, v))} max={30} suffix="%" />
-        </fieldset>
-
-        <fieldset className={styles.group}>
-          <legend>
-            <label className={styles.toggle}>
-              <input type="checkbox" checked={pools} onChange={(e) => setPools(e.target.checked)} />
-              Add ad and VIP money
+        <div className={styles.regions} role="radiogroup" aria-label="Region">
+          {REGIONS.map((x) => (
+            <button
+              key={x.code}
+              type="button"
+              role="radio"
+              aria-checked={region === x.code}
+              className={clsx(styles.region, region === x.code && styles.regionOn)}
+              onClick={() => setRegion(x.code)}
+            >
+              {x.label}
+            </button>
+          ))}
+        </div>
+        {region === 'CUSTOM' && (
+          <div className={styles.customRow}>
+            <Field label="Coin value" value={customValue} onChange={setCustomValue} min={0.0001} max={1} step={0.0001} slider={false} hint="What one coin is worth in your currency." />
+            <label className={styles.field}>
+              <span className={styles.fieldHead}>
+                <span className={styles.fieldLabel}>Currency</span>
+                <span className={styles.fieldValue}>
+                  <input type="text" maxLength={3} value={customCurrency} onChange={(e) => setCustomCurrency(e.target.value.toUpperCase())} />
+                </span>
+              </span>
             </label>
-          </legend>
-          <p className={styles.note}>
-            Ad and VIP money isn't per unlock: your finance team fills in a monthly pool per region from the AdMob and store reports, and
-            the report splits it by verified ad unlocks and by VIP minutes on locked episodes. Here the series' part is shared at the same percent as coins.
-          </p>
-          {pools && (
-            <>
-              <Field label="Ad pool this month" value={adPool} onChange={setAdPool} max={20000} step={50} suffix={currency} />
-              <Field label="This series' share of verified ad unlocks" value={adShare} onChange={(v) => setAdShare(Math.min(100, v))} max={100} suffix="%" />
-              <Field label="VIP pool this month" value={vipPool} onChange={setVipPool} max={50000} step={100} suffix={currency} />
-              <Field label="This series' share of VIP minutes" value={vipShare} onChange={(v) => setVipShare(Math.min(100, v))} max={100} suffix="%" />
-            </>
-          )}
-        </fieldset>
+          </div>
+        )}
+        <Field label="Coin price per episode" value={price} onChange={setPrice} min={1} max={200} step={1} suffix="coins" hint="Creators choose 30 to 90 coins by default." />
+        <Field label="Paid unlocks this month" value={unlocks} onChange={setUnlocks} min={0} max={100000} step={100} hint="Episodes unlocked with paid coins. Bonus coins earn nothing." />
+        <Field label="Series Pass paid coins" value={passCoins} onChange={setPassCoins} min={0} max={500000} step={500} suffix="coins" hint="Optional: paid coins spent on this series' Series Pass." />
+        <Field label="Store fee" value={fee} onChange={setFee} min={0} max={30} step={1} suffix="%" hint="Google Play and App Store: 15% by default (Settings › Payments)." />
+        <Field label="Creator share" value={share} onChange={setShare} min={0} max={100} step={1} suffix="%" hint="Default creator share is 50%. A licensed title uses its licensor share." />
       </div>
 
-      <div className={styles.results} aria-live="polite">
-        <div className={styles.sticky}>
-          <p className={styles.resultsTitle}>This month</p>
-          <div className={styles.bar} aria-hidden="true">
-            <span className={styles.barFee} style={{ width: part(result.storeFees) }} />
-            <span className={styles.barCreator} style={{ width: part(result.creatorTotal) }} />
-            <span className={styles.barPlatform} style={{ width: part(result.platformTotal) }} />
-          </div>
-          <dl className={styles.list}>
-            <div>
-              <dt>Coins spent on unlocks</dt>
-              <dd>{num(result.unlockCoins)}</dd>
-            </div>
-            <div className={styles.muted}>
-              <dt>of which bonus coins (earn nothing)</dt>
-              <dd>{num(result.bonusCoins)}</dd>
-            </div>
-            <div>
-              <dt>Paid coins, with Series Passes</dt>
-              <dd>{num(result.paidCoins)}</dd>
-            </div>
-            <div>
-              <dt>Gross money</dt>
-              <dd>{money(result.gross, currency)}</dd>
-            </div>
-            <div>
-              <dt>
-                <span className={styles.dotFee} /> Store fees
-              </dt>
-              <dd>{money(result.storeFees, currency)}</dd>
-            </div>
-            <div>
-              <dt>Net money from coins</dt>
-              <dd>{money(result.net, currency)}</dd>
-            </div>
-            {pools && (
-              <div>
-                <dt>Series' part of the ad and VIP pools</dt>
-                <dd>{money(result.adPart + result.vipPart, currency)}</dd>
-              </div>
-            )}
-          </dl>
-          <div className={styles.totals}>
-            <div className={styles.total}>
-              <span>
-                <span className={styles.dotCreator} /> {owner === 'licensed' ? 'Licensor earns' : 'Creator earns'}
-              </span>
-              <strong>{money(result.creatorTotal, currency)}</strong>
-            </div>
-            <div className={styles.total}>
-              <span>
-                <span className={styles.dotPlatform} /> You keep
-              </span>
-              <strong>{money(result.platformTotal, currency)}</strong>
-            </div>
-          </div>
-          <p className={styles.small}>
-            Before your own costs (hosting, video, payment taxes). Store fees vary by store and programme; use the fees you actually pay.
-          </p>
+      <div className={styles.output} aria-live="polite">
+        <span className={styles.outLabel}>Paid coins this month</span>
+        <strong className={styles.coins}>{result.coins.toLocaleString()} coins</strong>
+        <span className={styles.sub}>× {coinValue.toLocaleString(undefined, {maximumFractionDigits: 6})} {currency} per coin = {fmt(result.gross)} gross</span>
+
+        <div className={styles.split} aria-hidden="true">
+          <i className={styles.segFee} style={{width: `${pct(result.storeFee)}%`}} />
+          <i className={styles.segCreator} style={{width: `${pct(result.creator)}%`}} />
+          <i className={styles.segYou} style={{width: `${pct(result.platform)}%`}} />
         </div>
+
+        <ul className={styles.rows}>
+          <li>
+            <span className={clsx(styles.dot, styles.dotFee)} /> Store fees ({Number(fee) || 0}%)
+            <b>{fmt(result.storeFee)}</b>
+          </li>
+          <li className={styles.rowNet}>
+            Net money
+            <b>{fmt(result.net)}</b>
+          </li>
+          <li>
+            <span className={clsx(styles.dot, styles.dotCreator)} /> Creator ({Number(share) || 0}%)
+            <b>{fmt(result.creator)}</b>
+          </li>
+          <li className={styles.rowYou}>
+            <span className={clsx(styles.dot, styles.dotYou)} /> You keep
+            <b>{fmt(result.platform)}</b>
+          </li>
+        </ul>
+        <p className={styles.note}>Assumes full-price packs and no refunds. Ads and VIP are shared separately, from monthly pools.</p>
       </div>
     </div>
   );

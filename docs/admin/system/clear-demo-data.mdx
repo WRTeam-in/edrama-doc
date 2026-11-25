@@ -1,0 +1,38 @@
+---
+title: "Clear demo data"
+sidebar_label: "Clear demo data"
+description: "Remove the sample titles, viewers, creators and figures before you launch, keeping everything you set up."
+---
+
+If you imported demo data during installation, it shows how eDrama looks in use: sample dramas, creators, viewers and Dashboard figures, with artwork drawn for you. **Clear it before you launch.** Your own titles, viewers and settings stay.
+
+**Only the Owner** can clear demo data, and the page appears only while demo data is present.
+
+## What's removed and what stays
+
+| Removed | Stays |
+|---|---|
+| The demo titles, with their episodes, translations, statistics, artwork and videos | Regions, coin packs, VIP plans, ad and reward settings |
+| The demo categories and their pictures | Settings, languages and language packs, roles, legal pages and email templates |
+| The demo creators, with their submissions and review items | Your license, the Owner account and the platform's own creator profile |
+| The demo viewers, with their wallets, ledgers, purchases, unlocks, VIP, reviews, comments, follows, reports and tickets | Everything you added yourself, and the audit log |
+| The demo team accounts | |
+| The demo Dashboard figures, searches and pushes to demo titles | |
+
+Home goes back to the starting layout and the sign-in screens to the built-in photos. If no categories would be left, the starting categories are restored.
+
+## Clear it
+
+<Steps>
+
+1. Open <Path>System › Clear demo data</Path> and read both lists.
+2. Choose **Clear demo data**.
+3. Type **CLEAR** in capital letters to confirm.
+
+</Steps>
+
+It can't be undone. The result says how many titles, viewers and creators were removed. If real viewers already paid for a demo title, that title is **kept, hidden**, so their purchases stay intact.
+
+:::tip
+You can import the demo data again on a test server with `php artisan edrama:demo-data`. Don't run it on your live server after launch.
+:::

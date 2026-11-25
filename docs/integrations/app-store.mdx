@@ -1,0 +1,50 @@
+---
+title: "App Store"
+sidebar_label: "App Store"
+description: "Let your server verify App Store purchases and subscriptions, and receive App Store Server Notifications."
+---
+
+Your server checks every iOS purchase with Apple and receives **App Store Server Notifications (version 2)** for renewals, refunds and cancellations.
+
+## 1. In-App Purchase key
+
+<Steps>
+
+1. [App Store Connect](https://appstoreconnect.apple.com/) › **Users and Access › Integrations › In-App Purchase**: generate a key. Copy its **Key ID** and download the **.p8** file (Apple lets you download it **once**).
+2. **Issuer ID**: shown at the top of **Users and Access › Integrations › App Store Connect API**.
+
+</Steps>
+
+## 2. Enter the keys
+
+<Path>Settings › Payments</Path> › **App Store** card:
+
+| Field | Value |
+|---|---|
+| **Bundle ID** | Your iOS app's ID, such as `com.yourcompany.drama`. |
+| **Issuer ID** | From step 1. |
+| **Key ID** | The 10-character ID. |
+| **Private key (.p8)** | Open the file in a text editor and paste all of it, from the first line of dashes to the last. |
+| **Environment** | Only decides where **Test connection** asks Apple for a test notification: **Production** (default) or **Sandbox**. |
+
+**Save**, then **Test connection**: it asks Apple to send a test notification to the URL below.
+
+:::info[TestFlight and App Review purchases just work]
+Every purchase is checked with the **live App Store first, then the sandbox**, whatever **Environment** says. So TestFlight, Sandbox testers and App Review can buy without you switching anything. Leave **Environment** on **Production**.
+:::
+
+## 3. Server notifications
+
+Copy the **Server notifications URL (version 2)** from the card and paste it in App Store Connect › your app › **App Information › App Store Server Notifications**, choosing **Version 2**, for **both production and sandbox**:
+
+<ServerUrl path="/api/v1/webhooks/app-store" />
+
+ Notifications are signed by Apple and checked before anything is stored.
+
+## 4. Products
+
+Create the coin packs (consumable) and the three VIP subscriptions in one group, matching the IDs in Monetization. See [In-app purchases](../app-setup/in-app-purchases.mdx).
+
+## Refunds
+
+Apple decides App Store refunds. In Transactions, the purchase drawer links to Apple's refund request page for the viewer, and Apple's notification updates the purchase when a refund (or a refund reversal) happens.

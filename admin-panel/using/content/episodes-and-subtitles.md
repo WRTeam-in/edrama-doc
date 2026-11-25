@@ -1,0 +1,80 @@
+---
+sidebar_position: 3
+title: "Episodes and subtitles"
+sidebar_label: "Episodes & subtitles"
+description: "Manage a title's episodes: rename, reorder, play, delete, allow a short episode, and upload subtitles."
+---
+
+Open a title and choose the **Episodes** tab to manage its episodes, or **Localization** for subtitles.
+
+<Screen
+  id="admin-title-episodes"
+  type="browser"
+  wire="list"
+  url="/admin/titles/1/edit"
+  title="Episodes"
+  caption="The Episodes tab of a title: the length floor, the episode table and its actions."
+  markers={[
+    {x: 59, y: 48.8, title: 'Episode length floor', text: '45 seconds by default. Lists episodes under it and whether each was allowed with a reason.'},
+    {x: 26.1, y: 56.7, title: 'Released count', text: 'How many episodes are out.'},
+    {x: 77, y: 56.7, title: 'Schedule episodes', text: 'One episode a day at the same time, for a range of episodes.'},
+    {x: 88.2, y: 56.7, title: 'Upload episodes', text: 'Opens the uploader for this title only.'},
+    {x: 25.8, y: 62.7, title: 'Reorder', text: 'Drag unreleased episodes into a new order. Released episodes keep their numbers.'},
+    {x: 32, y: 73.8, title: 'Episode name', text: 'Rename an episode right in the table.'},
+    {x: 47.8, y: 87.6, title: 'Access', text: 'Free (within the free episodes) or Locked.'},
+    {x: 61.8, y: 73.8, title: 'Processing', text: 'Uploading, Processing, Ready or Failed (with the reason).'},
+    {x: 80.9, y: 73.8, title: 'Release', text: 'When it was released, when it’s scheduled, or a Schedule button.'},
+    {x: 92.6, y: 73.8, title: 'Play and comments', text: 'Play the episode here, or open its comments and likes.'},
+  ]}
+/>
+
+## The columns
+
+| Column | Meaning |
+|---|---|
+| **Episode** | Its number and name ("Untitled" until named). |
+| **Length** | The video's length, once processed. |
+| **Access** | **Free** (within the free episodes) or **Locked**. |
+| **Status** | Draft, In review, Approved, Live and so on. |
+| **Processing** | Uploading, Processing, Ready or Failed (with the reason). |
+| **Subtitles** | Which languages have subtitles. |
+| **Release** | Released on a date, scheduled for a date, or not scheduled yet. |
+
+## Actions on an episode
+
+| Action | What it does |
+|---|---|
+| **Play episode** | Plays it right in the panel, whether it's on this server, Cloudflare Stream or YouTube. If a replacement video is processing, you see the current one until the new one is ready. |
+| **Comments and likes** | Opens what viewers said about this episode. |
+| **Rename** | Click the name to change it. |
+| **Schedule** | Sets the publish time ([Release schedule](/admin-panel/using/content/release-schedule/)). |
+| **Delete episode** | Only an **unreleased** episode that **no viewer has paid for**. The episode and its video go for good. |
+| **Allow short episode** | See below. |
+
+## The 45-second floor
+
+eDrama won't release a **paid** episode shorter than **45 seconds** (the "length floor", set in <Path>Settings › Video pipeline</Path>). Viewers complain when late episodes are cut into seconds-long pieces to sell more unlocks, so a coin should always buy a real scene.
+
+If an episode is shorter for a good reason, such as the finale's epilogue, use the warning button on its row: **Allow short episode**, give the reason, and choose **Allow it**. The reason goes in the audit log. Creators can't submit episodes under the floor at all.
+
+## Replacing a video
+
+Upload a new file with the same episode number. Viewers keep watching the current video until the new one is processed, then switch over. If the new upload fails, the old one stays.
+
+## Subtitles {#subtitles}
+
+Open the **Localization** tab. Each episode has a row and each app language a column, with how many episodes are covered.
+
+<Steps>
+
+1. Choose **Upload** in the cell for the episode and language.
+2. Choose a **WebVTT (.vtt)** or **SubRip (.srt)** file: UTF-8 text, up to 1 MB.
+3. Choose **Upload**.
+
+</Steps>
+
+The file is checked: times must run in order and end within the episode's length (plus one second). SRT files are converted to WebVTT automatically; the message says how many subtitle lines were found. A new file for the same episode and language replaces the old one.
+
+If the episode's video isn't processed yet, the file is checked against its length once it is.
+
+In the app, viewers choose subtitles in the player's menu or in <Path panel="app">Me › Settings › Subtitles</Path> ("Same as app language" by default).

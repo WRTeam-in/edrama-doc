@@ -46,7 +46,7 @@ Separate several SHA-256 fingerprints with commas. Then run `php artisan config:
 </Step>
 <Step title="Match the app">
 
-The app's share domain must be this domain. See [Mobile App › Deep links](/mobile-app/deep-links/).
+The app's share domain must be this domain. See [Mobile App › Deep links](/mobile-app/deep-links/), and [Signing](/mobile-app/signing/) for where your keystore's fingerprints come from.
 
 </Step>
 </Steps>

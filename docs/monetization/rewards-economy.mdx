@@ -1,0 +1,49 @@
+---
+title: "Rewards, bonuses and ads"
+sidebar_label: "Rewards economy"
+description: "How free coins enter the economy (welcome bonus, daily spin, streak titles, ads), and how to keep them balanced."
+---
+
+Free coins bring viewers back and let them sample paid episodes. They're all **bonus coins**: they expire (7 days by default) and are spent first, so they never pile up.
+
+## Where bonus coins come from
+
+| Source | Default | Set in |
+|---|---|---|
+| **Welcome bonus** | 100 coins for 7 days, once per device | Monetization › Rewards |
+| **Coin pack bonus** | +50 to +2,000 per pack | Monetization › Coin packs |
+| **Daily spin** | 10–200 coins, average about 20 (19.7) | Monetization › Rewards |
+| **Streak titles** | 0–500 coins, paid once per title | Monetization › Rewards |
+| **Ads for coins** | 15 coins per ad, up to 6 a day (20 in India) | Monetization › Ads |
+| **Goodwill credit** | Any amount, with a reason | Users › Adjust balance |
+
+## The daily spin
+
+Every spin pays. The **server** picks the prize by weight (viewers can see the odds), so the outcome can't be tampered with. VIP members win their prize × the VIP multiplier (2 by default); title bonuses are never multiplied.
+
+The Rewards tab in the Admin Panel shows the **average spin** and about how many coins a daily viewer earns a month (and roughly how many episodes that is), so you can balance generosity against sales.
+
+## Streaks
+
+A streak counts days in a row with a spin. **Shields** (one every 7 days, up to 2 held) cover a missed day automatically. **Titles** are earned at a viewer's best streak and kept for good; each pays its bonus once.
+
+## Rewarded ads {#rewarded-ads}
+
+Two kinds of rewarded ad, each with its own AdMob unit and daily limit (or one shared limit):
+
+| Ad | Reward |
+|---|---|
+| **Unlock ad** | One episode. |
+| **Rewards ad** | Bonus coins (15 by default). |
+
+Either pays **only once AdMob's server-side verification confirms** the ad was watched to the end, 30 seconds at most, never a playable or interactive ad, never shown to VIP. See [AdMob](../integrations/admob.mdx).
+
+## Bonus expiry
+
+A background task removes expired bonus coins every 5 minutes; the ledger shows a **bonus expiry** row. The wallet always tells viewers when their next bonus coins expire.
+
+:::tip[Balancing tips]
+- If viewers rarely buy, the spin may be too generous: lower the big prizes' weights.
+- A first top-up offer with double coins converts guests well: keep one per region.
+- Keep the welcome bonus close to the price of one or two episodes so it's a real taste of the paywall.
+:::

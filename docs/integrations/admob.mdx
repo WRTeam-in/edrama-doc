@@ -1,0 +1,48 @@
+---
+title: "AdMob"
+sidebar_label: "AdMob"
+description: "Set up rewarded ad units with server-side verification, and connect the AdMob Reporting API for creator revenue."
+---
+
+eDrama uses **AdMob rewarded ads** in two places: to **unlock an episode**, and to earn **bonus coins** on the Rewards tab. AdMob is set up in three places:
+
+| Where | What |
+|---|---|
+| The app project | The AdMob **app IDs** ([Ads setup](../app-setup/ads-setup.mdx)). |
+| <Path>Money › Monetization › Ads</Path> | The **ad unit IDs** per platform and region, and the limits. |
+| <Path>Settings › Creator revenue</Path> | The **AdMob Reporting API**, so unlock-ad earnings can be shared with creators. |
+
+## 1. Create the ad units
+
+In [AdMob](https://apps.admob.com/), for **each app** (Android and iOS), create two **Rewarded** ad units: one for unlocks, one for Rewards. Each ID looks like `ca-app-pub-0000000000000000/0000000000`.
+
+## 2. Turn on server-side verification
+
+For **every** ad unit: AdMob › Ad units › the unit › **Server-side verification** › enter the **callback URL** shown on the Ads tab in Monetization.
+
+:::danger[Required]
+An ad unlocks an episode or pays coins **only once AdMob confirms it** through this callback. Without server-side verification, ads play but reward nothing.
+:::
+
+## 3. Enter the units
+
+In <Path>Money › Monetization › Ads</Path>, for each region: **Unlock ad unit ID (Android / iOS)** and **Rewards ad unit ID (Android / iOS)**, plus the daily limits and coins per Rewards ad. A platform without a unit shows no ads in that region.
+
+## 4. Connect the Reporting API (for creator revenue)
+
+So the monthly import can read your unlock ads' earnings by country and ad unit (read-only):
+
+<Steps>
+
+1. In Google Cloud, enable the [AdMob API](https://console.cloud.google.com/apis/library/admob.googleapis.com). Set up **APIs & Services › OAuth consent screen** and **publish** it (in testing mode, Google ends the connection after 7 days).
+2. [Credentials](https://console.cloud.google.com/apis/credentials) › **Create credentials › OAuth client ID › Web application**. Add the **Authorised redirect URI** shown on the AdMob Reporting API card.
+3. Paste the **OAuth client ID** and **client secret** on the card and **Save**.
+4. Choose **Connect AdMob** and sign in with the Google account that owns the AdMob account. The **refresh token** and **publisher ID** (`pub-…`) are filled in.
+
+</Steps>
+
+Without it, creator revenue's ads pools stay at zero unless set by hand.
+
+## Rules eDrama enforces
+
+One ad, one reward; 30 seconds at most; no playable or interactive ads in the unlock path; never shown to VIP; never auto-played. Use AdMob's **Blocking controls** to keep interactive formats out of your rewarded units.

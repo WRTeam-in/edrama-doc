@@ -1,0 +1,72 @@
+---
+sidebar_position: 10
+title: "AI Studio"
+sidebar_label: "AI Studio"
+description: "Make characters, storyboards and video takes for your series with Google Gemini, on your own key or the platform's."
+---
+
+**AI Studio** helps you make a short drama with Google's Gemini models: create **characters** who look the same from shot to shot, turn each **shot** into a **storyboard** image, generate video **takes** from it, then cut the takes into an episode. What you make is reviewed like any upload.
+
+AI Studio appears in your menu only when the platform has switched it on for your account.
+
+## Who pays
+
+The platform decides how AI Studio is paid for. Your **Your account › AI Studio** card says which applies to you:
+
+| Mode | What it means for you |
+|---|---|
+| **Your own key** | You add your own **Gemini API key**; calls are billed to your own Google account, with no limits from the platform. |
+| **The platform's key** | The platform pays, within your **monthly allowance** and daily limits (shown on your account). You don't add a key. |
+| **Your choice** | You may use either. Choose **Pay with** on your account. |
+
+### Add your Gemini key
+
+<Steps>
+
+1. Create a key in [Google AI Studio](https://aistudio.google.com/apikey) in a Google project **with billing switched on**.
+2. On **Your account › AI Studio**, choose **Add key**, paste it and choose **Test and save**. Google checks it before it's saved.
+
+</Steps>
+
+Your key is stored encrypted; only its last 4 characters are ever shown. **Test** checks it again; **Remove** stops new calls (calls already sent finish).
+
+### Set a monthly budget
+
+**Set budget** caps your own estimated spend each calendar month (UTC), from $1. You get a notice and an email at **80%** and **100%**; at 100%, nothing new starts. Leave it blank for no budget.
+
+## Make a series with AI
+
+Open **AI Studio** and pick a series. It has two tabs, **Characters** and **Shots**, and a progress line ("4 characters, 3 with a portrait · 12 shots, 8 with a kept take").
+
+<Steps>
+
+1. **Series look.** Write one **style line** every prompt starts with, such as *Realistic, soft daylight, warm colours*.
+2. **Characters.** Choose **New character**: a name and an **identity profile** (age range, face shape, skin tone, eye colour, hair, build, height, distinguishing marks, usual clothes, voice). The profile is repeated word for word in every prompt, and **locks** once a storyboard uses it.
+3. **Portrait.** **Generate portrait** (tick **Higher quality** for the better image model), or **Upload a reference** you have the rights to (never a real, recognisable person or a minor).
+4. **Looks.** **New look** from a preset (Casual, Office, Wedding, Night, Traditional) or your own description. **Regenerate**, **Edit by prompt** ("Change only the jacket to red"), and switch between **Versions**.
+5. **Shots.** On the **Shots** tab, add a shot with a title and its episode. Pick its cast (each in a look), framing (Close-up, Wide shot, Two-shot, Over-the-shoulder, Walking scene, Conversation), camera (Static, Push in, Pull out, Pan, Tilt, Tracking, Handheld, Orbit), and lines of dialogue with an emotion (neutral, calm, happy, sad, tearful, angry, scared, excited, whispering). Drag shots to reorder them or onto another episode.
+6. **Storyboard.** Generate a still of the shot and **approve** it. Takes start from it.
+7. **Takes.** Choose the mode (from the storyboard, from start and end stills, or from the cast's images), the resolution and the length (from 3 seconds), and generate. **Keep** the take you like. **Edit take** makes a new take from one with your change; the original stays.
+8. **Episode.** Assemble the kept takes in the [Episode editor](/creator-portal/guide/ai-episode-editor/).
+
+</Steps>
+
+:::warning[AI characters drift]
+Characters won't look exactly the same in every image or take. The portrait, the look and the same profile in every prompt keep them close. **Check each storyboard before you make takes**: takes cost more.
+:::
+
+## Costs and progress
+
+- Every button shows an **estimate** first. Every take asks you to confirm; images ask above a set amount.
+- **Now generating** shows live progress of every call. You can leave the page; each result appears where it belongs.
+- Google doesn't report progress, so the percentage is estimated; the stage (preparing, making the image, rendering the video, downloading) is real.
+
+| Message | What to do |
+|---|---|
+| Google blocked this prompt | Change the prompt and try again. |
+| Your Gemini key was refused | Check it on Your account. |
+| Your Google project reached its limit | Tier 1 allows 40 videos a day; try later. |
+| You reached today's limit | Limits on the platform's key reset at midnight UTC. |
+| We lost Google's answer | It may already be on your Google bill: check before trying again. |
+
+Unused files (rejected storyboards, takes you didn't keep, unused versions) are deleted after 30 days. Anything in use stays.

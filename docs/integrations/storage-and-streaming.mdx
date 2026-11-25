@@ -1,0 +1,108 @@
+---
+title: "Storage and streaming"
+sidebar_label: "Storage & streaming"
+description: "Set up Amazon S3, an S3-compatible service, Cloudflare R2 or Cloudflare Stream for files and videos."
+---
+
+By default, every file and video stays on your own server, processed with ffmpeg. As you grow, you can move files to a **bucket** (cloud storage) and/or let **Cloudflare Stream** process and stream videos. Switching is done in <Path>Settings › Storage & video</Path> ([how switching works](../admin/settings/storage-and-video.mdx)).
+
+## Amazon S3
+
+<Steps>
+
+1. [AWS console › S3](https://console.aws.amazon.com/s3/home) › **Create bucket**. Pick the region nearest your viewers (`ap-south-1` for India) and keep **Block all public access** on.
+2. [IAM › Users](https://console.aws.amazon.com/iam/home#/users) › **Create user** (such as `edrama-storage`), without console access.
+3. Give the user a policy that allows **listing, reading, writing and deleting in this bucket only**.
+4. Open the user › **Security credentials › Create access key** › *Application running outside AWS*. Copy the **access key ID** and **secret access key** (shown once).
+5. On the **Amazon S3 bucket** card: the keys, the bucket's **name** and **region**. **Save**, then **Test connection**.
+
+</Steps>
+
+Optional **Public URL** (such as a CloudFront domain) serves posters and banners publicly; without it they're served through secure links that last six days. Inside the bucket, public media goes under `media/` and private files and videos under `files/`: a bucket policy that makes only `media/*` public is enough for a Public URL.
+
+:::tip[Using the website?]
+Add the bucket's host (or its Public URL's host) to the website's `EDRAMA_IMAGE_HOSTS`, or posters won't show there ([Connect the website](../website/connect.mdx)).
+:::
+
+## Another S3-compatible service
+
+DigitalOcean Spaces, Wasabi, Backblaze B2, MinIO and others work through the same card (choose the **Service**):
+
+- **Endpoint**: the provider's S3 address, such as `https://sgp1.digitaloceanspaces.com`, `https://s3.ap-southeast-1.wasabisys.com` or `https://s3.us-west-004.backblazeb2.com`.
+- **Region**: the bucket's region there (`sgp1`, `ap-southeast-1`, `us-west-004`), or `us-east-1` / `auto` when any works.
+
+## Cloudflare R2
+
+R2 has **no download fees**, which suits video streaming at scale.
+
+<Steps>
+
+1. [Cloudflare dashboard](https://dash.cloudflare.com/) › **R2 Object Storage › Create bucket** (location Automatic, unless you need EU or FedRAMP).
+2. Copy your **account ID** from the R2 overview's Account details.
+3. **Manage API tokens › Create API token**, with **Object Read & Write** for this bucket only. Copy the **Access Key ID** and **Secret Access Key** (shown once).
+4. Optional: connect a **custom domain** to the bucket for posters and banners, and put it in **Public URL**.
+5. On the **Cloudflare R2 bucket** card: account ID, jurisdiction, keys and bucket name. **Save**, then **Test connection**. Then pick **Cloudflare R2** under Storage (files).
+
+</Steps>
+
+## Cloudflare Stream
+
+Cloudflare uploads, transcodes and streams the videos; your server does no video work, so ffmpeg isn't needed.
+
+<Steps>
+
+1. **Turn on Stream.** In the [Cloudflare dashboard](https://dash.cloudflare.com/), open **Stream** and subscribe.
+2. **Account ID**: Cloudflare dashboard › Stream, or the address bar after `dash.cloudflare.com/`.
+3. **API token**: [My Profile › API Tokens](https://dash.cloudflare.com/profile/api-tokens) › Create Token › Custom token, with **Account › Stream › Edit**. Copy it (shown once).
+4. **Signing key**: signed playback stops anyone playing your videos outside the app. Create one with the API (below). The answer's `id` is the **signing key ID** and its `pem` the **signing key** (paste it as Cloudflare returns it).
+5. **Customer subdomain**: Stream › any video › its link starts with `customer-….cloudflarestream.com`.
+6. Fill in the **Cloudflare Stream** card and **Save**. Leave **Webhook secret** empty: the next step fills it in.
+7. **Register the webhook**, so Cloudflare can tell your server when a video is ready (below).
+8. Press **Test connection**. It fails until every key, the webhook secret included, is saved, and it checks the signing key belongs to your account. Then choose **Cloudflare Stream** under Video streaming.
+
+</Steps>
+
+```bash title="Create a signing key (step 4)"
+curl -X POST "https://api.cloudflare.com/client/v4/accounts/ACCOUNT_ID/stream/keys" \
+  -H "Authorization: Bearer API_TOKEN"
+```
+
+### Register the webhook (step 7)
+
+<Tabs>
+<TabItem value="command" label="With one command (recommended)">
+
+From the project folder on your server:
+
+```bash title="Server"
+php artisan edrama:video-webhook
+```
+
+It registers this address with Cloudflare and saves the **Webhook secret** Cloudflare returns, straight into Settings:
+
+<ServerUrl path="/api/v1/webhooks/video" />
+
+If your Admin Panel answers on a different address, pass it as an argument: `php artisan edrama:video-webhook https://admin.your-domain.com/api/v1/webhooks/video`.
+
+</TabItem>
+<TabItem value="api" label="With Cloudflare's API">
+
+```bash title="Register the webhook"
+curl -X PUT "https://api.cloudflare.com/client/v4/accounts/ACCOUNT_ID/stream/webhook" \
+  -H "Authorization: Bearer API_TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{"notificationUrl": "WEBHOOK_URL_FROM_THE_CARD"}'
+```
+
+The answer's `secret` is the **Webhook secret**: paste it on the card and **Save**.
+
+</TabItem>
+</Tabs>
+
+Cloudflare's own guides: [Stream webhooks](https://developers.cloudflare.com/stream/manage-video-library/using-webhooks/) and [signed links](https://developers.cloudflare.com/stream/viewing-videos/securing-your-stream/).
+
+Stream's notifications are signed and checked (at most 5 minutes old) before they're stored. Missed ones are caught by a check every 10 minutes. To check one episode's video from the server:
+
+```bash title="Server"
+php artisan edrama:video-status <episode-id> --refresh
+```

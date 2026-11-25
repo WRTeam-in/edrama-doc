@@ -1,0 +1,53 @@
+---
+title: "App and support"
+sidebar_label: "App & support"
+description: "App versions and store links, the support email, feature switches, maintenance mode and the comment blocklist."
+---
+
+<Path>Settings › App & support</Path> controls the app without a new release.
+
+## App versions
+
+Force an update when an old build breaks something.
+
+| Field (per platform) | Meaning |
+|---|---|
+| **Latest** | The newest version in the store. Viewers on older builds see a "A new version is ready" prompt. |
+| **Minimum supported** | Builds below this see **Update required** and can't continue until they update. It can't be newer than Latest. |
+| **Store link** | `https://play.google.com/store/apps/details?id=…` or `https://apps.apple.com/app/id…`. Used by the update screens, share pages and the website. |
+| **On latest** | How many devices seen in the last 30 days run the latest version. |
+
+## Support contact
+
+**Support email**: where viewers and creators write when they need help. It shows in the app's Help screen, in creator emails and to suspended creators. Leave it blank to use the server's address (`EDRAMA_SUPPORT_EMAIL` in `.env`).
+
+:::warning[Set one of the two]
+`EDRAMA_SUPPORT_EMAIL` is `support@example.com` until you change it. If both are left alone, the app and creator emails show that example address.
+:::
+
+## Features
+
+Switch a feature off and the app hides it at its next start, without a new release. The server refuses it too, where that's safe.
+
+| Switch | What it controls |
+|---|---|
+| **VIP** | Subscriptions that unlock every drama. (Viewers who already paid still get their VIP.) |
+| **Series Pass** | One price for a whole series. |
+| **Auto-unlock** | Unlocking the next episode with coins as it starts. |
+| **Rewards** | The daily spin, streak titles and Rewards ads. Off: the Rewards tab becomes the Wallet tab. |
+| **Phone sign-in** | In the app and on the Creator Portal's sign-in. |
+| **Episode comments** | Comments under episodes. |
+| **Series reviews** | Ratings and reviews on series pages. |
+| **Daily spend limit** | Viewers choosing how many coins they may spend a day. Off: no daily limit. |
+| **Creator profiles and following** | Creator pages, following creators and creators in search, in the app and on the website. |
+| **"Become a creator" applications** | The public application form. Off: it says applications are closed for now. |
+
+All are on by default. Switched-off features leave no trace in the app.
+
+## Maintenance mode
+
+While **Show the maintenance screen** is on, the app shows a maintenance screen ("Back soon") with your **Message** (up to 280 characters, required, such as when the app will be back) instead of the catalogue. Viewers' coins, unlocks and progress are safe.
+
+## Comment blocklist
+
+**Words and phrases** (press Enter after each). A comment or review containing one, as a whole word and in any case, waits for a person on [Comments & reviews](../community/comments-and-reviews.mdx) before others see it.

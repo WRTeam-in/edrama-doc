@@ -1,0 +1,109 @@
+---
+sidebar_position: 5
+title: "Upload & pipeline"
+sidebar_label: "Upload & pipeline"
+description: "Upload episode files in bulk, import from a CSV, a link or YouTube, and follow every episode from upload to ready."
+---
+
+**Upload & pipeline** is where your team uploads episodes and watches them move through three stages: **upload → process → ready**. Everything after the upload happens in the background, so you can close the page once the files are sent.
+
+<Access area="Uploads" view="See the pipeline" edit="Upload, import and retry" />
+
+<Screen
+  id="admin-upload"
+  type="browser"
+  wire="upload"
+  url="/admin/upload"
+  title="Upload & pipeline"
+  caption="Upload & pipeline: the drop zone, the stage cards, the pipeline table and the side cards."
+  markers={[
+    {x: 70.6, y: 14.6, title: 'Import options', text: 'Bulk import (CSV), Add YouTube video and Import from URL.'},
+    {x: 45.2, y: 30.9, title: 'Drop episode files here', text: 'MP4, MOV or MKV, resumable after a dropped connection.'},
+    {x: 45.9, y: 34.6, title: 'Choose files', text: 'Or pick files from your computer. Title and episode are matched from file names.'},
+    {x: 24.3, y: 51.2, title: 'Stage cards', text: 'Uploading, Processing, Failed and Ready. Click one to filter the pipeline.'},
+    {x: 29.9, y: 62.6, title: 'Pipeline', text: 'Every episode from upload to release, refreshed by itself.'},
+    {x: 68.8, y: 78.5, title: 'Retry', text: 'A failed upload shows why; Retry starts it again.'},
+    {x: 57.7, y: 90, title: 'Schedule', text: 'A ready episode waiting for its publish time.'},
+    {x: 86.1, y: 22.6, title: 'Encoding ladder', text: 'The qualities each video is turned into, vertical first.'},
+    {x: 86.1, y: 55.1, title: 'Storage & delivery', text: 'Where videos are kept and streamed, and whether it’s ready.'},
+    {x: 86.1, y: 77.6, title: 'Workers', text: 'Episodes uploading, processing or failed, and the jobs waiting.'},
+  ]}
+/>
+
+## Upload episode files
+
+<Steps>
+
+1. Drag the files onto **Drop episode files here**, or choose **Choose files**. Accepted: **MP4, MOV or MKV**, up to the size set in <Path>Settings › Video pipeline</Path> (20 GB by default).
+2. Check each file's **title** and **episode number**. The number is read from the file name: `EP07`, or the first number that isn't a year. A file with no number asks you to type it.
+3. Read the flags under the files:
+   - *Another file in this upload is the same episode.*
+   - *Replaces E7's video once the new one is ready; the current one stays live until then.*
+   - *Missing* episodes, so you notice gaps.
+4. Choose **Upload N files**. Files go **three at a time**, straight from your browser to where videos live. **Keep the page open until they're sent.**
+
+</Steps>
+
+Uploads are **resumable**: if your connection drops, the upload pauses ("waiting for the network") and carries on by itself. If you reload the page, drop the same file again to continue where it stopped.
+
+:::tip
+To upload to one title only, open the title and choose **Upload episodes** on its Episodes tab: the uploader opens already set to that title.
+:::
+
+## Import from a CSV file
+
+For a whole catalogue at once, choose **Bulk import (CSV)**. Download the sample file to see the layout. One row per episode, with these columns:
+
+| Column | Example |
+|---|---|
+| `title` | The title's name or slug. The title must already exist. |
+| `episode` | 1 to 9999 |
+| `episode title` | *The first meeting* |
+| `file name or URL` | A file name you'll drop next, an `https://` link to a video file, or a YouTube link |
+| `credit` | Optional, such as *Title by Creator, CC BY* |
+| `publish time` | Optional, in the default region's time zone, such as `2026-11-02 20:00` |
+
+Up to 500 rows. **If one row has a problem, nothing is imported**: the panel lists each problem by row number. Setting publish times needs **Schedule & Home** (Edit).
+
+## Import from a link
+
+**Import from URL** downloads a video that's already online and processes it like an upload. Choose the **Source** (an `https://` link to an MP4, MOV or MKV on a public website), the title and the episode. Only import content you own or license.
+
+## Add a YouTube video
+
+**Add YouTube video** makes an episode that plays in YouTube's own player inside the app. Paste a Shorts, watch or youtu.be link to a **public** video that allows embedding, and optionally a **Credit**.
+
+:::warning[YouTube episodes are always free]
+YouTube's rules forbid charging for, gating or rewarding views of its videos. So these episodes are never sold with coins, ads, VIP or a Series Pass, and earn creators nothing. Their quality and subtitles are YouTube's own. This option appears only when it's switched on in <Path>Settings › Video pipeline</Path>. See [YouTube](/admin-panel/settings/ai-studio/).
+:::
+
+## The pipeline
+
+The table below lists every episode from upload until it's released, with its stages and status. It refreshes by itself every few seconds.
+
+| Stage | Meaning |
+|---|---|
+| **Uploading** | Going to the video service. |
+| **Processing** | Being encoded for the app: 1080p, 720p, 480p and 360p (never above the original), plus a poster. |
+| **Failed** | Needs the file again. The **Detail** column says why; choose **Retry**. |
+| **Ready** | Processed, not released yet. Choose **Schedule** to set its publish time. |
+
+Filter by **Stage**, **Title** or whether it's **Released**.
+
+## The side cards
+
+- **Encoding ladder**: the qualities each video is turned into, vertical first.
+- **Storage & delivery**: where videos are kept and streamed, and whether it's ready ("ffmpeg not found" or "Not connected yet" means it isn't). Links to <Path>Settings › Storage & video</Path>.
+- **Workers**: how many episodes are uploading, processing or failed, and the jobs waiting in the queue.
+- **Rights checklist**: a reminder of what you need before an episode goes live: a licence or ownership document, territories matching the title's regions, a takedown contact, and cleared music.
+
+## Why an upload fails
+
+| Message | What to do |
+|---|---|
+| The connection dropped | Choose **Retry**: it carries on where it stopped. |
+| The video service refused the file | Check the file plays on your computer, then upload it again. |
+| The upload link expired | Choose **Retry** to start the file again. |
+| Stuck on Processing | Check the background workers are running ([Cron & queues](/admin-panel/background-jobs/)). |
+
+Unfinished uploads are cleaned up after two days.

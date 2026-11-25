@@ -1,0 +1,44 @@
+---
+title: "Unlock methods"
+sidebar_label: "Unlock methods"
+description: "The six ways an episode becomes watchable, and what each records for reporting and creator earnings."
+---
+
+An episode a viewer can watch was unlocked one of six ways. Each is recorded, so reports, the Dashboard's donut and creator earnings all add up.
+
+| Method | How | Earns | Counts toward |
+|---|---|---|---|
+| **Free** | Within the series' free episodes. | Nothing directly. | Views |
+| **Coins** | The series' price, bonus coins first. | The paid coins' value. | Creator coin share |
+| **Series Pass** | One coin price for every episode, including future ones. | The paid coins' value. | Creator coin share |
+| **Ad** | One rewarded ad, up to 30 seconds, verified by AdMob. | AdMob's payment to you. | Creator ad pool, by verified ad unlocks |
+| **VIP** | An active VIP subscription. | The subscription. | Creator VIP pool, by VIP minutes watched |
+| **Grant** | Your team, from [Users › Grant episode](../admin/audience/users.mdx). | Nothing; no coins move. | No revenue share |
+
+## Series Pass
+
+- Set per region in the title editor (optional). Unlocks **every episode, including future drops**.
+- The unlock sheet shows the saving against paying per episode.
+- It isn't held to the viewer's daily spend limit.
+- Switch it off for everyone in <Path>Settings › App & support › Features</Path>.
+
+:::note[To confirm]
+The project notes record that the Series Pass ignoring the daily spend limit is a deliberate choice (a pass usually costs more than the highest limit) still awaiting the product owner's confirmation.
+:::
+
+## Ad unlocks
+
+- Only on series with **Ads can unlock** on (title editor › Paywall).
+- One ad, one episode. The viewer always taps to watch; ads never auto-play an unlock.
+- **Unlocks only once AdMob's server-side verification confirms** the ad was watched to the end. A failed or unconfirmed ad unlocks nothing, but still counts toward the day's limit.
+- Never shown to VIP members.
+
+See [Rewarded ads](rewards-economy.mdx#rewarded-ads) and [AdMob](../integrations/admob.mdx).
+
+## YouTube episodes are always free
+
+Episodes added from YouTube can't be sold, gated or rewarded under YouTube's rules. They're always free, never part of VIP minutes or creator earnings.
+
+## Restorable everywhere
+
+Unlocks belong to the **account**, not the phone. A viewer who signs in on a new phone gets them all back.

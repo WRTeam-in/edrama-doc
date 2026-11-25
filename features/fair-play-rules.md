@@ -1,0 +1,35 @@
+---
+sidebar_position: 3.6
+title: "Fair-play rules"
+sidebar_label: "Fair-play rules"
+description: "The pricing promises built into eDrama and locked in the Admin Panel, and why each one exists."
+---
+
+Short-drama apps are often criticised for surprise charges, endless ads and prices that rise mid-story. eDrama's answer is a set of **fair-play rules** that are part of the product. They're shown, locked, on <Path>Money › Monetization › Fair-play rules</Path>, so a pricing change can't quietly undo them.
+
+| Rule | What it means for viewers |
+|---|---|
+| **Price shown in coins and money, before every unlock** | The full cost, in their own currency, before they spend anything. |
+| **Price lock per viewer** | Once they start a series, their per-episode price can't rise. |
+| **Cost to finish on every series page** | What the rest of the story costs, before they start. |
+| **Auto-unlock off by default, always capped** | The next episode is never charged without them choosing it. |
+| **Daily spend cap** (300 coins by default) | Screen-time-style control over spending. |
+| **Append-only ledger the viewer can see** | Every coin in and out stays on record; paid coins are always accounted for. |
+| **Unlocks tied to the account, restorable anywhere** | What they unlocked survives a restart or a new phone. |
+| **VIP: reminder before renewal, cancel in two taps, no ads** | A renewal never comes as a surprise. |
+| **Bonus coins are spent first, earliest expiry first** | Paid coins never expire, so bonus coins go before they can. |
+| **Never charged twice** | Every unlock and purchase is idempotent: a retry or a double tap can't take coins again. |
+| **One ad, one reward** | A rewarded ad unlocks or rewards once, verified by the ad network. |
+| **45-second floor** | No paid episode is shorter than 45 seconds, so a coin always buys a real scene. (Your team can allow a single short episode, such as an epilogue, with a reason in the audit log.) |
+
+## Rules for ads and VIP
+
+- Ads are at most **30 seconds**, never playable or interactive in the unlock path, and never auto-play an unlock.
+- **VIP never sees an ad.**
+- **No free trial** that turns into a charge; a **reminder 24 hours** before every renewal.
+
+## Can a rule be changed?
+
+Not from the Admin Panel. Some have settings around them (the spend cap's choices, the floor's length, ad lengths up to 30 seconds), but the rule itself stays on. Changing one means changing the code, which WRTeam advises against: these rules are what make viewers trust the price.
+
+The [daily spend limit](/admin-panel/settings/app-and-support/#features) is the one fair-play protection you can switch off entirely from the Features switches.

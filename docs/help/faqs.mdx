@@ -1,0 +1,246 @@
+---
+title: "Frequently asked questions"
+sidebar_label: "FAQs"
+description: "Answers to the questions eDrama buyers ask most, about installation, content, money, creators and the app."
+---
+
+Each answer has its own link: hover a question and choose **Share** to copy it.
+
+## Installation and server
+
+<details id="faq-default-login">
+<summary><strong>What are the default login details?</strong></summary>
+
+There are none. You choose the **Owner** email and password in the installer's last step. If you lost them, run `php artisan edrama:create-owner` on the server only if no Owner exists; otherwise use **Forgot password?** on the sign-in page (email must be set up).
+
+</details>
+
+<details id="faq-composer-npm">
+<summary><strong>Do I need Composer, Node.js or a build step on the server?</strong></summary>
+
+No. The package includes `vendor/` and the built `public/build`. Upload, point the domain at `public`, and run the web installer.
+
+</details>
+
+<details id="faq-shared-hosting">
+<summary><strong>Can I install eDrama on shared hosting?</strong></summary>
+
+Yes, if you can choose PHP 8.5 and allow `proc_open`. Video processing needs ffmpeg in your home folder, or use Cloudflare Stream so your server does no video work. One cron line runs both the schedule and the queues. See [Shared hosting](../installation/shared-hosting.mdx).
+
+</details>
+
+<details id="faq-episodes-not-releasing">
+<summary><strong>Episodes don't release at their time, and pushes don't go out. Why?</strong></summary>
+
+The scheduler isn't running. Add the cron line from <Path>System › System › Server setup</Path> and wait until it shows **Cron running**. See [Cron & queues](../installation/cron-and-queues.mdx).
+
+</details>
+
+<details id="faq-update-versions">
+<summary><strong>Can I jump straight to the newest version?</strong></summary>
+
+No. Updates go **one version at a time**: install 1.0.0 → 1.1.0, then 1.1.0 → 1.2.0. Back up first. See [License & updates](../installation/license-and-updates.mdx).
+
+</details>
+
+<details id="faq-license-domain">
+<summary><strong>Can I move to a new domain?</strong></summary>
+
+The purchase code is registered to one domain. After moving, the panels ask for the code again at `/activate`. If it's refused as registered elsewhere, contact WRTeam support with your purchase code to release it. Step by step: [Move to another domain](../installation/license-and-updates.mdx#move-to-another-domain). Your viewers' app keeps working meanwhile: the license never locks the API.
+
+</details>
+
+<details id="faq-install-404">
+<summary><strong><code>/install</code> shows "404".</strong></summary>
+
+The installer closes itself once the install finishes: sign in at `/admin` instead. It also answers 404 while `EDRAMA_INSTALLER` isn't `true` in `.env`. To install again on an empty database, contact [support](support.mdx).
+
+</details>
+
+<details id="faq-install-missing">
+<summary><strong>The installer marks something "Missing".</strong></summary>
+
+Your server lacks a PHP extension, runs PHP below 8.5, or a folder isn't writable. Fix the items marked **Missing** (or ask your host), then choose **Check again**. See [Server installation](../installation/overview.mdx#server-requirements).
+
+</details>
+
+<details id="faq-processing">
+<summary><strong>An episode stays "Processing".</strong></summary>
+
+- With **this server** or **Amazon S3**: ffmpeg isn't found, or the host stops long jobs. Check the ffmpeg line on <Path>Settings › Storage & video</Path>, and that the cron line runs ([Video processing](../installation/video-processing.mdx)).
+- With **Cloudflare Stream**: the webhook isn't registered. Run `php artisan edrama:video-webhook` ([Cloudflare Stream](../integrations/storage-and-streaming.mdx#cloudflare-stream)).
+
+Videos stuck in processing are also re-checked every 10 minutes.
+
+</details>
+
+<details id="faq-emails">
+<summary><strong>Emails don't arrive.</strong></summary>
+
+Until you add an SMTP server in <Path>Settings › Email delivery (SMTP)</Path>, emails are only written to the server's log and nobody receives them. Emails also go out through the queue, so the cron line must be running ([Email](../admin/settings/email.mdx)).
+
+</details>
+
+## Content
+
+<details id="faq-short-episode">
+<summary><strong>Why won't an episode publish? It says it's under the floor.</strong></summary>
+
+Paid episodes must be at least 45 seconds long. Upload a longer cut, or open the title's **Episodes** tab and use **Allow short episode** with a reason. Creators can't submit episodes under the floor.
+
+</details>
+
+<details id="faq-home-not-updating">
+<summary><strong>I changed Home but the app still shows the old one.</strong></summary>
+
+Changes in the Home builder reach the app only after **Publish layout**. Viewers see it the next time they open Home.
+
+</details>
+
+<details id="faq-title-hidden">
+<summary><strong>A live title doesn't appear for some viewers.</strong></summary>
+
+Check its **Where it's shown** (title editor › Monetization): it may be limited to some regions. Also check it has a price in the default region, and that the viewer's audience matches the Home section it's in.
+
+</details>
+
+## Money
+
+<details id="faq-coins-not-delivered">
+<summary><strong>A viewer paid but says the coins didn't arrive.</strong></summary>
+
+Search their order ID on <Path>Money › Transactions</Path> and open the purchase: the four verification steps show where it stopped. Purchases waiting on the store finish by themselves; the viewer can also choose **Restore purchases** in the app. If needed, use a [balance adjustment](../admin/audience/balance-adjustments.mdx) with a reason.
+
+</details>
+
+<details id="faq-refund-app-store">
+<summary><strong>Why can't I refund an App Store purchase from the panel?</strong></summary>
+
+Apple decides App Store refunds. Send the viewer to Apple's refund request page (linked in the purchase drawer); Apple's notification updates the purchase when it's done.
+
+</details>
+
+<details id="faq-price-change">
+<summary><strong>I raised a series' price but some viewers still pay the old one.</strong></summary>
+
+That's the **price lock**: viewers who already started the series keep their price. A rise doesn't reach them; a drop does. See [Coins & pricing](../monetization/coins-and-pricing.mdx).
+
+</details>
+
+<details id="faq-dashboard-currency">
+<summary><strong>The Dashboard says some revenue is left out.</strong></summary>
+
+A currency has no exchange rate into your reporting currency for some days. Add the rate in <Path>Settings › Regions & languages</Path>.
+
+</details>
+
+<details id="faq-vip-trial">
+<summary><strong>Can I offer a free trial for VIP?</strong></summary>
+
+No. It's a locked fair-play rule: VIP never starts with a free trial that turns into a charge. The server refuses a subscription that started with one.
+
+</details>
+
+<details id="faq-ads-no-reward">
+<summary><strong>Viewers watch ads but nothing unlocks.</strong></summary>
+
+Server-side verification isn't set up. In AdMob, set the callback URL shown in <Path>Money › Monetization › Ads</Path> on every rewarded ad unit. See [AdMob](../integrations/admob.mdx).
+
+</details>
+
+<details id="faq-region-moved">
+<summary><strong>A viewer moved country and sees the wrong prices.</strong></summary>
+
+If they've never paid, the app moves them to the right region by itself at its next start. If they have paid, open their page in <Path>Audience › Users</Path> and use **Change region**, with a reason ([Regions](../admin/money/regions.mdx)).
+
+</details>
+
+<details id="faq-some-countries">
+<summary><strong>Can I show a series in some countries only, or charge different prices per country?</strong></summary>
+
+Yes, both. On the series' **Monetization** tab, set **Where it's shown** to **Only these regions**. For different prices, create a region for those countries in <Path>Money › Monetization › Regions</Path>, with its own currency, coin value, packs, VIP plans and title prices ([Regions & currencies](../monetization/regions-and-currencies.mdx)).
+
+</details>
+
+<details id="faq-creators-paid">
+<summary><strong>How are creators paid?</strong></summary>
+
+eDrama works out each creator's share every month and writes a **statement**. Your team pays them outside eDrama (bank transfer, UPI, PayPal, Wise or other) and records the payment with **Record payout** on the creator's page, so nobody is paid twice. Creators see their statements and payouts on **Earnings** in the Creator Portal ([Creator earnings](../monetization/creator-earnings.mdx)).
+
+</details>
+
+## Creators
+
+<details id="faq-creator-invite-not-received">
+<summary><strong>A creator didn't get their invite email.</strong></summary>
+
+Email delivery may not be set up: add your SMTP server in <Path>Settings › Email delivery (SMTP)</Path>, send a test, then use **Resend invite** on the creator. Invites expire after 7 days.
+
+</details>
+
+<details id="faq-creator-cannot-sign-in">
+<summary><strong>A creator can't sign in to the Creator Portal.</strong></summary>
+
+Check that the Firebase **Web API key** and **Auth domain** are in <Path>Settings › Notifications</Path>, and that your domain is in Firebase's **Authorized domains**. Creators sign in with Google, email or phone; Sign in with Apple isn't available in the portal, and a guest account can't become a creator.
+
+</details>
+
+<details id="faq-creator-terms">
+<summary><strong>Creators can't create a series.</strong></summary>
+
+The **Creator terms** must be published in <Path>Settings › Legal pages</Path>, and each creator must accept the version in force.
+
+</details>
+
+## The app
+
+<details id="faq-app-name-change">
+<summary><strong>I changed the app name in Settings, but the name under the icon didn't change.</strong></summary>
+
+The name under the icon is part of the app build: change it in `AndroidManifest.xml` and `Info.plist` and publish a new version. See [Name & package name](../app-setup/name-and-package.mdx).
+
+</details>
+
+<details id="faq-share-links-browser">
+<summary><strong>Shared links open in the browser, not the app.</strong></summary>
+
+The share domain must match in `app_config.dart`, `build.gradle.kts` and `Runner.entitlements`, and your server must publish the link files (`EDRAMA_ANDROID_PACKAGE`, `EDRAMA_ANDROID_SHA256`, `EDRAMA_IOS_APP_ID`). See [Deep links](../app-setup/deep-links.mdx).
+
+</details>
+
+<details id="faq-apple-sign-in">
+<summary><strong>"Continue with Apple" fails.</strong></summary>
+
+Enable the **Apple** provider in Firebase Authentication with your Apple Developer account, and check **Sign in with Apple** is on in Xcode's capabilities.
+
+</details>
+
+<details id="faq-new-language">
+<summary><strong>How do I add a language without releasing the app?</strong></summary>
+
+Add it in <Path>Settings › Regions & languages</Path>, upload its translated JSON file for the mobile app, and turn on **Offered in the app**. The app downloads it at its next start. See [Languages](../app-setup/languages.mdx).
+
+</details>
+
+<details id="faq-app-cant-reach">
+<summary><strong>The app can't reach my server.</strong></summary>
+
+Check `apiBaseUrl` in `lib/app/config/app_config.dart`: it must be your server, use `https://` and end in `/api/v1/`. If you turned on `EDRAMA_APP_CHECK=enforce`, go back to `monitor` until your store build passes App Check ([Connect to your server](../app-setup/connect-to-server.mdx)).
+
+</details>
+
+<details id="faq-app-maintenance">
+<summary><strong>The app shows "maintenance" or asks to update.</strong></summary>
+
+Maintenance mode is on, or the app's version is below **Minimum supported**. Both are in <Path>Settings › App & support</Path> ([App & support](../admin/settings/app-and-support.mdx)).
+
+</details>
+
+<details id="faq-store-review">
+<summary><strong>What login do I give Google Play and App Store reviewers?</strong></summary>
+
+Create an email-and-password account for them on the server with `php artisan edrama:review-account review@your-domain.com`, and put it in each store's review notes ([Server commands](../installation/commands.mdx#store-reviewer-account)).
+
+</details>
+
+<HelpBanner title="Didn't find your answer?" text="Check Troubleshooting for step-by-step fixes, or contact WRTeam support with your purchase code." />

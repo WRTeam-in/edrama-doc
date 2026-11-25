@@ -1,0 +1,38 @@
+---
+title: "Sign-in and security"
+sidebar_label: "Sign-in & security"
+description: "Require two-factor authentication for every team member, and the sign-in protections that are always on."
+---
+
+<Path>Settings › Sign-in & security</Path>
+
+## Require two-factor for every member
+
+**Only the Owner** can change this.
+
+The card shows how many active members use two-factor and names those who don't.
+
+<Steps>
+
+1. Turn on **Require two-factor for every member**.
+2. Confirm. The dialog says how many members don't use it yet (including you, if you don't).
+
+</Steps>
+
+From the next click, members without two-factor are held on the setup page, and nobody reaches the Studio without a second factor. Turning it off lets members sign in with their password alone; those who use two-factor keep it.
+
+A member who lost their phone and recovery codes can be helped with **Reset 2FA** on [Team & roles](../system/team-and-roles.mdx).
+
+## Always on
+
+These protections can't be switched off:
+
+| Protection | Details |
+|---|---|
+| **Lockout** | 5 failed sign-ins for one email from one address lock it for 15 minutes. |
+| **Session length** | 12 hours from sign-in; no "remember me". |
+| **Disabled members** | Signed out at their next click. |
+| **Strong passwords** | At least 12 characters, not found in a known data breach. |
+| **Same answer for every failure** | Sign-in and password reset never reveal whether an email has an account. |
+| **Audit** | Every sign-in, failure, lockout and sign-out is in the [audit log](../system/audit-log.mdx). |
+| **Encrypted secrets** | Integration keys, viewers' email and phone, and two-factor secrets are stored encrypted. |

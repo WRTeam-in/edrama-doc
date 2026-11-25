@@ -1,0 +1,63 @@
+---
+title: "Connect the website to the Admin Panel"
+sidebar_label: "Connect to the Admin Panel"
+description: "The website's settings, the Website address and the refresh secret that lets a publish show at once."
+---
+
+The website and the Admin Panel need to know about each other:
+
+- the **website** needs your server's address, to read its content;
+- the **Admin Panel** needs the website's address, to show previews and to tell it about changes.
+
+The two share a **refresh secret**, so only your Admin Panel can ask the website to refresh.
+
+## The website's settings
+
+They go in `.env.local` on your computer, or in your host's environment variables (on Vercel: **Settings › Environment Variables**).
+
+| Variable | Needed | What it is |
+|---|---|---|
+| `EDRAMA_API_URL` | **Yes** | Your server's address **without** `/api`, such as `https://admin.your-domain.com`. Must be `https://` (plain `http://` only works for `localhost`, `127.0.0.1` and `*.test`). |
+| `REVALIDATE_SECRET` | Recommended | The refresh secret from the Admin Panel (below). Without it, a publish shows within 5 minutes instead of at once. At least 32 characters, which the Admin Panel's secret always is. |
+| `NEXT_PUBLIC_SITE_URL` | No | The website's own address, used only while the Admin Panel has none set. |
+| `EDRAMA_IMAGE_HOSTS` | No | Extra hosts images may come from, comma-separated, when your files live on S3 or a CDN, such as `my-bucket.s3.amazonaws.com,cdn.your-domain.com`. Your server's host is always allowed. |
+| `EDRAMA_SCRIPT_HOSTS` | No | Extra `https://` origins allowed to serve analytics scripts, for self-hosted Plausible or Umami. Plausible, Umami Cloud and Google Analytics are allowed already. |
+| `EDRAMA_FRAME_ORIGINS` | No | Other addresses your Admin Panel opens at, comma-separated, that may show the website's live preview. Your server's own address always may. |
+| `APP_ADS_TXT` | No | The lines of `/app-ads.txt`, which AdMob checks on the developer website listed in your store pages. Copy them from AdMob › **Apps › app-ads.txt**, one per line (or separated by `\n`). Without it, `/app-ads.txt` isn't served. |
+
+:::warning[Rebuild after changing them]
+`EDRAMA_API_URL`, `EDRAMA_IMAGE_HOSTS`, `EDRAMA_SCRIPT_HOSTS` and `EDRAMA_FRAME_ORIGINS` are built into the site's security headers and image settings. After changing any of them, **build and deploy the website again**.
+:::
+
+:::tip[Files on Amazon S3?]
+If you moved files to S3 or another S3-compatible bucket in <Path>Settings › Storage & video</Path>, add the bucket's host (or its **Public URL** host) to `EDRAMA_IMAGE_HOSTS`, or posters won't show on the website.
+:::
+
+## In the Admin Panel
+
+<Steps>
+
+1. **Open the Connection tab.** Go to <Path>Content › Website</Path> and open **Connection & history**. It shows **This server's address for the website (EDRAMA_API_URL)**: that's the value for `EDRAMA_API_URL`.
+2. **Set the Website address.** Enter where visitors open the website, such as `https://www.your-domain.com`, and choose **Save address**. It's used for previews, canonical links, the sitemap, share pictures, and to tell the website about changes.
+3. **Make the refresh secret.** Choose **Make a secret** (once one exists, the button reads **Make a new secret**, and the old one stops working). The secret is **shown once**: copy it into the website's `REVALIDATE_SECRET`, then redeploy (or restart) the website so it reads the new value.
+
+</Steps>
+
+<Access area="Website" view="Open the page" edit="Change the content" />
+
+Changing the **Website address** or making a secret needs a role with **Settings › Edit** ([Roles & access](../getting-started/roles-and-access.mdx)).
+
+## Check it worked
+
+1. Change a heading on the **Sections** tab and choose **Publish**.
+2. Open the website: the new heading shows **within a minute**.
+
+If it only shows after about 5 minutes:
+
+- the secret doesn't match: make a new one, paste it again and redeploy;
+- the server's queue isn't running: the refresh is sent as a background job ([Cron & queues](../installation/cron-and-queues.mdx));
+- or the website runs on `localhost` or a private network address, which never receives the call.
+
+## How the refresh works
+
+Each time you publish, or switch the website on or off, your server sends `POST <Website address>/api/revalidate` with a small JSON body, signed with the refresh secret (an HMAC-SHA256 in the `X-Edrama-Signature` header). The website refuses calls that aren't signed with its `REVALIDATE_SECRET` or are more than 5 minutes old. The call is only sent to a **public** address, never to `localhost` or a private network, and if it fails nothing breaks: pages rebuild by themselves every 5 minutes.

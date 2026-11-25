@@ -12,38 +12,50 @@ Everything here reaches the app at its next start, without a new release. Each c
 
 ## App versions
 
-For **Android** and **iOS**:
+Versions are set for **Android** and **iOS**, as numbers and dots only, such as `1.2.0`: the app's version name without the build number.
 
-| Field | What it does |
+Force an update when an old build breaks something.
+
+| Field (per platform) | Meaning |
 |---|---|
-| **Latest** | Your newest version in the store. Older builds are offered the update, which they can skip, when a **Store link** is set. |
-| **Minimum supported** | Builds below it must update before they can be used: the app shows its update screen. Can't be newer than **Latest**. |
-| **Store link** | Your app's Google Play or App Store page (`https://` only). The app's update screen and the website's store buttons use it. |
+| **Latest** | The newest version in the store. Viewers on older builds see a "A new version is ready" prompt. |
+| **Minimum supported** | Builds below this see **Update required** and can't continue until they update. It can't be newer than Latest. |
+| **Store link** | `https://play.google.com/store/apps/details?id=…` or `https://apps.apple.com/app/id…`. Used by the update screens, share pages and the website. |
+| **On latest** | How many devices seen in the last 30 days run the latest version. |
 
-Versions are numbers and dots only, such as `1.2.0`: the app's version name without the build number. **On latest** shows the share of devices seen in the last 30 days that run the latest version.
+<Anchor id="support-email" />
 
-## Support email
+## Support contact
 
-Where viewers and creators write when they need help. It shows in the app's help screen, in creator emails and to suspended creators. Leave it blank to use `EDRAMA_SUPPORT_EMAIL` from `.env`, which is `support@example.com` until you change it, so set one of the two.
+**Support email**: where viewers and creators write when they need help. It shows in the app's Help screen, in creator emails and to suspended creators. Leave it blank to use the server's address (`EDRAMA_SUPPORT_EMAIL` in `.env`).
 
-## Comment blocklist
-
-A comment or review containing one of these **Words and phrases** waits for a person on <AdminPath path="Community › Comments & reviews" /> instead of going live. Whole words, any case. Press Enter after each (up to 500). Comments with a link, a long run of digits (such as a phone number) or one character repeated many times are held the same way.
+:::warning[Set one of the two]
+`EDRAMA_SUPPORT_EMAIL` is `support@example.com` until you change it. If both are left alone, the app and creator emails show that example address.
+:::
 
 ## Features
 
-Every feature is on to start. Switch one off and the app hides it at its next start.
+Switch a feature off and the app hides it at its next start, without a new release. The server refuses it too, where that's safe.
 
 | Switch | What it controls |
 |---|---|
-| **VIP** | Subscriptions that unlock every drama |
-| **Series Pass** | One price for a whole series |
-| **Auto-unlock** | Unlocks the next episode with coins as it starts |
-| **Rewards (daily spin and ads for coins)** | The daily spin, streak titles and Rewards ads |
-| **Phone sign-in** | Phone number sign-in, in the app and on the Creator Portal |
-| **Episode comments** | Comments under episodes |
-| **Series reviews** | Ratings and reviews on series pages |
+| **VIP** | Subscriptions that unlock every drama. (Viewers who already paid still get their VIP.) |
+| **Series Pass** | One price for a whole series. |
+| **Auto-unlock** | Unlocking the next episode with coins as it starts. |
+| **Rewards (daily spin and ads for coins)** | The daily spin, streak titles and Rewards ads. Off: the Rewards tab becomes the Wallet tab. |
+| **Phone sign-in** | In the app and on the Creator Portal's sign-in. |
+| **Episode comments** | Comments under episodes. |
+| **Series reviews** | Ratings and reviews on series pages. |
+| **Daily spend limit** | Viewers choosing how many coins they may spend a day. Off: no daily limit. |
+| **Creator profiles and following** | Creator pages, following creators and creators in search, in the app and on the website. |
+| **"Become a creator" applications** | The public application form. Off: it says applications are closed for now. |
+
+All are on by default. Switched-off features leave no trace in the app.
 
 ## Maintenance mode
 
-Turn on **Show the maintenance screen** and write a **Message** (up to 280 characters, such as when you'll be back). While it's on, the app shows the maintenance screen with your message instead of the catalogue. The language tabs below take the message in each of your other app languages; an empty tab shows the main message.
+While **Show the maintenance screen** is on, the app shows a maintenance screen ("Back soon") with your **Message** (up to 280 characters, required, such as when the app will be back) instead of the catalogue. Viewers' coins, unlocks and progress are safe.
+
+## Comment blocklist
+
+**Words and phrases** (press Enter after each). A comment or review containing one, as a whole word and in any case, waits for a person on [Comments & reviews](/admin-panel/using/community/comments-and-reviews/) before others see it.

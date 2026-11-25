@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://wrteam-in.github.io/edrama-doc/sitemap.xml

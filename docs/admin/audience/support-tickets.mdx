@@ -1,0 +1,58 @@
+---
+title: "Support tickets"
+sidebar_label: "Support tickets"
+description: "Handle help requests viewers send from the app's Help & refunds screen."
+---
+
+Viewers send requests from <Path panel="app">Me › Help & refunds</Path>. Each one arrives here as a **ticket**. You reply **by email** (from your own mailbox), then record where the ticket stands.
+
+<Access area="Support tickets" view="See tickets" edit="Change status and notes" />
+
+<Screen
+  id="admin-support-tickets"
+  type="browser"
+  wire="list"
+  url="/admin/support-tickets"
+  title="Support tickets"
+  caption="Support tickets with their topic, message, reply-to email and status."
+  markers={[
+    {x: 22.9, y: 22.9, title: 'Tickets by status', text: 'All tickets, Open, Pending, Resolved and Closed.'},
+    {x: 22, y: 48.3, title: 'Ticket', text: 'Its reference (the viewer was given it) and topic.'},
+    {x: 49.4, y: 49.5, title: 'Message', text: 'What the viewer wrote. Open the ticket for the purchase, app version and team notes.'},
+    {x: 77.7, y: 49.5, title: 'Reply to', text: 'The email the viewer asked you to answer.'},
+    {x: 85.4, y: 49.5, title: 'Status', text: 'Open, Pending, Resolved or Closed.'},
+  ]}
+/>
+
+## Topics
+
+| Topic in the app | Arrives as |
+|---|---|
+| A refund | Refund |
+| Coins didn't arrive | Missing coins |
+| Video or playback | Playback |
+| My account | Account |
+| Something else | Something else |
+
+For refund and missing-coins requests, the viewer can pick **which purchase** it's about; the ticket links to it.
+
+## Handle a ticket
+
+<Steps>
+
+1. Open the ticket. You see the viewer (or "No account"), the purchase, the app version, and the message.
+2. Reply to the viewer from your support mailbox, to the **Reply to** address.
+3. Set the **Status** and add **Team notes** (viewers never see them), then **Save**.
+
+</Steps>
+
+| Status | Use it for |
+|---|---|
+| **Open** | New, waiting for a first look. |
+| **Pending** | Waiting on someone: the viewer, a store, a developer. |
+| **Resolved** | Answered. |
+| **Closed** | Nothing more to do. |
+
+The app promises a reply **within 24 hours** (change it with `EDRAMA_SUPPORT_REPLY_HOURS`). Members who can see tickets get a bell notification for each new one.
+
+For a refund, open the purchase from the ticket and follow [Transactions › Refund](../money/transactions.mdx#refund-a-purchase).

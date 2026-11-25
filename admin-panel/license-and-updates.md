@@ -6,58 +6,104 @@ description: Your purchase code, moving to another domain, and installing an upd
 
 # License and updates
 
-<AdminPath path="System › License & updates" /> shows your licence (**Purchase code**, **Domain**, **Buyer**, **Last checked**), the **Installed version** and the **Update history**. Members with Settings access can open the page. Only the Owner can **Activate license**, **Reset purchase code** or **Upload update**.
+eDrama is licensed per domain. Your CodeCanyon **purchase code** is registered to the domain you install on, and both panels check it in the background.
 
-## The licence
+<Anchor id="the-licence" />
 
-Your purchase code is registered to your domain during installation. The domain is the one in `APP_URL` in `.env`, without `www.`. The Admin Panel and the Creator Portal only open on a domain with an active code. The app, the website and the API keep working whatever the licence check says.
+## How the license check works
 
-The code is checked again at most every 7 days. If the licence server can't be reached, nothing locks. The panels lock only when the code is clearly invalid or registered to another domain. A locked panel shows **Activate your purchase**: enter the purchase code and click **Activate**.
+- The check runs when the panels are used, at most once every **7 days**, with WRTeam's license server.
+- **Only a clear answer locks the panels**: "invalid code" or "domain mismatch". If the license server can't be reached, nothing is locked; the app tries again 10 minutes later.
+- When locked, every page of the Admin Panel and the Creator Portal sends people to `/activate`, where the Owner enters the purchase code again.
+- **The viewer app is never locked by the license.** Your viewers, the creator application form, share pages and legal pages keep working.
+- A local development address (such as `localhost`) is never checked.
 
-### Moving to another domain
+The Owner is alerted by email, Slack and the bell if a weekly check refuses the code.
+
+## Re-activate the license
 
 <Steps>
-<Step title="Free the code">
 
-On the old domain, click **Reset purchase code**. Both panels there lock until it's activated again.
+1. Sign in as the **Owner** and open <Path>System › License & updates</Path> (or follow the link to `/activate` when locked).
+2. Enter the purchase code. Leave the update package empty.
+3. Choose **Check code and activate**.
 
-</Step>
-<Step title="Move the backend">
-
-Copy the backend folder and the database to the new server, or point the new domain at the same folder. In `.env`, set `APP_URL` to the new address, such as `https://admin.new-domain.com`, then run `php artisan config:clear`.
-
-</Step>
-<Step title="Activate it on the new domain">
-
-Open the Admin Panel on the new domain. It shows **Activate your purchase**: enter the same purchase code and click **Activate**.
-
-</Step>
 </Steps>
 
-## Updating eDrama
+<AdminPath path="System › License & updates" /> shows your license (**Purchase code**, **Domain**, **Buyer**, **Last checked**), the **Installed version** and the **Update history**. Members whose role can open **Settings** can see this page; only the **Owner** can activate the license or install updates.
 
-Updates come as a zip from CodeCanyon, holding `version_info.json` and `source_code.zip`.
+<Anchor id="moving-to-another-domain" />
+
+## Move to another domain
+
+One purchase code is registered to one domain: the domain of `APP_URL` in `.env`, without `www.`. To move eDrama to a new domain:
 
 <Steps>
-<Step title="Back up">
 
-Back up your **database** and your `storage` folder first. Run the update at a quiet time.
+1. **Ask WRTeam to free the code.** Write to [support](/support/) with your purchase code, the old domain and the new one. The panel has no button for this: the license server releases it.
+2. **Move the backend.** Copy the project folder and the database to the new server, or point the new domain at the same folder ([VPS](/admin-panel/vps-server/), [shared hosting](/admin-panel/shared-hosting/)).
+3. **Change the address.** In `.env`, set `APP_URL` to the new address, such as `https://admin.new-domain.com`, then run `php artisan config:cache` (or `php artisan config:clear`).
+4. **Activate it there.** Open the Admin Panel on the new domain. It shows **Activate your purchase**: enter the same purchase code and choose **Activate**.
+5. **Update everything that names the old domain:** the app's `apiBaseUrl` and `shareBaseUrl` ([Connect to your server](/mobile-app/app-settings/)), the stores' notification URLs, AdMob's verification callback, the website's `EDRAMA_API_URL`, and Firebase's authorised domains ([callback addresses](/admin-panel/integrations/#callback-addresses)).
 
-</Step>
-<Step title="Upload the update">
+</Steps>
 
-Click **Upload update** and choose the update zip. The purchase code is checked with the licence server first, so it must be reachable. Then files are replaced, new database migrations run and the caches are cleared. Every file it replaces is backed up first, in a zip in `storage/app/private/updates`.
+While the panels wait for activation, the app, the website and the API keep working.
 
-The zip goes through PHP's upload, so `upload_max_filesize` and `post_max_size` must be larger than it. If you can't raise them, ask [support](/support/).
+<Anchor id="updating-edrama" />
 
-</Step>
-<Step title="Restart the workers">
+## Install an update
 
-```bash
+Updates come from CodeCanyon as a zip named like `update-1.0.0-to-1.1.0.zip`, holding `version_info.json` and `source_code.zip`: upload the zip as it is, without unzipping it. The license server must be reachable, because the purchase code is checked before the package is opened. Updates go **one version at a time**: each one moves you **exactly one version forward**: to go from 1.0.0 to 1.2.0, install the 1.0.0 → 1.1.0 update first, then 1.1.0 → 1.2.0.
+
+<Screen
+  id="admin-license-updates"
+  type="browser"
+  wire="form"
+  url="/admin/license"
+  title="License & updates"
+  caption="License & updates: the license and version cards and the activation form."
+  markers={[
+    {x: 35, y: 24.5, title: 'License', text: 'Status, purchase code, domain, buyer and last check.'},
+    {x: 78.2, y: 24.5, title: 'Version', text: 'The installed version and update history.'},
+    {x: 59, y: 41, title: 'Activate or update', text: 'One form for both: the purchase code, and optionally an update package.'},
+    {x: 38, y: 60.1, title: 'Purchase code', text: 'Checked first, every time you submit.'},
+    {x: 77.7, y: 61.6, title: 'Update package (.zip)', text: 'Optional. When added, you confirm you backed up the database and files.'},
+    {x: 91.5, y: 77.4, title: 'Submit', text: 'Check code and activate, or Check code and install update.'},
+  ]}
+/>
+
+<Steps>
+
+1. **Back up first.** Download a copy of your database and the project folder (most hosting panels have a one-click backup).
+2. **Pick a quiet time.** The update doesn't switch the app into maintenance mode, so run it when few people are using it.
+3. Open <Path>System › License & updates</Path> as the Owner.
+4. Enter your purchase code and choose the update zip.
+5. Tick **I backed up the database and files**.
+6. Choose **Check code and install update**.
+
+</Steps>
+
+What happens next, in order:
+
+| Step | What it means |
+|---|---|
+| **Purchase code checked** | With the license server, for this domain. A refused code stops here. |
+| **Package checked** | Its version must follow yours exactly, and every file inside is inspected for safety. |
+| **Update installed** | Every file about to be replaced is first backed up to `storage/app/private/updates/`, then the new files are written and the database changes run. |
+
+When it's done, the page shows the new **Installed version** and adds a line to **Update history**. Then restart the workers so they load the new code:
+
+```bash title="Server"
 php artisan queue:restart
 ```
 
-</Step>
-</Steps>
+:::warning[Why an update can be refused]
+- It's for a different version than the one installed (updates go one at a time).
+- It's larger than the upload limit (300 MB by default, and also your PHP `upload_max_filesize` and `post_max_size`).
+- It tries to write outside the allowed folders. Your `.env` and `storage` folder are never touched by an update.
+:::
 
-Updates go **one version at a time**: an update from 1.1.0 to 1.2.0 is refused on 1.0.0, so apply each one in order. An update never touches your `.env` or your uploaded files in `storage`.
+## Updating the mobile app
+
+The app's source code is updated separately: copy your changes (server address, name, package name, Firebase files, logos and colours) into the new version of the app project, then build and publish it. Keeping your changes to the files listed in [Mobile app setup](/mobile-app/) makes this quick.

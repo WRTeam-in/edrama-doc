@@ -1,0 +1,33 @@
+---
+title: "Email and alerts"
+sidebar_label: "Email & alerts"
+description: "Connect an SMTP provider for every email eDrama sends, and route system alerts to email and Slack."
+---
+
+## SMTP email
+
+eDrama sends team invites, password resets, every creator email (invites, review decisions, suspensions…) and system alerts. Connect your provider in <Path>Settings › Email delivery (SMTP)</Path> ([full page](../admin/settings/email.mdx)).
+
+| Provider | Host | Port / encryption | Username |
+|---|---|---|---|
+| **Gmail / Google Workspace** | `smtp.gmail.com` | 587 STARTTLS | Your address; password = an [app password](https://myaccount.google.com/apppasswords) |
+| **Amazon SES** | `email-smtp.<region>.amazonaws.com` | 587 STARTTLS | SES SMTP credentials |
+| **SendGrid** | `smtp.sendgrid.net` | 587 STARTTLS | `apikey` (password = your API key) |
+| **Any other** | Your provider's SMTP host | 587 STARTTLS or 465 SSL/TLS | Your SMTP login |
+
+The **From address** must be one your provider lets you send from (a verified sender or domain). **Save**, then **Send test email**.
+
+:::tip[Land in the inbox, not spam]
+Set up **SPF**, **DKIM** and **DMARC** records for your sending domain, as your provider describes. It's the single biggest factor in deliverability.
+:::
+
+## System alerts
+
+When a background job or scheduled task fails, eDrama alerts the team within minutes. In <Path>Settings › Notifications › System alerts</Path>:
+
+| Field | Value |
+|---|---|
+| **Alert emails** | One or more addresses, separated by commas. Members with Settings (Edit) also get a bell. |
+| **Slack webhook URL** | Optional. [api.slack.com/apps](https://api.slack.com/apps) › Create New App › **Incoming Webhooks** › Add New Webhook to Workspace › pick the channel › copy the URL. |
+
+**Test connection** sends a test alert. Alerts are throttled to one per job per 15 minutes, and the license check also alerts here if your purchase code is refused.

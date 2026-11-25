@@ -1,0 +1,115 @@
+---
+title: "Monetization › Ads, Rewards and Fair-play rules"
+sidebar_label: "Ads & rewards"
+description: "Set each region's rewarded-ad limits and AdMob units, the daily spin wheel, streak shields and titles, the welcome bonus and bonus expiry."
+---
+
+Ads and Rewards are per region: choose it with the **Region** switch at the top of <Path>Money › Monetization</Path>.
+
+## Ads
+
+eDrama uses **rewarded ads** only: ads a viewer chooses to watch, either to **unlock an episode** or to earn **bonus coins** on the Rewards tab.
+
+### Daily limits
+
+| Setting | Default | Meaning |
+|---|---|---|
+| **Unlock ads per day** | 6 (Global), 20 (India) | One ad unlocks one episode. |
+| **Rewards ads per day** | Same as unlock | Ads watched for coins. |
+| **Coins per Rewards ad** | 15 | Bonus coins per ad. |
+| **Maximum ad length** | 30 seconds | Never more than 30 seconds. |
+| **Unlock and Rewards ads share one daily limit** | Off | Off: each has its own limit. |
+
+### AdMob ad units
+
+An AdMob ad unit belongs to one app, so Android and iOS each have their own. A platform without a unit shows no ads.
+
+| Field | Format |
+|---|---|
+| **Unlock ad unit ID (Android)** / **(iOS)** | `ca-app-pub-0000000000000000/0000000000` |
+| **Rewards ad unit ID (Android)** / **(iOS)** | Same format |
+
+:::warning[Turn on server-side verification]
+In AdMob, open each ad unit › **Server-side verification** and enter the **callback URL** shown on this tab. An ad unlocks an episode or pays coins **only once AdMob confirms it** there, so ads can't be faked. See [AdMob](../../integrations/admob.mdx).
+:::
+
+### Locked ad rules
+
+- **1 ad = 1 reward.** Never two ads that turn into six.
+- **Maximum length 30 seconds.**
+- **No playable or interactive ads** in the unlock path.
+- **Paid once AdMob confirms the ad.**
+- **Never show ads to VIP**, anywhere.
+- **Ads never auto-play an unlock**: the viewer always taps to watch.
+
+## Rewards
+
+<Screen
+  id="admin-rewards"
+  type="browser"
+  wire="form"
+  url="/admin/monetization?tab=rewards"
+  title="Rewards"
+  caption="The Rewards tab for the Global region: the spin wheel’s prizes and the streak titles."
+  markers={[
+    {x: 21.5, y: 28, title: 'Region', text: 'Rewards are set per region.'},
+    {x: 90.8, y: 28, title: 'Restore default rewards', text: 'Fills the form with the default wheel, titles, shields and multiplier.'},
+    {x: 37.4, y: 36, title: 'Spin wheel', text: '6 to 12 prizes (an even number), in wheel order; drag to rearrange.'},
+    {x: 23.3, y: 51.5, title: 'A prize', text: 'Its coins and weight; the chance is worked out for you.'},
+    {x: 49.6, y: 59.2, title: 'Chance', text: 'Weight compared with the others.'},
+    {x: 78.3, y: 36, title: 'Streak titles', text: 'Names earned at a viewer’s best streak, with one-time bonus coins.'},
+    {x: 63.1, y: 59.6, title: 'Translations', text: 'Each title’s name in other app languages.'},
+    {x: 93.7, y: 95.5, title: 'Save rewards', text: 'Nothing changes for viewers until you save.'},
+  ]}
+/>
+
+### The daily spin
+
+Viewers spin a wheel **once a day for free**; **every spin pays** bonus coins. The server picks the prize, and viewers can see the odds.
+
+The default wheel (8 prizes, in wheel order):
+
+| Prize | 10 | 200 | 15 | 50 | 20 | 100 | 25 | 30 |
+|---|---|---|---|---|---|---|---|---|
+| **Weight** | 300 | 3 | 250 | 35 | 200 | 12 | 120 | 80 |
+| **Chance** | 30% | 0.3% | 25% | 3.5% | 20% | 1.2% | 12% | 8% |
+
+**Weight** is a prize's chance compared with the others: a weight of 200 comes up twice as often as 100. Drag rows to rearrange the wheel. Use an even number of prizes (6 to 12) so the colours alternate. The tab shows the average spin and about how many coins a daily viewer earns a month.
+
+**VIP spin multiplier** (default **2**): VIP viewers get the prize times this number. Title bonuses are never multiplied.
+
+### Streaks, shields and titles
+
+Each daily spin adds a day to the viewer's **streak**.
+
+- **Streak shields**: one shield is earned every **7** days of streak (0 turns shields off), and a viewer holds up to **2**. A shield covers one missed day by itself, so the streak carries on. Shields are only earned, never sold.
+- **Streak titles**: names earned at a viewer's **best** streak and kept for good. Each title's bonus coins are paid **once**, the first time it's reached. The app colours titles by their order.
+
+| Days | Title | Bonus coins |
+|---|---|---|
+| 1 | Extra | 0 |
+| 3 | Understudy | 5 |
+| 7 | Scene Stealer | 20 |
+| 14 | Plot Twister | 30 |
+| 30 | Drama Champion | 75 |
+| 60 | Drama Royalty | 100 |
+| 100 | Drama Legend | 150 |
+| 365 | Hall of Famer | 500 |
+
+Titles can be renamed, added and translated per language.
+
+### Welcome bonus and bonus expiry
+
+| Setting | Default | Meaning |
+|---|---|---|
+| **Welcome bonus: Coins** | 100 | Bonus coins a new account gets **once per device**. |
+| **Welcome bonus: Days to use them** | 7 | When they expire. |
+| **Bonus coins expire after** | 7 days | Counted from the day they're earned. Applies to spin, ad and pack bonuses. |
+
+**Restore default rewards** fills the form with the default wheel, titles, shields and multiplier. Nothing changes until you choose **Save rewards**; the welcome bonus and expiry stay as they are.
+
+Rewards can be switched off for everyone in <Path>Settings › App & support › Features</Path>. The app's Rewards tab then becomes the Wallet tab.
+
+## Fair-play rules
+
+The last tab lists the rules that protect what viewers pay for. They're **locked**, so a pricing change can never quietly undo them. See [Fair-play rules](../../monetization/fair-play-rules.mdx).

@@ -1,0 +1,57 @@
+---
+title: "Coins, the store and the wallet"
+sidebar_label: "Coins & wallet"
+description: "Buying coin packs, the first top-up offer, restoring purchases, the wallet's balance and history, and the spend guard."
+---
+
+## Buying coins
+
+The coin packs appear on the **Rewards** tab (under **Top up**) and in the coin store an unlock opens.
+
+| On a pack | Meaning |
+|---|---|
+| **1,000 coins · +200 bonus** | The coins and the bonus on top. |
+| **Popular** / **Best value** | Flags your team sets. |
+| **≈ 16 episodes** | About how many episodes it unlocks at the region's prices. |
+| **First top-up: double coins** | A one-time offer: *300 + 300 bonus for $1.99 · once per account*. |
+
+Under the packs: *Prices in INR · India*, *Paid coins never expire. Bonus coins expire after 7 days and are spent first.* and *Prices include tax. You confirm with Google Play next.*
+
+<Steps>
+
+1. Tap a pack. A guest is asked to sign in first.
+2. Confirm in Google Play or the App Store.
+3. The server checks the receipt, then: *+1,200 coins added · 1,000 paid · 200 bonus*, with the new balance. Coins fly to the balance.
+
+</Steps>
+
+If the app closes mid-purchase, the purchase is picked up at the next start. **Restore purchases** (<Path panel="app">Me › Restore purchases</Path> or the wallet) checks the store for anything already bought: *All set: 3 purchases checked, nothing missing.*
+
+## The wallet
+
+<Path panel="app">Rewards › Wallet</Path> (or <Path panel="app">Me › Wallet</Path>).
+
+<Screen
+  id="app-wallet"
+  type="phone"
+  wire="app-wallet"
+  title="Wallet"
+  caption="The wallet: the balance with paid and bonus coins, Top up and Restore, the Spend guard card, the All / Coins in / Coins out filter and the history."
+  markers={[
+    {x: 20, y: 16.3, title: 'Balance', text: 'Total coins.'},
+    {x: 25, y: 25, title: 'Paid coins', text: '“Never expire.”'},
+    {x: 72, y: 25, title: 'Bonus coins', text: '“Spent first · 100 expire Dec 1.”'},
+    {x: 28.9, y: 32.9, title: 'Top up', text: 'Opens the coin packs.'},
+    {x: 71.2, y: 32.9, title: 'Restore', text: 'Gets back purchases already made with this store account.'},
+    {x: 88.2, y: 41, title: 'Spend guard', text: '“0 of 300 coins today · 300 left.” Edit changes the daily limit.'},
+    {x: 26.1, y: 52.9, title: 'Filter', text: 'All, Coins in, Coins out.'},
+    {x: 40, y: 63, title: 'History', text: 'Every coin in and out, with what it was for and the balance after.'},
+    {x: 50, y: 70.3, title: 'Append-only', text: 'Nothing is edited or deleted; refunds and corrections appear as new rows with a reason.'},
+  ]}
+/>
+
+The history is **append-only**: *nothing is edited or deleted. Refunds and corrections appear as new rows with a reason you can see.* Tap a row for its details: the change, paid and bonus coins, balance after, the episode, and a reference to copy when contacting support.
+
+## Spend guard
+
+**Spend guard** is a daily limit on coins, *like screen time, for spending*. Pick **Coins a day** from the choices your team sets (the default is marked). Unlocks past the limit pause and ask first; auto-unlock never goes past it. If you switch the daily limit off in the Admin Panel, it disappears from the app.

@@ -1,0 +1,107 @@
+---
+title: "Publish to the stores"
+sidebar_label: "Publish to the stores"
+description: "Step by step: put eDrama on Google Play and the App Store, from developer accounts and store listings to review, testing tracks and release."
+---
+
+You have signed release builds ([Release build](release-build.mdx)). This page takes them to **Google Play** and the **App Store**, then tells your server about the new version.
+
+<Cards
+  columns={2}
+  items={[
+    {icon: 'phone', title: 'Google Play', text: '$25 once. Review usually takes hours to a few days.', to: '/docs/app-setup/publishing/?store=play#publish-steps'},
+    {icon: 'phone', title: 'App Store', text: '$99 a year. Review usually takes one to three days.', to: '/docs/app-setup/publishing/?store=apple#publish-steps'},
+  ]}
+/>
+
+## Prepare once, for both stores
+
+| You need | Notes |
+|---|---|
+| **Privacy policy URL** | Publish it in <Path>Settings › Legal pages</Path>; it lives at `https://admin.your-domain.com/legal/privacy`. Both stores require it. |
+| **Terms of service URL** | `https://admin.your-domain.com/legal/terms`. |
+| **Support email or URL** | The one in <Path>Settings › App & support</Path>. |
+| **A reviewer account** | `php artisan edrama:review-account review@your-domain.com` makes an email-and-password account that needs no inbox ([Server commands](../installation/commands.mdx#store-reviewer-account)). |
+| **Your server live** | Reviewers use the real app: your catalogue, prices and sign-in must work. Clear the demo data first if you don't want reviewers to see it. |
+| **Products created** | Coin packs and VIP subscriptions in both stores ([In-app purchases](in-app-purchases.mdx)). |
+| **Screenshots and icon** | Phone screenshots (and iPad, for the App Store), a 512 × 512 icon for Play, a 1024 × 500 feature graphic for Play. |
+
+## Step by step {#publish-steps}
+
+Pick your store:
+
+<Tabs queryString="store">
+<TabItem value="play" label="Google Play">
+
+<CommonGuide to="GeneralSettings/deployment/playstore" title="Play Store deployment" text="Developer account, store listing, content rating and release, with screenshots of every Play Console screen." />
+
+<Steps>
+
+1. **Developer account.** Create one at [Play Console](https://play.google.com/console) ($25, once). Choose **Organization** (needs a D-U-N-S number) or **Individual**. Complete identity verification and, for paid products, a **payments profile**.
+2. **Register your package name and signing key** for Android developer verification ([Signing](signing.mdx#android-developer-verification)).
+3. **Create the app.** **Create app**: name, default language, **App** (not game), **Free** (in-app purchases are still allowed), and accept the declarations.
+4. **Store listing.** Main store listing: app name (30 characters), short description (80), full description (4,000), the 512 × 512 icon, the 1,024 × 500 feature graphic and at least two phone screenshots.
+5. **App content** (Policy › App content), answer every section:
+   - **Privacy policy**: your `/legal/privacy` URL.
+   - **App access**: *All or some functionality is restricted*: add the reviewer's email and password.
+   - **Ads**: *Yes, my app contains ads*.
+   - **Content rating**: the questionnaire; answer for the dramas you'll publish.
+   - **Target audience**: 18+ or 13+ to suit your catalogue. Don't target children.
+   - **Data safety**: as in [Permissions & platform settings](permissions.mdx#what-this-means-for-the-store-forms).
+   - **Advertising ID**: *Yes*, used for advertising and analytics.
+6. **Upload to internal testing first.** Testing › **Internal testing** › **Create new release** › upload `app-release.aab`, add release notes, roll out, and add your testers' emails. Products can be created once a build is uploaded ([In-app purchases](in-app-purchases.mdx)).
+7. **Closed testing, if Google asks.** New **personal** developer accounts must run a **closed test** before production (currently at least 12 testers opted in for 14 days in a row). Organization accounts can go straight to production.
+8. **Production.** Testing passed: **Production › Create new release**, promote the build (or upload it), choose the **countries**, and **Send for review**. Use a **staged rollout** (such as 20%) for updates.
+9. **After the first release:** copy the **App signing key** SHA-256 into Firebase and `EDRAMA_ANDROID_SHA256` ([Release build](release-build.mdx#after-the-first-google-play-release)).
+
+</Steps>
+
+</TabItem>
+<TabItem value="apple" label="App Store">
+
+<CommonGuide to="GeneralSettings/deployment/appstore" title="App Store deployment" text="Developer account, App Store Connect record, signing, upload and review, with screenshots." />
+
+<Steps>
+
+1. **Developer account.** Enrol in the [Apple Developer Program](https://developer.apple.com/programs/) ($99 a year). Organizations need a D-U-N-S number.
+2. **Agreements.** App Store Connect › **Business**: sign the **Paid Applications Agreement** and add banking and tax details. Without it, purchases and subscriptions can't be tested or sold.
+3. **Create the app record.** App Store Connect › **Apps › + › New App**: iOS, the name (30 characters), primary language, your **bundle ID** (it appears once Xcode or the developer portal registered it), and a **SKU** (any reference of yours).
+4. **App information:** category (Entertainment), the **age rating** questionnaire, **privacy policy URL**, and **App Privacy** answers ([Permissions & platform settings](permissions.mdx#what-this-means-for-the-store-forms)).
+5. **Upload the build.** Archive and upload from Xcode, or upload the `.ipa` with **Transporter** ([Release build](release-build.mdx)). It appears under **TestFlight** after Apple processes it (often 10 to 30 minutes).
+6. **Test with TestFlight.** Add internal testers (your team) and try sign-in, a coin purchase with a Sandbox account, and a push. External testers need a short Beta App Review.
+7. **Prepare the version.** On the version page: screenshots for **iPhone 6.9"** (or 6.5") and **iPad 13"** (the app supports iPad), promotional text, description, keywords, support URL, the build, and under **In-App Purchases and Subscriptions** select your coin packs and VIP plans (their first review happens with the app).
+8. **App Review information.** **Sign-in required**: the reviewer's email and password. Notes: explain that episodes unlock with coins, one ad or VIP, and where to find a free episode.
+9. **Submit for review.** Choose **Manually release** if you want to pick the launch moment, or a **phased release** for updates.
+
+</Steps>
+
+:::tip[Common App Review answers]
+- *Sign in with Apple*: offered, because Google sign-in is (keep `signInWithApple` on).
+- *Account deletion*: viewers can delete their account in the app (<Path panel="app">Me › Settings › Delete account</Path>).
+- *Restore purchases*: in the coin store and the wallet.
+- *Subscriptions*: the VIP screen shows the price, period and terms before purchase, and opens Apple's subscription page to cancel.
+:::
+
+</TabItem>
+</Tabs>
+
+## After each release: tell the server
+
+Open <Path>Settings › App & support › App versions</Path> and, for each platform:
+
+| Field | What to enter |
+|---|---|
+| **Latest** | The version you just published, such as `1.0.1`. Older builds are offered the update. |
+| **Minimum supported** | Raise it only when an old build must stop working; those builds then must update. |
+| **Store link** | Your Google Play or App Store page. The update screen, share pages and the website's store buttons use it. |
+
+## Updates
+
+<Steps>
+
+1. Raise `version:` in `pubspec.yaml`, such as `1.0.1+2`: the number after `+` must go up for every upload ([Release build](release-build.mdx)).
+2. Build with the **same upload keystore** (Android) and team (iOS).
+3. Upload as a new release (Play) or a new version (App Store), with release notes.
+4. Update **Latest** in <Path>Settings › App & support</Path> once it's live.
+
+</Steps>

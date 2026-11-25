@@ -1,0 +1,60 @@
+---
+title: "Ads (AdMob)"
+sidebar_label: "Ads (AdMob)"
+description: "Put your AdMob app IDs in the Android and iOS projects. Ad units, limits and verification are set in the Admin Panel."
+---
+
+eDrama shows **rewarded ads** only: ads a viewer chooses to watch to unlock one episode or earn bonus coins. Setting them up has two halves:
+
+| Where | What |
+|---|---|
+| **In the app** (this page) | Your AdMob **app ID** for Android and for iOS. |
+| **In the Admin Panel** | The **ad unit IDs**, daily limits and coin amounts, per region: <Path>Money › Monetization › Ads</Path>. See [Ads & rewards](../admin/money/ads-and-rewards.mdx). |
+
+:::warning[Replace the test IDs]
+The app ships with **Google's sample test app IDs**: `ca-app-pub-3940256099942544~3347511713` (Android) and `ca-app-pub-3940256099942544~1458002511` (iOS). Every build shows test ads and earns nothing. An Android release build without `admob.appId` prints a `WARNING` about the test ID; **iOS doesn't warn**, so check `Info.plist` yourself before you publish.
+:::
+
+| What | Where | Format |
+|---|---|---|
+| AdMob **app ID**, Android | `admob.appId` in `android/key.properties` or `android/local.properties` | `ca-app-pub-…~…` (with a `~`) |
+| AdMob **app ID**, iOS | `GADApplicationIdentifier` in `ios/Runner/Info.plist` | `ca-app-pub-…~…` |
+| **Ad unit IDs** (unlock and Rewards, per platform) | Admin Panel › Monetization › **Ads**, per region. **Not** in the app. | `ca-app-pub-…/…` (with a `/`) |
+| **Server-side verification** callback | AdMob › each ad unit | <ServerUrl path="/api/v1/webhooks/admob-ssv" inline /> |
+
+<CommonGuide to="GeneralSettings/advertisement/google-admob" title="Google AdMob" text="Create the AdMob account and the Android and iOS apps, with screenshots." />
+
+## Create the apps in AdMob
+
+In [AdMob](https://apps.admob.com/), choose **Apps › Add app**, once for Android and once for iOS. Each app gets an **app ID** that looks like `ca-app-pub-1234567890123456~1234567890` (note the `~`).
+
+## Android
+
+Put the Android app ID in `android/local.properties` (not committed to version control) or `android/key.properties`:
+
+```properties title="android/local.properties"
+admob.appId=ca-app-pub-1234567890123456~1234567890
+```
+
+The build reads it and writes it into the Android manifest for you: don't edit `AndroidManifest.xml` by hand.
+
+## iOS
+
+Put the iOS app ID in `ios/Runner/Info.plist`:
+
+```xml title="ios/Runner/Info.plist"
+<key>GADApplicationIdentifier</key>
+<string>ca-app-pub-1234567890123456~0987654321</string>
+```
+
+## Privacy and consent
+
+The app asks for ad consent where the law requires it (using Google's consent message), and viewers can change their choice in <Path panel="app">Me › Settings › Privacy choices</Path>. On iOS it also shows Apple's tracking prompt, with this text from `Info.plist`:
+
+> This lets eDrama show ads that fit you better. Your choice doesn't change what you can watch.
+
+Change the app's name in that line when you rebrand. The consent messages themselves come from Google's **User Messaging Platform**: create them in AdMob › **Privacy & messaging**, a **GDPR** message for Europe and an **IDFA** explainer for Apple's tracking prompt (plus a US state regulations message if you serve the US).
+
+## The rest happens on the server
+
+After the IDs, everything else is in the Admin Panel: ad units per platform and region, daily limits, coins per ad and **server-side verification**, which makes sure an ad really was watched before anything is unlocked or paid. Follow [AdMob integration](../integrations/admob.mdx).

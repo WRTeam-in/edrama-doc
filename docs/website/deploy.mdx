@@ -1,0 +1,112 @@
+---
+title: "Deploy the website"
+sidebar_label: "Deploy"
+description: "Put the eDrama website live on Vercel or on your own Node.js server, with your own domain and HTTPS."
+---
+
+The website is a standard Next.js app. Pick where it runs:
+
+<Cards
+  columns={2}
+  items={[
+    {icon: 'bolt', title: 'Vercel', text: 'The easiest: no server to manage, every push deploys, and the free Hobby plan is enough to start (check Vercel’s terms for commercial use).', to: '/docs/website/deploy/?host=vercel#deploy-steps'},
+    {icon: 'server', title: 'Your own Node.js server', text: 'A VPS, a cloud VM or a host with Node.js app support, behind your own web server and certificate.', to: '/docs/website/deploy/?host=node#deploy-steps'},
+  ]}
+/>
+
+:::warning[It can't be a static export]
+The website needs a running Node.js process: it rebuilds pages in the background, answers the refresh call and serves the `/.well-known` files. Uploading the build folder to plain shared hosting won't work.
+:::
+
+## Step by step {#deploy-steps}
+
+Pick where the website runs:
+
+<Tabs queryString="host">
+<TabItem value="vercel" label="Vercel">
+
+## Before you start
+
+- A [Vercel](https://vercel.com) account.
+- The website's code (`edrama-website-<version>.zip`, unzipped) in a Git repository you own (GitHub, GitLab or Bitbucket), or the [Vercel CLI](https://vercel.com/docs/cli) on your computer.
+- Your Admin Panel installed and reachable over `https://`.
+
+## Steps
+
+<Steps>
+
+1. **Create the project.** In Vercel, choose **Add New › Project** and import the website's repository. Vercel detects Next.js by itself (the repository's `vercel.json` says so too); no build settings need changing.
+2. **Add the settings.** Before the first deploy, open **Environment Variables** and add the variables from [Connect to the Admin Panel](connect.mdx#the-websites-settings): at least `EDRAMA_API_URL` and `REVALIDATE_SECRET`, for **Production** and **Preview**.
+3. **Deploy.** From now on, every push to your production branch (usually `main`) deploys the live site, and every other branch gets its own preview address. After changing an environment variable, redeploy (**Deployments › Redeploy**) so the site picks it up.
+4. **Add your domain.** In the project, open **Settings › Domains**, add your domain (for example `your-domain.com` and `www.your-domain.com`) and point its DNS records at Vercel exactly as that screen shows.
+5. **Tell the Admin Panel.** Set the same address in <Path>Content › Website</Path> › **Connection & history** › **Website address**.
+
+</Steps>
+
+### Deploying from your computer instead
+
+The website includes `scripts/deploy.sh`, a Bash script (macOS, Linux, or WSL on Windows) that uses the Vercel CLI. It runs `npm ci`, `npm run lint` and `npm run build` before deploying.
+
+```bash title="Terminal, in the website folder"
+npm install --global vercel
+vercel link              # once: link the folder to your Vercel project
+scripts/deploy.sh        # a preview deployment, with its own address
+scripts/deploy.sh --prod # the live site
+```
+
+</TabItem>
+<TabItem value="node" label="Your own Node.js server">
+
+Any server with **Node.js 20.9 or newer** works.
+
+<Steps>
+
+1. **Set the settings** from [Connect to the Admin Panel](connect.mdx#the-websites-settings) in `.env.local` or the server's environment. They're read when the site builds **and** when it runs, so after changing one, build and restart again.
+2. **Build it.**
+
+   ```bash title="Server, in the website folder"
+   npm ci
+   npm run build
+   ```
+
+3. **Start it.** It listens on port 3000; use `PORT=8080 npm run start` for another port.
+
+   ```bash title="Server"
+   npm run start
+   ```
+
+4. **Keep it running.** Use a process manager such as [PM2](https://pm2.keymetrics.io/) or a systemd service, so it restarts after a crash or a reboot:
+
+   ```bash title="Server"
+   npm install --global pm2
+   pm2 start npm --name edrama-website -- run start
+   pm2 save && pm2 startup
+   ```
+
+5. **Put it behind HTTPS.** Point your web server at the Node.js port as a reverse proxy, with an SSL certificate for your domain (Let's Encrypt's `certbot --nginx -d your-domain.com -d www.your-domain.com` adds one to nginx).
+
+   ```nginx title="/etc/nginx/sites-available/edrama-website"
+   server {
+       server_name your-domain.com www.your-domain.com;
+
+       location / {
+           proxy_pass http://127.0.0.1:3000;
+           proxy_set_header Host $host;
+           proxy_set_header X-Forwarded-Proto $scheme;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       }
+   }
+   ```
+
+6. **Tell the Admin Panel.** Set the **Website address** in <Path>Content › Website</Path> › **Connection & history**.
+
+</Steps>
+
+</TabItem>
+</Tabs>
+
+## Check it worked
+
+- Open your domain: the home page shows your sections.
+- Open `https://your-domain.com/sitemap.xml` and `https://your-domain.com/robots.txt`: the files search engines read.
+- Publish a small change in the Admin Panel: it shows within a minute ([Check the refresh](connect.mdx#check-it-worked)).

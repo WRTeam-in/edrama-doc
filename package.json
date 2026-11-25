@@ -1,28 +1,33 @@
 {
-  "name": "edrama-doc",
+  "name": "edrama-docs",
   "version": "1.0.0",
   "private": true,
+  "description": "eDrama documentation: installation, Admin Panel, Creator Portal, viewer app and monetization guides.",
   "scripts": {
     "docusaurus": "docusaurus",
+    "screens": "node scripts/screens-manifest.mjs",
+    "prestart": "node scripts/screens-manifest.mjs",
     "start": "docusaurus start",
+    "prebuild": "node scripts/screens-manifest.mjs",
     "build": "docusaurus build",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear",
-    "check:media": "bash scripts/check-media.sh"
+    "deploy": "docusaurus deploy",
+    "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
-    "@docusaurus/core": "3.10.2",
-    "@docusaurus/preset-classic": "3.10.2",
+    "@docusaurus/core": "^3.10.2",
+    "@docusaurus/preset-classic": "^3.10.2",
     "@easyops-cn/docusaurus-search-local": "^0.55.3",
     "@mdx-js/react": "^3.1.0",
     "clsx": "^2.1.1",
     "prism-react-renderer": "^2.4.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.10.2",
-    "@docusaurus/types": "3.10.2"
+    "@docusaurus/module-type-aliases": "^3.10.2",
+    "@docusaurus/types": "^3.10.2"
   },
   "browserslist": {
     "production": [">0.5%", "not dead", "not op_mini all"],

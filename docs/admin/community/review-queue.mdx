@@ -1,0 +1,73 @@
+---
+title: "Review queue"
+sidebar_label: "Review queue"
+description: "Decide creators' series, episodes and series updates, and resolve viewers' problem reports. Every decision is logged."
+---
+
+Nothing a creator submits reaches viewers without a person's decision here. The **Review queue** also holds the **problem reports** viewers send from the player ("Video won't play", "Subtitles are wrong"…).
+
+<Access area="Review queue" view="See the queue" edit="Decide items" />
+
+<Screen
+  id="admin-review-queue"
+  type="browser"
+  wire="split"
+  url="/admin/review-queue?type=series"
+  title="Review queue"
+  caption="The Review queue with a creator’s new series selected, and the Decision panel."
+  markers={[
+    {x: 23.6, y: 22.9, title: 'Queue stats', text: 'Open items, the oldest waiting, the median time to a decision and how many were sent back.'},
+    {x: 20.8, y: 38.2, title: 'Queue, Decided, All', text: 'And filters by type: Series, Episodes, Reports, Series updates, and by who it’s assigned to.'},
+    {x: 29.8, y: 51.5, title: 'An item', text: 'Its name, who sent it and how long it has waited. Amber after 18 hours, red after 24.'},
+    {x: 50, y: 65.7, title: 'Rights declaration', text: 'When and from where the creator declared their rights.'},
+    {x: 46.4, y: 77.1, title: 'Details', text: 'Synopsis, age rating, categories, free episodes, coin price and where it’s shown; the episodes are below.'},
+    {x: 88.9, y: 54.9, title: 'Approve', text: 'Confirm free episodes, price and regions; it goes live at its release time.'},
+    {x: 88.9, y: 59.9, title: 'Request changes', text: 'Sends it back with your reason, which the creator sees.'},
+    {x: 88.9, y: 64.9, title: 'Reject', text: 'It won’t go live. Needs a reason.'},
+    {x: 88.9, y: 81.9, title: 'Assign to me', text: 'So two reviewers don’t watch the same item.'},
+  ]}
+/>
+
+## What lands in the queue
+
+| Type | What it is |
+|---|---|
+| **Series** | A creator's new series, sent with its ready episodes. |
+| **Episodes** | New episodes of a creator's live series, each on its own. |
+| **Series updates** | Proposed changes to a live series' details. The series stays live as it is until you approve. |
+| **Reports** | Problem reports from viewers in the player. |
+
+## Take an item
+
+Choose **Assign to me** so two reviewers don't watch the same item. If someone else holds it and can't finish, **Take over** (recorded in the audit log). Keyboard shortcuts are listed at the top: move between items, approve and reject.
+
+Aim for a decision within **24 hours**: items turn **amber after 18 hours** and **red after 24**.
+
+## Decide a series or episode
+
+| Decision | What happens |
+|---|---|
+| **Approve** | A **series**: confirm the **free episodes** and the **coin price per episode** (both within the limits in <Path>Settings › Payments › Creator price limits</Path>) and **where it's shown**. It goes live at its release time, or now if none is set. An **episode**: it goes live at its release time, or now. |
+| **Request changes** | Your reason (up to 1,000 characters) goes to the creator, who can fix it and send it again. |
+| **Reject** | Your reason goes to the creator. It won't go live. |
+| **Unpublish** | Takes a live series or episode out of the app at once, with a reason. Viewers who unlocked it keep it. |
+
+For a **series update**, a table compares each changed field, **Now** and **Proposed**: name, subtitle, kicker, schedule line, audio languages, synopsis, categories, age rating, poster, banner, free episodes, coin price and regions. Approving applies them; requesting changes or rejecting leaves the series as it is.
+
+If you change where a creator's series is shown, the creator gets a notice and an email saying where.
+
+Every decision leaves a notice in the creator's portal and sends them an email, and is recorded in the audit log. **Earlier decisions** on the same work are listed under each item. A reviewer can't approve a title they own as a creator.
+
+:::tip[Check the rights declaration]
+Every creator submission records a **rights declaration**: when it was made, from which address, and the declaration version. If an item has none, ask the creator to declare their rights before you approve.
+:::
+
+## Resolve a problem report
+
+A report shows the reason, the episode, the moment in the episode, the device and app version, the viewer's message, and other reports on the same episode.
+
+| Action | Use it when |
+|---|---|
+| **Mark resolved** | You fixed or checked it. Write a resolution note (such as "re-encoded E14 and playback works again"). The note stays with the team. |
+| **Ask the creator to fix it** | It's a creator's episode. They get your reason in the portal and by email; the episode stays live. The report is resolved. |
+| **Unpublish this episode** | Viewers shouldn't see it meanwhile. |

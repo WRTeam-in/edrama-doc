@@ -14,6 +14,18 @@ Every series has an owner, and the owner decides who shares its money:
 | **Licensed** | The licensor gets their **Licensor share**, from the contract, set on the series |
 | **A creator's series** | The creator gets their own share, set on their page in **Creators**, or else the **Default creator share** (50% to start) |
 
+## The three streams
+
+A creator's share applies to everything their series earn. Three streams make up a creator's month:
+
+| Stream | How the creator's part is worked out |
+|---|---|
+| **Coins** | Paid coins spent on their episodes and Series Passes (less refunds) × the region's **paid coin value** × (1 − store fee) × their share. The share saved **with each unlock** is used, so a later share change never rewrites the past. [Worked out below](#from-a-coin-to-money). |
+| **Ads** | The region's **ads pool** (unlock-ad earnings from AdMob × the ads pool percent) × their verified ad unlocks ÷ all verified ad unlocks in the region × their share. |
+| **VIP** | The region's **VIP pool** (VIP charges less refunds and store fees × the VIP pool percent) × their VIP minutes on locked episodes ÷ all VIP minutes in the region × their share. |
+
+Not counted: bonus coins, the creator's own viewing and unlocks, accounts under a day old (for ads), free and YouTube episodes, and granted episodes. Your own and licensed titles count in each region's totals, so their part of the pools stays with the platform.
+
 ## From a coin to money
 
 Only **paid coins** earn money. Bonus coins (the welcome bonus, coin-pack bonuses, the spin, streak titles, Rewards ads) are given away, so they earn nobody anything.
@@ -48,7 +60,7 @@ A creator series priced at 60 coins in the Global region. In a month, viewers un
 | Creator (50%) | **252.45 USD** |
 | You | **252.45 USD** |
 
-Try your own numbers in the [earnings calculator](./earnings-calculator.md).
+Try your own numbers in the [earnings calculator](./earnings-calculator.md). It leaves out refunds, discounted packs (which lower the paid coin value), the ads and VIP pools, and your own running costs: hosting, video storage and streaming, taxes and payout fees.
 
 ## Series Pass
 
@@ -56,10 +68,12 @@ A Series Pass's paid coins count for the series too. The report splits them into
 
 ## Ads and VIP
 
-Ad and VIP money doesn't come per unlock, so it's shared from a **monthly pool per region**:
+Ad and VIP money doesn't come per unlock, so it's shared from a **monthly pool per region**, worked out in [Creator revenue](/admin-panel/using/money/creator-revenue/):
 
-- **Ads**: your finance team fills the report's `ad_pool_value` column with the month's ad money from the AdMob report. It is split by **verified ad unlocks**. Failed ads don't count, and neither do the creator's own views or accounts less than 24 hours old.
-- **VIP**: your finance team fills `vip_pool_value` with the month's VIP money from the store reports. It is split by **VIP minutes on locked episodes**, each viewer counted once per episode per month. The creator's own viewing never counts.
+- **Ads**: on the import day (the 5th by default), eDrama imports the month's unlock-ad earnings from AdMob through the [AdMob Reporting API](/admin-panel/settings/payments/#admob-reporting-api), takes the **Ads pool** percent of it, and splits it by **verified ad unlocks**. Failed ads don't count, and neither do the creator's own views or accounts less than 24 hours old.
+- **VIP**: the month's VIP charges, less refunds and store fees, times the **VIP pool** percent, split by **VIP minutes on locked episodes**, each viewer counted once per episode per month. The creator's own viewing never counts.
+
+Without the AdMob connection, your team sets the ads pool by hand in Creator revenue. The pool percents, the import day and the approval rule are in [Settings › Creator revenue](/admin-panel/settings/payments/#creator-revenue). The monthly creator report also keeps empty `ad_pool_value` and `vip_pool_value` columns, if you'd rather work the pools out in a spreadsheet.
 
 ## The monthly creator report
 
@@ -76,11 +90,11 @@ To build a month's report again: `php artisan edrama:creator-report --month=2026
 **Payouts are made by you**, outside eDrama (bank transfer, UPI, PayPal, Wise or other), and recorded in the Admin Panel so nobody is paid twice:
 
 1. **Close the month.** The same run on the 1st writes each creator's **statement** for the month before: their share of the net money from paid coins, less refunds, in your reporting currency. You can also do it with **Close month for creators** on Transactions. A month closes only once it's over and needs an exchange rate for every currency used (Settings › Regions & languages). A statement, once written, never changes its coin figures.
-2. **Add the ads and VIP share.** On the creator's page in <AdminPath path="Community › Creators" />, add their part of the month's ad and VIP pools to the statement, with a note on how you worked it out.
+2. **Add the ads and VIP share.** On the import day, [Creator revenue](/admin-panel/using/money/creator-revenue/) imports AdMob's earnings and calculates the ads and VIP pools and each creator's part. Your team reviews, sets a pool by hand or adjusts a creator if needed, and **approves**: the ads, VIP and adjustments then go onto the statements. For a month Creator revenue doesn't manage, add the share by hand on the creator's page in <AdminPath path="Community › Creators" />, with a note on how you worked it out.
 3. **Pay, then record it.** Pay the creator, then use **Record payout** on their page with the amount, method, payment reference and date. A payout can't be more than what they're owed. A wrong one is **voided** with a reason, never deleted.
 
 Recording payouts needs Transactions › Edit. Every step is in the audit log.
 
-Creators see their own money on **Earnings** in the Creator Portal: earned, paid to them, waiting to be paid, an estimate for this month so far, their monthly statements by series and their payouts. Your internal notes are never shown to them.
+Creators see their own money on [Earnings](/creator-portal/guide/earnings/) in the Creator Portal: earned, paid to them, waiting to be paid, an estimate for this month so far, their monthly statements by series and their payouts. Your internal notes are never shown to them.
 
 Licensors aren't in the Creator Portal: pay them from the report's rows for their series.

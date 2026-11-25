@@ -1,0 +1,62 @@
+---
+title: "The viewer app"
+sidebar_label: "Overview"
+description: "A tour of the eDrama app your viewers use: its four tabs, how they move around, and what works offline."
+---
+
+The viewer app is what your audience downloads from Google Play and the App Store. It's built for **vertical episodes of 60 to 90 seconds**: open a series, swipe up for the next episode, and unlock more when the free ones run out. It runs on Android 7+ and iOS 15+, on phones and tablets, in light and dark themes, and in every language you offer (including right-to-left ones).
+
+<Screen
+  id="app-home"
+  type="phone"
+  wire="app-feed"
+  title="Home"
+  caption="The Home tab: the logo, coin balance, search and notifications on top, the featured series slider with Play E1, My List and Details, the Browse by mood row, and the tab bar."
+  markers={[
+    {x: 19.5, y: 6.1, title: 'Your logo', text: 'From the app’s brand files.'},
+    {x: 67.5, y: 6.1, title: 'Coins', text: 'The viewer’s balance (here the welcome bonus). Tap for the wallet.'},
+    {x: 81.5, y: 6.1, title: 'Search', text: 'Titles, categories and creators.'},
+    {x: 93.2, y: 6.1, title: 'Notifications', text: 'New drops and replies, with an unread dot.'},
+    {x: 50, y: 24, title: 'Featured series', text: 'The hero slider from the Home builder. Swipe to browse; the dots show where you are.'},
+    {x: 30, y: 35.3, title: 'Schedule, kicker, categories', text: 'The series’ schedule line, its kicker and its categories, set on the title.'},
+    {x: 34.4, y: 54.4, title: 'Play E1 / Continue', text: 'Starts or resumes the series.'},
+    {x: 74, y: 54.4, title: 'My List · Details', text: 'Save it to the Library, or open the series page.'},
+    {x: 20, y: 65.6, title: 'Rows of series', text: 'Browse by mood, Trending this week, Top 10 and more, in the order set in the Home builder.'},
+    {x: 50, y: 93.8, title: 'Tab bar', text: 'Home, Library, Rewards and Me. Rewards becomes Wallet when your team switches Rewards off.'},
+  ]}
+/>
+
+## The four tabs
+
+| Tab | What's there |
+|---|---|
+| **Home** | The sections your team built: featured series, Continue watching, rows, banners, categories. See [Home & discovery](home-and-discovery.mdx). |
+| **Library** | **Watching** (series in progress), **My List** (saved for later) and **Unlocked** (episodes and Series Passes you own). See [Library & notifications](library-and-notifications.mdx). |
+| **Rewards** | The daily spin, the streak, titles, ads for coins, the coin store and the wallet. When Rewards is switched off, this tab becomes **Wallet**. See [Rewards](rewards.mdx). |
+| **Me** | The profile, VIP, settings, help and account. See [Settings & help](settings-and-help.mdx). |
+
+Swipe between tabs or tap them. Tapping the tab you're on scrolls it back to the top. Pressing back on any tab other than Home goes Home.
+
+## Everything a viewer does
+
+<Cards
+  columns={3}
+  items={[
+    {icon: 'viewer', title: 'Watch', text: 'The vertical player, speed, quality, subtitles.', to: '/docs/viewer-app/player/', tone: 'info'},
+    {icon: 'coin', title: 'Unlock', text: 'Coins, one ad, Series Pass or VIP.', to: '/docs/viewer-app/unlocking-episodes/', tone: 'coin'},
+    {icon: 'gift', title: 'Earn', text: 'The daily spin, streaks and ads for coins.', to: '/docs/viewer-app/rewards/', tone: 'coin'},
+    {icon: 'crown', title: 'Subscribe', text: 'VIP: everything unlocked, no ads.', to: '/docs/viewer-app/vip/', tone: 'vip'},
+    {icon: 'users', title: 'Talk', text: 'Comments, ratings and reviews.', to: '/docs/viewer-app/comments-and-reviews/', tone: 'like'},
+    {icon: 'help', title: 'Get help', text: 'Help & refunds, legal pages, settings.', to: '/docs/viewer-app/settings-and-help/', tone: 'info'},
+  ]}
+/>
+
+## Offline and slow connections
+
+- What's already loaded keeps working offline; a banner says *You're offline. What's loaded still plays.*
+- Every list the app loads is saved on the phone and shown when the server can't be reached.
+- **Data saver** (in onboarding and Settings) starts every episode at 360p, then sharpens, and loads the next episode later.
+
+## What the app learns from your server
+
+At each start, the app reads its configuration from your server: the app name and theme colour, which features are on, the viewer's region with its prices, and the languages. So most changes you make in the Admin Panel reach viewers **without a new app release**. If your server is in [maintenance mode](../admin/settings/app-and-support.mdx#maintenance-mode), viewers see a "Back soon" screen instead of the catalogue.

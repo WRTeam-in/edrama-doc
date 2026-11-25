@@ -1,0 +1,45 @@
+---
+title: "Firebase"
+sidebar_label: "Firebase"
+description: "Connect Firebase to your server for viewer sign-in, push notifications, App Check and the Creator Portal's sign-in."
+---
+
+**Firebase** is Google's app platform. The app uses it to sign viewers in and receive pushes; your server uses the **same project** to check every viewer's sign-in token, send pushes, and sign creators in to the portal.
+
+App side: [Mobile app setup › Firebase](../app-setup/firebase.mdx). This page covers the server side.
+
+## Connect the server
+
+<Steps>
+
+1. Open the [Firebase console](https://console.firebase.google.com/) › your project › **Project settings › General**. Copy the **Project ID**.
+2. Under **Your apps**, open (or add) the **Web app**. Its config holds the **Web API key** (`apiKey`) and **Auth domain** (`authDomain`).
+3. **Project settings › Service accounts › Generate new private key**. A JSON file downloads.
+4. In the Admin Panel: <Path>Settings › Notifications</Path> › **Firebase** card. Fill in **Project ID**, paste the whole **Service account JSON**, and the **Web API key** and **Auth domain**.
+5. **Save**, then **Test connection**.
+
+</Steps>
+
+## Allow the Creator Portal's domain
+
+Creators sign in from the browser at your domain, so it must be allowed: **Authentication › Settings › Authorized domains** › add your Admin Panel's domain. Otherwise creators see *This site isn't allowed to sign in with Firebase yet*.
+
+Enable the sign-in providers creators use (Google, Email/Password, Phone) under **Authentication › Sign-in method**; viewers also need **Anonymous** (guests) and **Apple**.
+
+## App Check
+
+App Check proves requests come from your genuine app on a real device. In `.env`:
+
+| `EDRAMA_APP_CHECK` | Behaviour |
+|---|---|
+| `off` (default) | Not checked. |
+| `monitor` | Checked and logged, nothing refused. Start here. |
+| `enforce` | Requests without a valid token are refused. |
+
+Limit it to your apps with `EDRAMA_APP_CHECK_APP_IDS` (comma-separated Firebase app IDs). An outage on your side is never held against viewers.
+
+## Good to know
+
+- Without the keys, inbox notifications are still saved but pushes are skipped, and Push shows *Pushes aren't set up yet*.
+- If viewers get signed out right after signing in, your server's clock may be off: keep it synced, and the allowance `EDRAMA_FIREBASE_CLOCK_LEEWAY` (60 seconds) covers small drift.
+- Saved keys are encrypted and never shown again.

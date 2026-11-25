@@ -12,6 +12,10 @@ description: Put the eDrama backend on your server and point your domain at it.
 - An empty MySQL 8 database, its user and password (create them in cPanel › **MySQL Databases**, or with your host's tools).
 - Your CodeCanyon purchase code.
 
+:::tip Starting from an empty server?
+Follow the full walkthrough for your hosting first, then come back here: [Prepare a VPS](./vps-server.md) (nginx, PHP 8.5, MySQL 8, ffmpeg and SSL on Ubuntu) or [Install on shared hosting](./shared-hosting.md) (cPanel, the domain's folder, ffmpeg and the single cron line).
+:::
+
 ## Steps
 
 <Steps>
@@ -44,7 +48,7 @@ sudo chown -R www-data:www-data /var/www/edrama
 Set your domain's **document root** to the backend's **`public`** folder, for example `/home/youruser/edrama/public`.
 
 - **cPanel:** Domains › your domain › **Manage** › Document Root. If your host doesn't let you change the main domain's root, use a sub-domain such as `admin.your-domain.com`, whose root you can set.
-- **Nginx:** `root /home/youruser/edrama/public;` with requests passed to `index.php`, as in [Laravel's Nginx guide](https://laravel.com/docs/deployment#nginx). Add `client_max_body_size 16M;`, or video uploads fail.
+- **Nginx:** `root /home/youruser/edrama/public;` with requests passed to `index.php`, as in [Laravel's Nginx guide](https://laravel.com/docs/deployment#nginx). Add `client_max_body_size 16M;` (or more, such as `320M`, to install update packages from the browser), or video uploads fail. A complete server block is in [Prepare a VPS](./vps-server.md).
 - **Apache:** the `public` folder already has its `.htaccess`. Make sure `mod_rewrite` is on and `AllowOverride All` is set.
 
 Only the `public` folder should be reachable from the web. The `.env` file and the rest of the code must not be.

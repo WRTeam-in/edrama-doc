@@ -6,53 +6,71 @@ description: Open the project and run eDrama on an emulator or a phone.
 
 # Run the app
 
-Before the first run, give the app your [package name](./package-name.md), connect [Firebase](./firebase.md) and set your server in [App settings](./app-settings.md). The download has no Firebase files, so neither the Android nor the iOS build runs until `flutterfire configure` has made them.
+Before the first run, three things must be in place, because the download ships with placeholders ([what's in the download](/mobile-app/#whats-in-the-download)):
+
+1. your own [package name](/mobile-app/package-name/),
+2. your [Firebase files](/mobile-app/firebase/) (the Android build stops without `google-services.json`, and the app won't start without `firebase_options.dart`),
+3. your [server's address](/mobile-app/app-settings/) in `app_config.dart`.
+
+Then run it: if it opens and shows your catalogue, your computer is set up correctly.
 
 <Steps>
-<Step title="Open the project">
 
-Unzip the app's code and open the folder in Android Studio or VS Code.
+1. **Open the project.** Unzip the app source code and open the folder in Android Studio or VS Code.
+2. **Check your Flutter version.**
 
-</Step>
-<Step title="Get the packages">
+   ```bash title="Terminal, in the app folder"
+   flutter --version
+   ```
 
-```bash
-flutter pub get
-```
+   It should say **3.47.7**. (With FVM: `fvm install`, then use `fvm flutter`.) Not set up yet? See [Set up Flutter](/mobile-app/setup-flutter/).
 
-For iOS, also run:
+3. **Install the packages.**
 
-```bash
-cd ios
-pod install
-cd ..
-```
+   ```bash
+   flutter pub get
+   ```
 
-</Step>
-<Step title="Run it">
+4. <Anchor id="if-you-change-the-code" />**Generate the code files.** Some files (ending in `.g.dart` and `.freezed.dart`) are generated from others. They are included, but regenerate them after changing anything marked `@riverpod` or `@freezed`:
 
-Start an emulator or connect a phone, then:
+   ```bash
+   dart run build_runner build
+   ```
 
-```bash
-flutter run
-```
+5. **Start an emulator or connect your phone** (with USB debugging on, for Android).
+6. **Run it.**
 
-</Step>
+   ```bash
+   flutter run
+   ```
+
 </Steps>
 
-The app talks to the server set in `apiBaseUrl` in `lib/app/config/app_config.dart`. It ships as `https://your-domain.com/api/v1/`, a placeholder, so the app can't load anything until you set your own Admin Panel's address there: [App settings](./app-settings.md).
+The app opens on the splash screen, then onboarding, then Home with your server's catalogue (or the demo data, if you imported it). For iOS, run `pod install` in the `ios` folder once before the first iOS build.
 
-## If you change the code
+The app talks to the server set in `apiBaseUrl` in `lib/app/config/app_config.dart`. In the download it's `https://your-domain.com/api/v1/`, a placeholder, so the app can't load anything until you set your own Admin Panel's address there ([App settings](/mobile-app/app-settings/)).
 
-The project uses code generation for its models and state. The generated files are included, so you don't need this to run the app. If you edit a model or a provider, regenerate them:
+<Anchor id="checks" />
 
-```bash
-dart run build_runner build
-```
+## Health checks
 
-## Checks
+Before a release, these should all pass:
 
-```bash
-flutter analyze
+```bash title="Terminal"
+dart format lib test
+flutter analyze        # should print: No issues found!
 flutter test
 ```
+
+## Common problems
+
+| Problem | Fix |
+|---|---|
+| Errors mentioning a Dart or Flutter version | Use Flutter **3.47.7**. |
+| `Undefined name` errors in `.g.dart` files | Run `dart run build_runner build`. |
+| iOS build fails at `pod install` | In `ios/`, run `pod repo update` then `pod install`. |
+| Android build complains about Java | Point Android Studio at JDK 17 or newer (**Settings › Build Tools › Gradle › Gradle JDK**). |
+| The app shows "No internet connection" | The emulator has no network, or the server address is wrong ([Connect to your server](/mobile-app/app-settings/)). |
+| Android build stops: `File google-services.json is missing` | Run `flutterfire configure` ([Firebase](/mobile-app/firebase/)). |
+| The app stops at start: *Firebase is not configured yet* | `firebase_options.dart` is still the placeholder: run `flutterfire configure` with `--out=lib/app/config/firebase_options.dart`. |
+| Nothing loads, or *Server error* | `apiBaseUrl` is still `your-domain.com`, isn't `https://`, or doesn't end in `/api/v1/`. If you turned on `EDRAMA_APP_CHECK=enforce`, test with `monitor` first. |

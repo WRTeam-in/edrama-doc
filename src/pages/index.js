@@ -1,237 +1,185 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import DocBanner from '@site/src/components/DocBanner/DocBanner';
-import Reveal from '@site/src/components/Reveal';
-import { ACCENTS, inkOn } from '@site/src/components/AccentPreview';
-import HeroPhone from '@site/src/components/HeroPhone';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import {Icon} from '@site/src/components/Docs';
 import styles from './index.module.css';
 
-/** Icon paths for the cursor trail: clapperboard, play, coin, heart. */
-const TRAIL_ICONS = [
-  'M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8Z M4 11 3.2 7.1a1 1 0 0 1 .8-1.2l13.7-2.6a1 1 0 0 1 1.2.8L19.6 7 M7.5 5.2l2.6 3.6 M12.3 4.3l2.6 3.6',
-  'M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z',
-  'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z M12 7.5l1.3 2.7 3 .4-2.2 2.1.5 3-2.6-1.4-2.6 1.4.5-3-2.2-2.1 3-.4L12 7.5Z',
-  'M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.3 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10Z',
+const PATHS = [
+  {icon: 'server', title: 'Server installation', text: 'Requirements, the four-step web installer, cron, queues and ffmpeg.', to: '/docs/installation/overview/'},
+  {icon: 'phone', title: 'Mobile app setup', text: 'Package name, Firebase, your server, your brand, then the store builds.', to: '/docs/app-setup/overview/'},
+  {icon: 'globe', title: 'Website setup', text: 'Run the Next.js website, connect it to your panel and deploy it.', to: '/docs/website/overview/'},
+  {icon: 'studio', title: 'Admin Panel', text: 'Every screen of the Studio: content, creators, users, money and settings.', to: '/docs/admin/overview/'},
+  {icon: 'creator', title: 'Creator Portal', text: 'How invited creators upload series, get reviewed, schedule and earn.', to: '/docs/creator/overview/', tone: 'vip'},
+  {icon: 'viewer', title: 'Viewer App', text: 'What viewers see: Home, the player, unlocking, Rewards, VIP and Wallet.', to: '/docs/viewer-app/overview/', tone: 'info'},
+  {icon: 'coin', title: 'Monetization', text: 'Coins, Series Pass, VIP, rewarded ads, regions, refunds and payouts.', to: '/docs/monetization/overview/', tone: 'coin'},
+  {icon: 'plug', title: 'Integrations', text: 'Firebase, the stores, AdMob, S3 and Cloudflare, with every callback address.', to: '/docs/integrations/overview/'},
+  {icon: 'check', title: 'Launch checklist', text: 'Every step to go live, in order, with your progress saved as you tick.', to: '/docs/getting-started/launch-checklist/'},
 ];
-const TRAIL_COLOURS = ['#C6EB3B', '#D5F070', '#F2C25B', '#FF4F6E'];
-const TRAIL_POOL = 18;
-const TRAIL_SPACING = 34;
+
+const SERVICES = ['Firebase', 'Google Play', 'App Store', 'AdMob', 'Cloudflare', 'Amazon S3', 'Gemini', 'YouTube'];
 
 /**
- * Small icons that drift away from the cursor over the hero. A fixed pool of
- * elements is reused, each moved with transform only and animated by the
- * browser's compositor (Web Animations), so the page never re-lays out while
- * the mouse moves. New icons appear every few dozen pixels of travel, at most
- * once a frame. Off on touch screens and for readers who prefer less motion.
+ * The hero's poster reels: key art for series from eDrama's demo catalogue
+ * (static/img/hero, made with Gemini). Each column repeats its list twice so
+ * the scroll loops without a jump.
  */
-function useCursorTrail(ref) {
+const POSTERS = [
+  {slug: 'heiress-returns', title: 'The Heiress Returns', ep: 12, badge: 'free'},
+  {slug: 'vows-of-the-don', title: 'Vows of the Don', ep: 7, coins: 60},
+  {slug: 'moonbound', title: 'Moonbound', ep: 3, badge: 'new'},
+  {slug: 'ceo-contract-wife', title: "The CEO's Contract Wife", ep: 18, coins: 45},
+  {slug: 'bodyguard-clause', title: 'The Bodyguard Clause', ep: 9, badge: 'free'},
+  {slug: 'glass-crown', title: 'Glass Crown', ep: 21, coins: 75},
+  {slug: 'sindoor-ka-badla', title: 'Sindoor Ka Badla', ep: 5, badge: 'free'},
+  {slug: 'divorce-day', title: 'Divorce Day', ep: 14, coins: 30},
+  {slug: 'seoul-after-midnight', title: 'Seoul After Midnight', ep: 2, badge: 'new'},
+  {slug: 'wrong-billionaire', title: 'Married to the Wrong Billionaire', ep: 11, coins: 60},
+];
+
+const REELS = [
+  [0, 2, 4, 6, 8],
+  [1, 3, 5, 7, 9],
+  [5, 0, 9, 2, 7],
+];
+
+const PROMISES = [
+  {icon: 'coin', title: 'Price shown before every unlock', text: 'In coins and in the viewer’s own money.'},
+  {icon: 'shield', title: 'Price lock per viewer', text: 'Once a series is started, its price can’t rise for them.'},
+  {icon: 'bolt', title: 'Auto-unlock off by default', text: 'And always held to the daily spend limit.'},
+  {icon: 'crown', title: 'VIP without surprises', text: 'No free trial that turns into a charge, a reminder before renewal.'},
+];
+
+const ICON_PATHS = [
+  'M8 5v14l11-7z',
+  'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 4v10',
+  'M12 21s-7-4.4-9.3-8.6C1 9.1 2.8 5 6.6 5c2.1 0 3.6 1.2 5.4 3.2C13.8 6.2 15.3 5 17.4 5 21.2 5 23 9.1 21.3 12.4 19 16.6 12 21 12 21z',
+];
+
+function useCursorBurst(ref) {
   useEffect(() => {
-    const node = ref.current;
-    if (!node || typeof Element.prototype.animate !== 'function') return undefined;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
-    if (window.matchMedia('(hover: none)').matches) return undefined;
-
-    const layer = document.createElement('div');
-    layer.className = styles.trailLayer;
-    layer.setAttribute('aria-hidden', 'true');
-    const pool = Array.from({ length: TRAIL_POOL }, (_, n) => {
-      const i = n % TRAIL_ICONS.length;
-      const el = document.createElement('div');
-      el.className = styles.trail;
-      el.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="${TRAIL_ICONS[i]}" stroke="${TRAIL_COLOURS[i]}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-      layer.appendChild(el);
-      return el;
-    });
-    document.body.appendChild(layer);
-
-    let next = 0;
-    let frame = 0;
-    let pending = null;
-    let last = null;
-    let travelled = 0;
-
-    const spawn = (x, y, dx, dy) => {
-      const el = pool[next];
-      next = (next + 1) % pool.length;
-      const len = Math.hypot(dx, dy) || 1;
-      const ux = dx / len;
-      const uy = dy / len;
-      const spread = (Math.random() - 0.5) * 40;
-      const driftX = -ux * 26 + -uy * spread;
-      const driftY = -uy * 26 + ux * spread - 24;
-      const size = 0.7 + Math.random() * 0.4;
-      const turn = (Math.random() - 0.5) * 120;
-      el.getAnimations().forEach((a) => a.cancel());
-      el.animate(
-        [
-          { transform: `translate3d(${x}px, ${y}px, 0) scale(0.2) rotate(0deg)`, opacity: 0 },
-          { transform: `translate3d(${x + driftX * 0.3}px, ${y + driftY * 0.3}px, 0) scale(${size}) rotate(${turn * 0.3}deg)`, opacity: 0.95, offset: 0.25 },
-          { transform: `translate3d(${x + driftX}px, ${y + driftY}px, 0) scale(${size * 0.85}) rotate(${turn}deg)`, opacity: 0 },
-        ],
-        { duration: 1100, easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)', fill: 'forwards' },
-      );
+    const el = ref.current;
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    let last = {x: 0, y: 0};
+    let budget = 0;
+    const spawn = (x, y, vx = 0, vy = 0) => {
+      const node = document.createElement('span');
+      const kind = Math.floor(Math.random() * ICON_PATHS.length);
+      const size = 12 + Math.random() * 8;
+      const color = kind === 1 ? '#f2c25b' : kind === 2 ? '#ff4f6e' : '#c6eb3b';
+      node.className = styles.burst;
+      node.innerHTML = `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="${kind === 1 ? 'none' : color}" stroke="${color}" stroke-width="${kind === 1 ? 2 : 0}"><path d="${ICON_PATHS[kind]}"/></svg>`;
+      const a = Math.random() * Math.PI * 2;
+      const d = 6 + Math.random() * 18;
+      node.style.left = `${x + Math.cos(a) * d}px`;
+      node.style.top = `${y + Math.sin(a) * d}px`;
+      document.body.appendChild(node);
+      requestAnimationFrame(() => {
+        node.style.transform = `translate(${(Math.random() - 0.5) * 60 + vx}px, ${-30 - Math.random() * 50 + vy}px) rotate(${(Math.random() - 0.5) * 160}deg) scale(1)`;
+        node.style.opacity = '0';
+      });
+      setTimeout(() => node.remove(), 900);
     };
-
-    const flush = () => {
-      frame = 0;
-      if (!pending) return;
-      const { x, y } = pending;
-      pending = null;
-      if (!last) {
-        last = { x, y };
-        return;
-      }
-      const dx = x - last.x;
-      const dy = y - last.y;
-      travelled += Math.hypot(dx, dy);
-      if (travelled >= TRAIL_SPACING) {
-        travelled = 0;
-        spawn(x - 10, y - 10, dx, dy);
-      }
-      last = { x, y };
-    };
-
     const onMove = (e) => {
-      pending = { x: e.clientX, y: e.clientY };
-      if (!frame) frame = requestAnimationFrame(flush);
+      const vx = e.clientX - last.x;
+      const vy = e.clientY - last.y;
+      last = {x: e.clientX, y: e.clientY};
+      budget += Math.hypot(vx, vy);
+      if (budget > 46) {
+        budget = 0;
+        spawn(e.clientX, e.clientY, vx * 0.6, vy * 0.6);
+      }
     };
-    const onLeave = () => {
-      last = null;
-      travelled = 0;
+    const onEnter = (e) => {
+      last = {x: e.clientX, y: e.clientY};
+      for (let i = 0; i < 6; i += 1) setTimeout(() => spawn(e.clientX, e.clientY), i * 45);
     };
-
-    node.addEventListener('pointermove', onMove, { passive: true });
-    node.addEventListener('pointerleave', onLeave);
+    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mouseenter', onEnter);
     return () => {
-      node.removeEventListener('pointermove', onMove);
-      node.removeEventListener('pointerleave', onLeave);
-      cancelAnimationFrame(frame);
-      layer.remove();
+      el.removeEventListener('mousemove', onMove);
+      el.removeEventListener('mouseenter', onEnter);
     };
   }, [ref]);
 }
 
 function Hero() {
-  const { siteConfig } = useDocusaurusContext();
   const ref = useRef(null);
-  const [accent, setAccent] = useState(ACCENTS[0].fill.toLowerCase());
-  const logo = useBaseUrl('/images/brand/logo-horizontal-dark.svg');
-  useCursorTrail(ref);
+  useCursorBurst(ref);
+  const logo = useBaseUrl('/img/brand/logo-dark-lg.png');
+  const posterBase = useBaseUrl('/img/hero/');
   return (
-    <header ref={ref} className={styles.hero} style={{ '--hero-accent': accent, '--hero-ink': inkOn(accent) }}>
+    <header ref={ref} className={styles.hero}>
       <div className={styles.glow} aria-hidden="true" />
+      <div className={styles.grain} aria-hidden="true" />
+      <div className={styles.reels} aria-hidden="true">
+        {REELS.map((list, c) => (
+          <div key={c} className={clsx(styles.reel, styles[`reel${c}`])}>
+            {[...list, ...list].map((index, i) => {
+              const p = POSTERS[index];
+              return (
+                <span key={i} className={styles.poster} style={{backgroundImage: `url(${posterBase}${p.slug}.jpg)`}}>
+                  <i className={styles.posterShade} />
+                  {p.badge === 'free' && <i className={styles.posterFree}>Free</i>}
+                  {p.badge === 'new' && <i className={styles.posterNew}>New</i>}
+                  {p.coins && <i className={styles.posterCoin}>{p.coins}</i>}
+                  <b className={styles.posterTitle}>{p.title}</b>
+                  <i className={styles.posterEp}>E{p.ep}</i>
+                </span>
+              );
+            })}
+          </div>
+        ))}
+      </div>
       <div className={clsx('container', styles.heroInner)}>
-        <div className={styles.heroText}>
-          <img className={styles.heroLogo} src={logo} alt="eDrama" width="230" height="53" />
-          <h1 className={styles.heroTitle}>
-            Short dramas,
-            <br />
-            <em>set up your way.</em>
-          </h1>
-          <p className={styles.heroTagline}>{siteConfig.tagline}</p>
-          <div className={styles.heroButtons}>
-            <Link className={clsx('button button--lg', styles.primaryButton)} to="/admin-panel/">
-              Start with the Admin Panel
-            </Link>
-            <Link className={clsx('button button--lg', styles.ghostButton)} to="/features/earnings-calculator/">
-              Try the earnings calculator
-            </Link>
-          </div>
-          <div className={styles.accentRow}>
-            <span>Your brand colour, in a minute:</span>
-            {ACCENTS.map((a) => (
-              <button
-                key={a.name}
-                type="button"
-                className={styles.accentDot}
-                style={{ background: a.fill }}
-                aria-pressed={a.fill.toLowerCase() === accent}
-                aria-label={`Preview ${a.name}`}
-                title={a.name}
-                onClick={() => setAccent(a.fill.toLowerCase())}
-              />
-            ))}
-            <label className={styles.customColour} title="Any colour">
-              <input
-                type="color"
-                value={accent}
-                onChange={(e) => setAccent(e.target.value)}
-                aria-label="Pick any brand colour"
-              />
-              <span aria-hidden="true">+</span>
-            </label>
-          </div>
-          <p className={styles.accentNote}>
-            Set it in Admin Panel › Settings › Branding and the app, panels and website all switch, with no new release.
-          </p>
+        <img className={styles.heroLogo} src={logo} alt="eDrama" width="270" height="63" />
+        <p className={styles.eyebrow}>
+          <span className={styles.liveDot} /> Documentation
+        </p>
+        <h1 className={styles.headline}>
+          Every scene of eDrama,
+          <br />
+          <em>explained.</em>
+        </h1>
+        <p className={styles.sub}>
+          Install the server, publish your branded app, run the Admin Panel and the Creator Portal, and set up coins, VIP and ads. Written step by step, with
+          every screen marked and explained.
+        </p>
+        <div className={styles.ctas}>
+          <Link className={styles.ctaPrimary} to="/docs/getting-started/launch-checklist/">
+            Start the launch checklist <span aria-hidden="true">→</span>
+          </Link>
+          <Link className={styles.ctaGhost} to="/docs/intro/">
+            What is eDrama?
+          </Link>
         </div>
-        <div className={styles.heroArt}>
-          <HeroPhone />
-        </div>
+        <p className={styles.searchHint}>
+          Looking for something? Press <kbd>Ctrl</kbd> + <kbd>K</kbd> (<kbd>⌘</kbd> + <kbd>K</kbd> on a Mac) to search every page.
+        </p>
       </div>
     </header>
   );
 }
 
-const SECTIONS = [
-  {
-    to: '/admin-panel/',
-    title: 'Admin Panel',
-    text: 'Server requirements, the install wizard, background jobs, and every setting: payments, video, Firebase, email and more.',
-    icon: 'M3 4h18v12H3z M8 20h8 M12 16v4',
-  },
-  {
-    to: '/website/',
-    title: 'Website',
-    text: 'Put the public website live on Vercel or any Node host. It reads everything from your Admin Panel.',
-    icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z M3 12h18 M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z',
-  },
-  {
-    to: '/mobile-app/',
-    title: 'Mobile App',
-    text: 'Point the Flutter app at your server, re-brand it, connect Firebase, ads and store billing, and build for release.',
-    icon: 'M7 3h10a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z M11 18h2',
-  },
-  {
-    to: '/creator-portal/',
-    title: 'Creator Portal',
-    text: 'Let approved creators upload their own series. Every episode is reviewed by your team before it goes live.',
-    icon: 'M4 20v-1a6 6 0 0 1 12 0v1 M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M18 8v6 M15 11h6',
-  },
-  {
-    to: '/features/',
-    title: 'Features',
-    text: 'What every menu does, how unlocks and coins work, and how creators and the platform earn.',
-    icon: 'M4 6h16 M4 12h16 M4 18h10',
-  },
-];
-
-function Sections() {
+function PathCards() {
   return (
-    <section className={styles.sections}>
+    <section className={styles.section}>
       <div className="container">
-        <Reveal>
-          <h2 className={styles.sectionTitle}>Pick a part to set up</h2>
-          <p className={styles.sectionLead}>
-            eDrama is four parts that share one backend. Most buyers start with the Admin Panel, then the website and the app.
-          </p>
-        </Reveal>
+        <p className={styles.kicker}>Choose your path</p>
+        <h2 className={styles.h2}>Where do you want to start?</h2>
         <div className={styles.grid}>
-          {SECTIONS.map((s, i) => (
-            <Reveal key={s.to} delay={i * 60} className={styles.cardWrap}>
-              <Link to={s.to} className={styles.card}>
-                <svg className={styles.cardIcon} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d={s.icon} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <h3>{s.title}</h3>
-                <p>{s.text}</p>
-                <span className={styles.cardMore}>Open guide →</span>
-              </Link>
-            </Reveal>
+          {PATHS.map((p, i) => (
+            <Link key={p.title} to={p.to} className={styles.pathCard} style={{animationDelay: `${0.06 * i}s`}}>
+              <span className={clsx(styles.pathIcon, p.tone && styles[`tone_${p.tone}`])}>
+                <Icon name={p.icon} size={22} />
+              </span>
+              <span className={styles.pathTitle}>{p.title}</span>
+              <span className={styles.pathText}>{p.text}</span>
+              <span className={styles.pathGo}>
+                Open guide <span aria-hidden="true">→</span>
+              </span>
+            </Link>
           ))}
         </div>
       </div>
@@ -241,69 +189,97 @@ function Sections() {
 
 function Architecture() {
   return (
-    <section className={styles.arch}>
+    <section className={clsx(styles.section, styles.sectionAlt)}>
       <div className="container">
-        <Reveal>
-          <h2 className={styles.sectionTitle}>How it fits together</h2>
-          <p className={styles.sectionLead}>
-            One Laravel backend runs the Admin Panel and the Creator Portal, and serves the app and the website through its API.
-          </p>
-        </Reveal>
-        <Reveal>
-          <svg className={styles.diagram} viewBox="0 0 760 300" role="img" aria-label="The app, website and Creator Portal all talk to the backend, which uses Firebase, your video storage (this server, Amazon S3 or Cloudflare Stream) and the app stores.">
-            <g className={styles.lines}>
-              <path d="M150 70 C 260 70, 260 150, 330 150" />
-              <path d="M150 150 L 330 150" />
-              <path d="M150 230 C 260 230, 260 150, 330 150" />
-              <path d="M430 150 C 500 150, 500 70, 610 70" />
-              <path d="M430 150 L 610 150" />
-              <path d="M430 150 C 500 150, 500 230, 610 230" />
-            </g>
-            {[
-              ['Mobile app', 20, 45],
-              ['Website', 20, 125],
-              ['Creator Portal', 20, 205],
-            ].map(([label, x, y]) => (
-              <g key={label}>
-                <rect x={x} y={y} width="130" height="50" rx="12" className={styles.node} />
-                <text x={x + 65} y={y + 30} textAnchor="middle" className={styles.nodeText}>{label}</text>
-              </g>
-            ))}
-            <rect x="330" y="110" width="100" height="80" rx="16" className={styles.core} />
-            <text x="380" y="146" textAnchor="middle" className={styles.coreText}>Backend</text>
-            <text x="380" y="166" textAnchor="middle" className={styles.coreSub}>+ Admin Panel</text>
-            {[
-              ['Firebase', 610, 45],
-              ['Video storage', 610, 125],
-              ['Play · App Store', 610, 205],
-            ].map(([label, x, y]) => (
-              <g key={label}>
-                <rect x={x} y={y} width="130" height="50" rx="12" className={styles.node} />
-                <text x={x + 65} y={y + 30} textAnchor="middle" className={styles.nodeText}>{label}</text>
-              </g>
-            ))}
-          </svg>
-        </Reveal>
+        <p className={styles.kicker}>How it fits together</p>
+        <h2 className={styles.h2}>One server, three ways in.</h2>
+        <p className={styles.lead}>
+          Your server runs the Admin Panel, the Creator Portal and the API. The mobile app, the creators and your team all reach the same data, so a price changed
+          in the panel is the price viewers see.
+        </p>
+        <div className={styles.arch}>
+          <div className={clsx(styles.node, styles.nodeApp)}>
+            <Icon name="phone" />
+            <strong>Viewer app</strong>
+            <span>Android & iOS</span>
+          </div>
+          <div className={styles.link} aria-hidden="true">
+            <span />
+          </div>
+          <div className={clsx(styles.node, styles.nodeCore)}>
+            <Icon name="server" />
+            <strong>Your server</strong>
+            <span>Admin Panel · API · Creator Portal</span>
+          </div>
+          <div className={styles.link} aria-hidden="true">
+            <span />
+          </div>
+          <div className={clsx(styles.node, styles.nodeCreator)}>
+            <Icon name="creator" />
+            <strong>Creators & team</strong>
+            <span>in the browser</span>
+          </div>
+        </div>
+        <div className={styles.services}>
+          {SERVICES.map((s) => (
+            <span key={s} className={styles.service}>
+              {s}
+            </span>
+          ))}
+        </div>
+        <div className={styles.archLinks}>
+          <Link to="/docs/getting-started/how-it-works/">How eDrama works →</Link>
+          <Link to="/docs/integrations/overview/">All integrations →</Link>
+        </div>
       </div>
     </section>
   );
 }
 
-function Help() {
+function Promises() {
   return (
-    <section className={styles.help}>
+    <section className={styles.section}>
       <div className="container">
-        <Reveal>
-          <h2 className={styles.sectionTitle}>Need help?</h2>
-          <p className={styles.sectionLead}>Our team is ready to help with installation, configuration and re-branding.</p>
-        </Reveal>
-        <div className={styles.helpButtons}>
-          <Link className={clsx('button button--lg', styles.primaryButton)} to="/support/">
-            Contact support
-          </Link>
-          <Link className={clsx('button button--lg', styles.ghostButtonPlain)} to="/faqs/">
-            Read the FAQs
-          </Link>
+        <p className={styles.kicker}>Fair pricing, built in</p>
+        <h2 className={styles.h2}>The rules your viewers can trust.</h2>
+        <div className={styles.promises}>
+          {PROMISES.map((p) => (
+            <div key={p.title} className={styles.promise}>
+              <span className={styles.promiseIcon}>
+                <Icon name={p.icon} />
+              </span>
+              <strong>{p.title}</strong>
+              <span>{p.text}</span>
+            </div>
+          ))}
+        </div>
+        <Link className={styles.inlineLink} to="/docs/monetization/fair-play-rules/">
+          Read every fair-play rule →
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function HelpRow() {
+  const items = [
+    {title: 'FAQs', text: 'Quick answers to the questions buyers ask most.', to: '/docs/help/faqs/', icon: 'help'},
+    {title: 'Troubleshooting', text: 'Symptoms, causes and the fix, step by step.', to: '/docs/help/troubleshooting/', icon: 'settings'},
+    {title: 'Support', text: 'How to reach WRTeam and what to send us.', to: '/docs/help/support/', icon: 'users'},
+  ];
+  return (
+    <section className={clsx(styles.section, styles.sectionHelp)}>
+      <div className="container">
+        <div className={styles.helpGrid}>
+          {items.map((it) => (
+            <Link key={it.title} to={it.to} className={styles.helpCard}>
+              <Icon name={it.icon} />
+              <span>
+                <strong>{it.title}</strong>
+                <em>{it.text}</em>
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
@@ -311,17 +287,14 @@ function Help() {
 }
 
 export default function Home() {
-  const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout description={siteConfig.tagline}>
+    <Layout title="Documentation" description="The complete guide to eDrama: server installation, the mobile app, the Admin Panel, the Creator Portal and monetization.">
       <Hero />
       <main>
-        <Sections />
+        <PathCards />
         <Architecture />
-        <div className="container">
-          <DocBanner />
-        </div>
-        <Help />
+        <Promises />
+        <HelpRow />
       </main>
     </Layout>
   );

@@ -1,0 +1,73 @@
+.details {
+  --docusaurus-details-decoration-color: var(--ed-accent);
+  border-radius: 12px !important;
+  border: 1px solid var(--ed-border) !important;
+  background: var(--ed-surface) !important;
+  box-shadow: none !important;
+  margin: 0 0 0.75rem !important;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.details:hover { border-color: rgba(198, 235, 59, 0.45) !important; }
+.details[open] { box-shadow: var(--ed-shadow) !important; }
+/* The question: room on the left for the toggle, so it never sits on the text. */
+.details > summary {
+  font-weight: 600;
+  line-height: 1.5;
+  padding: 0.2rem 0 0.2rem 2.2rem !important;
+  min-height: calc(1.5em + 0.4rem);
+  color: var(--ed-content);
+}
+.details { color: var(--ed-content); }
+
+/* The toggle: a chevron in a tinted circle, turning down when the answer opens.
+   It replaces Docusaurus's small triangle but keeps its open/close rotation. */
+.details > summary::before {
+  content: '' !important;
+  top: 0.24rem !important;
+  left: 0 !important;
+  width: 1.45rem;
+  height: 1.45rem;
+  border: 0 !important;
+  border-radius: 50%;
+  background-color: var(--ed-accent-tonal);
+  background-repeat: no-repeat;
+  background-position: 54% 50%;
+  background-size: 0.72rem 0.72rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 3.5 10.5 8 6 12.5' fill='none' stroke='%23C6EB3B' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  transform-origin: 50% 50% !important;
+  transition: transform 0.25s var(--ed-ease), background-color 0.2s !important;
+}
+[data-theme='light'] .details > summary::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 3.5 10.5 8 6 12.5' fill='none' stroke='%234A7300' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.details:hover > summary::before { background-color: color-mix(in srgb, var(--ed-accent) 26%, transparent); }
+.details > summary:focus-visible { outline: none; }
+.details > summary:focus-visible::before { box-shadow: 0 0 0 2px var(--ed-accent); }
+.details > div > div { border-top-color: var(--ed-border-subtle) !important; }
+
+.anchored { scroll-margin-top: calc(var(--ifm-navbar-height) + 1.5rem); }
+.anchored > summary { display: flex !important; align-items: center; justify-content: space-between; gap: 1rem; }
+.anchored > summary > *:first-child { flex: 1 1 auto; min-width: 0; }
+
+.share {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--ed-border);
+  background: var(--ed-surface-muted);
+  color: var(--ed-content-2);
+  font: 500 0.74rem/1 var(--ifm-font-family-base);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, border-color 0.2s, color 0.2s;
+}
+.anchored:hover .share, .share:focus-visible, .copied { opacity: 1; }
+.share:hover { border-color: var(--ed-accent); color: var(--ed-accent-ink); }
+.copied { border-color: var(--ed-success) !important; color: var(--ed-success) !important; }
+@media (hover: none) { .share { opacity: 0.8; } }
+
+.target { animation: targetPulse 2.4s ease-out 1; border-color: var(--ed-accent) !important; }
+@keyframes targetPulse { 0%, 70% { box-shadow: 0 0 0 3px var(--ed-accent-tonal); } 100% { box-shadow: none; } }

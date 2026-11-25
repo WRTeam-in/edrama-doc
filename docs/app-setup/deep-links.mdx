@@ -1,0 +1,75 @@
+---
+title: "Share links and deep links"
+sidebar_label: "Deep links"
+description: "Make shared links and your website's series and creator pages open straight in the app."
+---
+
+When a viewer shares a series, an episode or a creator, the link looks like `https://admin.your-domain.com/s/12`. On a phone with the app installed, that link should open **in the app**. Without the app, it opens a share page with the poster, synopsis and store buttons.
+
+For that, three places must agree on the domain, and your server must prove the app is yours.
+
+:::info[Use this page, not the common guide]
+eDrama's link setup is its own (two hosts, link files served by your server and website), so follow this page rather than the common guide's deep-link page.
+:::
+
+## 1. In the app
+
+| Setting | File | Value |
+|---|---|---|
+| `shareBaseUrl` | `lib/app/config/app_config.dart` | `https://admin.your-domain.com` |
+| `shareHost` | `android/app/build.gradle.kts` | `admin.your-domain.com` |
+| `applinks:` | `ios/Runner/Runner.entitlements` | `applinks:admin.your-domain.com` |
+
+```kotlin title="android/app/build.gradle.kts"
+manifestPlaceholders["shareHost"] = "admin.your-domain.com"
+manifestPlaceholders["websiteHost"] = "www.your-domain.com"
+```
+
+```xml title="ios/Runner/Runner.entitlements"
+<key>com.apple.developer.associated-domains</key>
+<array>
+    <string>applinks:admin.your-domain.com</string>
+    <string>applinks:www.your-domain.com</string>
+</array>
+```
+
+The app opens these addresses:
+
+| Domain | Paths |
+|---|---|
+| Share host | `/s/…` (a series), `/c/…` (a creator) |
+| Website host | `/series/…`, `/creators/…`, and also `/s/…` and `/c/…` |
+
+The **website host** is your public website's domain (see [Website](../admin/content/website.mdx)). If you don't use the website, set it to your share domain too.
+
+## 2. On your server
+
+Your server publishes the two "proof" files phones check: `/.well-known/assetlinks.json` (Android) and `/.well-known/apple-app-site-association` (iOS). Fill them in through `.env`:
+
+```ini title=".env"
+EDRAMA_ANDROID_PACKAGE=com.yourcompany.drama
+EDRAMA_ANDROID_SHA256=AB:CD:EF:...
+EDRAMA_IOS_APP_ID=TEAMID.com.yourcompany.drama
+```
+
+- **SHA-256**: your release signing certificate's fingerprint. If Google Play signs your app (Play App Signing), copy it from Play Console › **Setup › App signing**. Separate several with commas.
+- **iOS app ID**: your Apple **Team ID** (Apple Developer › Membership), a dot, then your bundle ID.
+
+Run `php artisan config:cache`. Then open `https://admin.your-domain.com/.well-known/assetlinks.json` in a browser: it should show your package name.
+
+While these are empty, share links still work: they just open the web page.
+
+## 3. The website's link files
+
+Your public website serves the same two files itself, from the app settings in the Admin Panel. See [Website](../admin/content/website.mdx).
+
+## Test it
+
+- **Server files:** open both addresses below in a browser. Each should list your package name or app ID; empty values mean the `.env` lines are missing (run `php artisan config:cache` after adding them).
+
+  <ServerUrl path="/.well-known/assetlinks.json" />
+  <ServerUrl path="/.well-known/apple-app-site-association" />
+
+- **Android:** after installing a release build, run `adb shell pm get-app-links com.yourcompany.drama`. Both hosts should say `verified`. Without a computer: Settings › Apps › your app › **Open by default** lists your domains as verified links.
+- **iOS:** send yourself a link in Notes or Messages and long-press it: **Open in "Your App"** should appear.
+- **End to end:** share a series from the app to yourself and tap the link on a phone with the app installed: it opens on that series. On a phone without the app, the link opens a share page with your store buttons.

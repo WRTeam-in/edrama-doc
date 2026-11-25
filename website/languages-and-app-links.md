@@ -9,11 +9,15 @@ description: Website addresses per language, and how website links open the app.
 ## Languages
 
 - The **default language** is at plain addresses: `/series/…`, `/categories/…`.
-- Every other language turned on in <AdminPath path="Content › Website" /> › **Look & languages** lives under its code: `/hi/series/…`, `/ar/series/…`. Only languages already turned on for the app in <AdminPath path="System › Settings › Regions & languages" /> can be picked.
+- Every other language turned on in <AdminPath path="Content › Website" /> › **Languages** lives under its code: `/hi/series/…`, `/ar/series/…`. Only languages already turned on for the app in <AdminPath path="System › Settings › Regions & languages" /> can be picked.
 - Right-to-left languages such as Arabic are laid out right to left.
-- Visitors switch language from the header when **Show a language menu in the header** is on, and light or dark when **Let visitors switch between light and dark** is on (both on **Look & languages**).
-- Website texts are translated on the **Translations** tab. Series and category names use the translations already entered for the app.
+- Visitors switch language from the header when **Show a language menu in the header** is on, and light or dark when **Let visitors switch between light and dark** is on (on the **Languages** and **Style** tabs).
+- Website texts are translated on the **Languages** tab. Series and category names use the translations already entered for the app.
 - The sitemap lists every page in every language, with links between the language versions.
+
+## Which series are on it
+
+The website shows what viewers in your **default region** see. A series limited to other regions isn't on it, so include the default region if a series should appear on the website ([Series in some regions only](/admin-panel/monetization/#series-in-some-regions-only)).
 
 ## Links that open the app
 
@@ -22,7 +26,7 @@ The website serves the two files phones read to open links in your app instead o
 - `/.well-known/assetlinks.json` (Android)
 - `/.well-known/apple-app-site-association` (iOS)
 
-Both are filled from your backend's app settings, so they stay empty until the backend knows your app (see [Admin Panel › Share links](/admin-panel/share-links/)). Your app must list the website's domain too: see [Mobile App › Deep links](/mobile-app/deep-links/).
+Both are filled from your backend's app settings, so they stay empty until the backend knows your app (see [Admin Panel › Share links](/admin-panel/share-links/)). Your app must list the website's domain too, as `websiteHost` on Android and an `applinks:` entry on iOS: see [Mobile App › Deep links](/mobile-app/deep-links/).
 
 The app's own share links (`/s/<id>` for a series, `/c/<handle>` for a creator) also work on the website: they redirect to the series or creator page.
 
