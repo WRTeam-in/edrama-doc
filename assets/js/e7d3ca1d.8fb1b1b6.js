@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkedrama_doc||=[]).push([[5767],{1650(s){s.exports=JSON.parse('{"name":"docusaurus-plugin-content-docs","id":"mobile-app"}')}}]);
